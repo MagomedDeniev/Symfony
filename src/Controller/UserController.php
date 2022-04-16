@@ -116,7 +116,6 @@ class UserController extends CustomAbstractController
             'profile' => $user->getProfile(),
             'user' => $user,
             'type' => 'profile',
-            'shareUsers' => $follows['sharedUsers'],
             'followers' => $follows['followers'],
             'following' => $follows['following']
         ]);
@@ -137,7 +136,7 @@ class UserController extends CustomAbstractController
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria($criteria)
             ->setParameters(['username' => $user->getUsername()])
-            ->setLimit(15)
+            ->setLimit(10)
             ->setPage($page)
         ;
 
@@ -150,7 +149,6 @@ class UserController extends CustomAbstractController
             'profile' => $user->getProfile(),
             'user' => $user,
             'type' => 'list',
-            'shareUsers' => $follows['sharedUsers'],
             'followers' => $follows['followers'],
             'following' => $follows['following']
         ]);
@@ -178,7 +176,6 @@ class UserController extends CustomAbstractController
             'profile' => $user->getProfile(),
             'user' => $user,
             'type' => 'tagged',
-            'shareUsers' => $follows['sharedUsers'],
             'followers' => $follows['followers'],
             'following' => $follows['following']
         ]);
@@ -366,7 +363,7 @@ class UserController extends CustomAbstractController
             ->setType('notification')
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['receiver' => $user, 'status' => true])
-            ->setLimit(30)
+            ->setLimit(20)
             ->setPage($page);
 
         return $this->render('interface/user/notifications.html.twig', [
@@ -442,16 +439,13 @@ class UserController extends CustomAbstractController
             ->setCriteria(['user' => $user])
             ->setClass(Post::class)
             ->setType('bookmark')
-            ->setLimit(15)
+            ->setLimit(10)
             ->setPage($page)
         ;
 
-        $shareUsers = $userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']);
-
         return $this->render('interface/user/bookmarks.html.twig', [
             'posts' => $paginator->getData(),
-            'paginator' => $paginator,
-            'shareUsers' => $shareUsers
+            'paginator' => $paginator
         ]);
     }
 

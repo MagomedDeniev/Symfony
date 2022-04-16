@@ -107,7 +107,7 @@ class SongController extends CustomAbstractController
     }
 
     #[Route('/song/{slug}/{page<\d+>?1}', name: 'song_show',  methods: ['GET'])]
-    public function show(Song $song, $page, Initializer $initializer, UserRepository $userRepo): Response
+    public function show(Song $song, $page, Initializer $initializer): Response
     {
         $this->updateLastActivity();
         if ($song->getStatus() != true && !$this->isGranted('ROLE_OWNER')) {
@@ -116,18 +116,11 @@ class SongController extends CustomAbstractController
             ]);
         }
 
-        if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']);
-        } else {
-            $shareUsers = null;
-        }
-
         $initializer->initializeSongShow($song);
 
         return $this->render('interface/song/show.html.twig', [
             'song' => $song,
-            'page' => $page,
-            'shareUsers' => $shareUsers
+            'page' => $page
         ]);
     }
 

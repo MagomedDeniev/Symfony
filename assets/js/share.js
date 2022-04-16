@@ -1,3 +1,4 @@
+const url = require("url");
 const axios = require('axios').default;
 
 // -------------------- Share global functions -------------------- //
@@ -48,15 +49,51 @@ function shareMedia(event, type) {
     })
 }
 
+function shareUsers(shareButton, type) {
+    shareButton.addEventListener('click', (event) => {
+        let shareContent = document.querySelector('.user-share-media.' + type.toLowerCase());
+        if (shareContent.innerHTML === '') {
+            shareContent.innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin"></i></div>';
+            let url = '/shareUsers';
+
+            axios.get(url).then((response) => {
+                shareContent.innerHTML = '';
+                response.data.users.forEach((user) => {
+                    let userLine = document.createElement('div');
+                    userLine.classList.add('user-line');
+                    userLine.innerHTML =
+                        `<div class="back-picture bp-45" style="margin-right: 10px; background-image: url('${user.image}')"></div>
+                            <div class="user-line-info">
+                                <div class="user-line-username">
+                                    <span class="md-username">${user.username}</span>
+                                </div>
+                            </div>
+                            `;
+
+                    if (type === 'Profile') {
+                        userLine.insertAdjacentHTML('afterbegin',`<span style="display: none" class="md-user-id">${user.id}</span>`)
+                    }
+
+                    document.querySelector('.user-share-media.' + type.toLowerCase()).appendChild(userLine);
+                })
+
+                let shareUsers = document.querySelectorAll('.user-share-modal .user-line');
+                shareUsers.forEach((user) => {
+                    user.addEventListener('click', (event) => {
+                        shareMediaAlert(event,user,type);
+                    })
+                })
+            })
+        }
+    })
+}
+
 // -------------------- Share song -------------------- //
 
 // Song share alert
-let shareSongUsers = document.querySelectorAll('#shareSongModal .user-line');
-shareSongUsers.forEach((user) => {
-    user.addEventListener('click', (event) => {
-        shareMediaAlert(event,user,'Song');
-    })
-});
+if (document.getElementById('shareSong')) {
+    shareUsers(document.getElementById('shareSong'),'Song');
+}
 
 // If song share confirm
 let shareSongButton = document.getElementById('shareSongConfirmButton');
@@ -91,12 +128,11 @@ sharePostButton.forEach((sharePostButton) => {
 });
 
 // Post share alert
-let sharePostUsers = document.querySelectorAll('#sharePostModal .user-line');
-sharePostUsers.forEach((user) => {
-    user.addEventListener('click', (event) => {
-        shareMediaAlert(event,user,'Post');
-    })
-})
+if (document.querySelector('.share-post-button')) {
+    sharePostButton.forEach((shareButton) => {
+        shareUsers(shareButton,'Post')
+    });
+}
 
 // If post share confirm
 let sharePostConfirmButton = document.getElementById('sharePostConfirmButton');
@@ -119,13 +155,9 @@ if (sharePostCancel) {
 
 // -------------------- Share profile -------------------- //
 
-// Profile share alert
-let shareProfileUsers = document.querySelectorAll('#shareProfileModal .user-line');
-shareProfileUsers.forEach((user) => {
-    user.addEventListener('click', (event) => {
-        shareMediaAlert(event,user,'Profile');
-    })
-});
+if (document.getElementById('shareProfile')) {
+    shareUsers(document.getElementById('shareProfile'),'Profile');
+}
 
 // If profile share confirm
 let shareProfileButton = document.getElementById('shareProfileConfirmButton');

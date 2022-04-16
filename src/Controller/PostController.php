@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends CustomAbstractController
 {
     #[Route('/{page<\d+>?1}', name: 'app_home',  methods: ['GET'])]
-    public function index($page, Paginator $paginator, UserRepository $userRepo): Response
+    public function index($page, Paginator $paginator): Response
     {
         $this->updateLastActivity();
         $gender = ($this->getUser()) ? $this->user()->getProfile()->getGender() : null;
@@ -30,45 +30,31 @@ class PostController extends CustomAbstractController
             ->setMethod('findRecommendations')
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['gender' => $gender, 'status' => true, 'featured' => true])
-            ->setLimit(15)
+            ->setLimit(10)
             ->setPage($page)
         ;
 
-        if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']);
-        } else {
-            $shareUsers = null;
-        }
-
         return $this->render('interface/post/recommendations.html.twig', [
             'posts' => $paginator->getData(),
-            'paginator' => $paginator,
-            'shareUsers' => $shareUsers
+            'paginator' => $paginator
         ]);
     }
 
     #[Route('/feed/{page<\d+>?1}', name: 'post_feed',  methods: ['GET'])]
     #[Security('is_granted("ROLE_USER")')]
-    public function feed($page, Paginator $paginator, UserRepository $userRepo): Response
+    public function feed($page, Paginator $paginator): Response
     {
         $paginator
             ->setClass(Post::class)
             ->setMethod('findFeedPosts')
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['status' => true,'user' => $this->user()])
-            ->setLimit(15)
+            ->setLimit(10)
             ->setPage($page);
-
-        if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']);
-        } else {
-            $shareUsers = null;
-        }
 
         return $this->render('interface/post/feed.html.twig', [
             'posts' => $paginator->getData(),
-            'paginator' => $paginator,
-            'shareUsers' => $shareUsers
+            'paginator' => $paginator
         ]);
     }
 
@@ -99,20 +85,13 @@ class PostController extends CustomAbstractController
     }
 
     #[Route('/post/{id}/{page<\d+>?1}', name: 'post_show',  methods: ['GET'])]
-    public function show(Post $post, $page, FollowRepository $followRepo, UserRepository $userRepo): Response
+    public function show(Post $post, $page, FollowRepository $followRepo): Response
     {
         $followed = $followRepo->findOneBy(['follower' => $this->getUser(), 'followed' => $post->getAuthor(), 'accepted' => true]);
         if ($followed && $post->getStatus() === true || $post->getStatus() === true && $post->getAuthor()->getClosedAccount() === false || $this->getUser() === $post->getAuthor() || $this->isGranted('ROLE_OWNER')) {
-            if ($this->isGranted('ROLE_USER')) {
-                $shareUsers = $userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']);
-            } else {
-                $shareUsers = null;
-            }
-
             return $this->render('interface/post/show.html.twig', [
                 'post' => $post,
-                'page' => $page,
-                'shareUsers' => $shareUsers
+                'page' => $page
             ]);
         } else {
             return $this->redirectToRoute('user_profile', [

@@ -18,9 +18,13 @@ use App\Repository\PlaylistSongRepository;
 use App\Repository\ReportRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Imagine\Filter\FilterInterface;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Liip\ImagineBundle\Service\FilterService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class JsonController extends CustomAbstractController
 {
@@ -113,7 +117,7 @@ class JsonController extends CustomAbstractController
         ]);
     }
 
-    #[Route('/sharePost/{post}/{username}', name: 'share_post', methods: ['GET'])]
+    #[Route('/sharePost/{post}/{username}', name: 'share_post', methods: ['GET', 'POST'])]
     #[Security('is_granted("ROLE_USER")')]
     public function sendPost(Post $post, User $user, MessageRepository $messageRepo): Response
     {
@@ -129,7 +133,36 @@ class JsonController extends CustomAbstractController
         $messageRepo->add($message);
 
         return $this->json([
-            'response' => ['status' => 'sent', 'message' => $this->trans('flash.post.is.sent') . ' ' . $user->getUsername()]
+            'response' => [
+                'status' => 'sent',
+                'message' => $this->trans('flash.post.is.sent') . ' ' . $user->getUsername()
+            ]
+        ]);
+    }
+
+    #[Route('/shareUsers', name: 'share_users', methods: ['GET'])]
+    #[Security('is_granted("ROLE_USER")')]
+    public function shareUsers(UserRepository $userRepo, UploaderHelper $helper): Response
+    {
+        $shareUsers = [];
+
+        foreach ($userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']) as $key => $shareUser) {
+
+            if (str_contains($helper->asset($shareUser->getProfile()), 'avatar.jpg')) {
+                $image = '/assets/images/avatar.jpg';
+            } else {
+                $image = $helper->asset($shareUser->getProfile());
+            }
+
+            $shareUsers[$key] = [
+                'id' => $shareUser->getId(),
+                'username' => $shareUser->getUsername(),
+                'image' => $image
+            ];
+        }
+
+        return $this->json([
+            'users' => $shareUsers
         ]);
     }
 

@@ -171,12 +171,6 @@ class Initializer
     {
         $userRepo = $this->users;
 
-        if ($this->defender->isGranted($this->getUser(),'ROLE_USER')) {
-            $shareUsers = $userRepo->findShareUsers(['user' => $this->getUser(), 'type' => 'following']);
-        } else {
-            $shareUsers = null;
-        }
-
         try {
             $followers = $userRepo->followsCount(['user' => $user, 'type' => 'followers', 'accepted' => true]);
         } catch (NoResultException|NonUniqueResultException $e) {
@@ -189,7 +183,6 @@ class Initializer
         }
 
         return [
-            'sharedUsers' => $shareUsers,
             'followers' => $followers,
             'following' => $following
         ];

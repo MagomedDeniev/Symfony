@@ -226,25 +226,3 @@ postCollapse.forEach((post) => {
     document.getElementById('postCollapseButton' + postId).addEventListener('click', openCollapsedPost);
 });
 
-// Modal change body color
-
-// let observer = new MutationObserver((mutations) => {
-//     mutations.forEach(function(mutation) {
-//         if (mutation.attributeName === "class") {
-//             if (mobileMedia.matches) {
-//                 if ($(mutation.target).hasClass('modal-open')){
-//                     observedBody.style.backgroundColor = '#141414';
-//                 } else {
-//                     observedBody.style.backgroundColor = '#282827';
-//                 }
-//             }
-//         }
-//     });
-// });
-//
-// let mobileMedia = window.matchMedia("(max-width: 576px)")
-// let observedBody = document.querySelector('body');
-//
-// observer.observe(observedBody, {
-//     attributes: true
-// });
