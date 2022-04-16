@@ -1,0 +1,15 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'activity.adding' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+        <header class="user-title-block">{{ 'activity.adding' | trans }}</header>
+
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/activity/_form.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}

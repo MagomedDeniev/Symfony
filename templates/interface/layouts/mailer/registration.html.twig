@@ -1,0 +1,31 @@
+{% extends 'interface/layouts/mailer/base.html.twig' %}
+
+{% block body %}
+
+    Здравствуйте <b>{{ user.username }}</b>,
+
+    <br><br>
+
+    Вы успешно зарегистрировались на сайте ShovdanYist, теперь вы можете зайти используя свое имя пользователя и пароль
+
+    <br><br>
+
+    Некоторые функции сайта такие как добавление аватара и комментариев будут недоступны, пока вы не подтвердите свою электронную почту
+
+    <br><br>
+
+    Для этого нажмите на следующую кнопку:
+
+    <br><br>
+
+    <table>
+        <tbody>
+            <tr>
+                <td class="btn btn-blue">
+                    <a href="{{ absolute_url(path('app_email_validation',{'token':user.token})) }}">Подтвердить почту</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

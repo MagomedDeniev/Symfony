@@ -1,0 +1,31 @@
+vich_uploader:
+    db_driver: orm
+    metadata:
+        type: attribute
+    mappings:
+        people_images:
+            uri_prefix: /uploads/images/people
+            upload_destination: '%kernel.project_dir%/public/uploads/images/people'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+        vocalist_songs:
+            uri_prefix: /uploads/audio/song
+            upload_destination: '%kernel.project_dir%/public/uploads/audio/song'
+            namer:
+                service: Vich\UploaderBundle\Naming\PropertyNamer
+                options: { property: 'slug'}
+
+        user_avatars:
+            uri_prefix: /uploads/images/avatars
+            upload_destination: '%kernel.project_dir%/public/uploads/images/avatars'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+        post_images:
+            uri_prefix: /uploads/images/posts
+            upload_destination: '%kernel.project_dir%/public/uploads/images/posts'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+        message_images:
+            uri_prefix: /uploads/images/messages
+            upload_destination: '%kernel.project_dir%/public/uploads/images/messages'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

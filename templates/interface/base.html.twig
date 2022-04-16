@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+
+    <head>
+        <meta charset="UTF-8">
+        {% if app.request.get('_route') == 'app_home' %}
+            <title>ShovdanYist</title>
+        {% else %}
+            <title>{% block title %}{% endblock %} - ShovdanYist</title>
+        {% endif %}
+
+        <meta property="og:site_name" content="ShovdanYist">
+        <meta property="og:title" content="{% block og_title %}{% endblock %}">
+        <meta property="og:image" content="{% block og_image %}{% endblock %}">
+        <meta property="og:url" content="{% block og_url %}{{ app.request.uri }}{% endblock %}">
+        {% block og_type %}<meta property="og:type" content="website">{% endblock %}
+
+        <meta name="description" content="{% block description %}ShovdanYist это чеченская социальная сеть, где вы можете общаться, делиться, находить и скачивать любые чеченские песни и тексты песен.{% endblock %}">
+        <meta name="keywords" content="{% block keywords %}тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <meta name="google-site-verification" content="gcJ4Jdgl_1DMmIidRioYPY0OU5fhy9CP-IG1ls0q0CU" />
+        <link href="{{ asset('/assets/images/favicon.ico') }}" rel="shortcut icon" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon-precomposed" href="{{ asset('/assets/images/apple-touch-icon-precomposed.png') }}"/>
+        <link rel="apple-touch-icon" href="{{ asset('/assets/images/apple-touch-icon.png') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chosen.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/player.css') }}">
+        {% if app.request.headers.get('User-Agent') == 'SYIOS' %}<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/iphone.css') }}">{% endif %}
+        <style>.custom-file-label::after {content: '{{ 'browse' | trans }}' !important}</style>
+        {{ encore_entry_link_tags('app6') }}
+    </head>
+
+    <body class="front {% block pageclass %}{% endblock %}">
+
+        {% block navbar %}
+            {% include 'interface/layouts/modules/navbar.html.twig' %}
+{#            {% include 'interface/layouts/modules/mobile_navbar.html.twig' %}#}
+        {% endblock %}
+
+        {% include 'interface/layouts/modules/mobile_menu.html.twig' %}
+
+        <div class="body-wrapper">
+
+            {% block letters %}
+{#                {{ lettersMenu() }}#}
+            {% endblock %}
+
+            <div class="container md-container">
+
+                {% block top_a %}{% endblock %}
+
+                <div class="row">
+
+                    {% block sidebar_a %}
+
+                        <div class="sidebar-a">
+                            {% include 'interface/layouts/modules/user_menu.html.twig' %}
+                            {% block sideblock_a %}
+                            {% endblock %}
+                        </div>
+
+                    {% endblock %}
+
+                    <main>
+                        {% block main_top %}{% endblock %}
+                        {% include 'interface/layouts/modules/flash.html.twig' %}
+
+                        {% block main %}
+                            <div class="md-box md-content-padding md-mobile-padding">
+                                {% block body %}{% endblock %}
+                            </div>
+                        {% endblock %}
+
+                        {% block main_bottom %}{% endblock %}
+                        {% block footer %}{% include 'interface/layouts/modules/footer.html.twig' %}{% endblock %}
+                    </main>
+
+                    {% block sidebar_b %}
+                    {% endblock %}
+
+                </div>
+
+            </div>
+
+            {{ encore_entry_script_tags('app6') }}
+            {% block scripts %}{% endblock %}
+
+        </div>
+
+    </body>
+
+</html>

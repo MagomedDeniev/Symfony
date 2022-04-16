@@ -1,0 +1,336 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block og_title %}{{ user.username }} | {{ type | trans }}{% endblock %}
+
+{% block og_image %}{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}{% endblock %}
+
+{% block og_type %}
+    <meta property="og:type" content="profile">
+    <meta property="profile:username" content="{{ user.username }}">
+    <meta property="profile:gender" content="{{ user.profile.gender ? 'female' : 'male' }}">
+{% endblock %}
+
+{% block title %}{{ user.username }} | {{ type | trans }}{% endblock %}
+
+{% block description %}Страница пользователя {{ user.username }} на сайте ShovdanYist, здесь вы найдете тексты всех чеченских песен, их переводы, а также сможете скачать их или добавлять в свой плейлист.{% endblock %}
+
+{% block keywords %}профиль {{ user.username }}, тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+
+        <header class="user-title-block">
+
+            <div class="username-container">
+
+                <span class="username">
+                    {% if user.closedAccount %}
+                        <span class="profile-lock">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    {% endif %}
+                    {{ user.username }}
+                </span>
+
+                {% if profile.verified == true %}
+                    <span class="verified">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </span>
+                {% endif %}
+
+            </div>
+
+            {% include 'interface/user/_actions.html.twig' %}
+
+        </header>
+
+        <div class="md-content-padding md-mobile-padding">
+
+            {% if user.profile.avatar != 'avatar.jpg' %}
+
+                {% if '.gif' in profile.avatar %}
+                    {% set avatar_link = vich_uploader_asset(profile) %}
+                {% else%}
+                    {% set avatar_link = vich_uploader_asset(profile) | imagine_filter('avatar') %}
+                {% endif %}
+
+            {% else %}
+
+                {% set avatar_link = asset('assets/images/avatar.jpg') %}
+
+            {% endif %}
+
+            <div class="md-profile-block">
+
+                <div class="back-picture bp-130" style="margin-right: 16px;background-image: url('{{ avatar_link }}')">
+                </div>
+
+                <div class="follows-block">
+
+                    <a href="">
+                        <div>
+                            <span class="number">{{ posts | length }}</span>
+                            <span class="title">{{ 'posts' | trans }}</span>
+                        </div>
+                    </a>
+
+                    <a href="{{ path('user_followers',{'username':user.username}) }}">
+                        <div id="profileFollowers">
+                            <span class="number">{{ followers }}</span>
+                            <span class="title">{{ 'followers' | trans }}</span>
+                        </div>
+                    </a>
+
+                    <a href="{{ path('user_following',{'username':user.username}) }}">
+                        <div>
+                            <span class="number">{{ following }}</span>
+                            <span class="title">{{ 'following' | trans }}</span>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div class="profile-buttons">
+
+                    <style>
+                        .profile-follow .btn::before {
+                            content: "{{ 'follow' | trans }}";
+                        }
+                        .profile-follow .btn.followed::before {
+                            content: "{{ 'unfollow' | trans }}";
+                        }
+                        .profile-follow .btn.requested::before {
+                            content: "{{ 'requested' | trans }}";
+                        }
+                    </style>
+
+                    {% if app.user == user %}
+                        <div class="profile-button un-width">
+                            <a class="btn btn-light" href="{{ path('user_edit',{'username':app.user.username}) }}">
+                                {{ 'edit' | trans }}
+                            </a>
+                        </div>
+                        <div class="profile-button un-width">
+                            <a class="btn btn-light" href="{{ path('user_bookmarks') }}">
+                                <i class="fas fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="profile-button un-width">
+                            <a class="btn btn-light" href="{{ path('user_settings',{'username':app.user.username}) }}">
+                                <i class="fas fa-cog"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="profile-button profile-follow md-margin-right">
+                            <a class="btn {% if userIsFollowed(user) == 'followed' %}btn-light followed{% elseif userIsFollowed(user) == 'requested' %}btn-light requested{% else %}btn-info{% endif %} {% if app.user %}follow-toggle{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':user.username}) }}{% else %}{{ path('app_login') }}{% endif %}"></a>
+                        </div>
+
+                        <div class="profile-button">
+                            <a class="btn btn-light" href="{{ path('message_conversation', {'username':user.username}) }}">
+                                {{ 'write' | trans }}
+                            </a>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="md-profile-info">
+
+                <span class="md-fullname">{{ profile.fullname }}</span>
+
+{#                {% if is_role(profile.user,'ROLE_MODERATOR') %}#}
+{#                    <span class="text-muted">Администрация ShovdanYist</span>#}
+{#                {% endif %}#}
+
+                <div class="md-bio">
+                    {{ profile.about | raw }}
+                </div>
+
+                <span class="md-link">
+                    <a href="{{ profile.url }}" target="_blank">{{ profile.url | replace({'http://': '', 'https://': '', 'http://www.': '', 'https://www.': ''}) }}</a>
+                </span>
+
+            </div>
+
+        </div>
+
+        {% if is_granted('ROLE_USER_ANALYST') %}
+
+            <hr class="m-0" style="border-color: #eef1f5">
+
+            <div class="form-spoiler" style="margin: 10px 12px">
+
+                <a class="collapsed message" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                    {{ 'statistics' | trans }} <i></i>
+                </a>
+
+                {% set statistics = {
+                    'Количество приглашенных': invitees,
+                    'Комментариев': user.comments.count,
+                    'Количество статей': user.posts.count,
+                    'Песен в плейлисте': user.playlistSongs.count,
+                    'Закладок': user.bookmarks.count
+                } %}
+
+                <div class="collapse" id="navbarToggleExternalContent" style="margin: 4px 0 0;">
+                    {% for name,count in statistics %}
+                        {% if not loop.first %}<br>{% endif %}
+                        <b>{{ name }}:</b> {{ count }}
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        {% endif %}
+
+        {% if userIsFollowed(user) == 'followed' or app.user == user or user.closedAccount == false or is_granted('ROLE_OWNER') %}
+
+            {% set pathname = app.request.get('_route') %}
+
+            <div class="md-profile-posts-menu">
+                <a href="{{ path('user_profile', {'username':user.username}) }}" {% if pathname == 'user_profile' %}class="active"{% endif %}>
+                    <i class="fas fa-th"></i>
+                </a>
+                <a href="{{ path('user_list', {'username':user.username}) }}" {% if pathname == 'user_list' %}class="active"{% endif %}>
+                    <i class="fas fa-th-list"></i>
+                </a>
+                <a href="{{ path('user_tagged', {'username':user.username}) }}" {% if pathname == 'user_tagged' %}class="active"{% endif %}>
+                    <i class="fas fa-user-tag"></i>
+                </a>
+
+                {% if app.user == user and not is_granted('ROLE_OWNER') %}
+
+                    {% if is_granted('ROLE_POST_MODERATOR') %}
+                        <a href="{{ path('moderation_posts') }}">
+                            <i class="fas fa-sticky-note"></i>
+                            {% if postModerationCount() != 0 %}
+                                <span class="md-profile-menu-indicator">
+                                    {% if postModerationCount() > 99 %}
+                                        99+
+                                    {% else %}
+                                        {{ postModerationCount() }}
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </a>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
+                        <a href="{{ path('moderation_music') }}">
+                            <i class="fas fa-play-circle"></i>
+                        </a>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_USER_ACTIONS') %}
+                        <a href="{{ path('moderation_actions') }}">
+                            <i class="fas fa-hand-point-up"></i>
+                        </a>
+                    {% endif %}
+
+                {% elseif app.user == user and is_granted('ROLE_OWNER')%}
+
+                    <a href="{{ path('moderation_index') }}">
+                        <i class="fas fa-toolbox"></i>
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+            {% if type == 'profile' or type == 'tagged' %}
+
+                {% if posts %}
+
+                    <div class="md-grid-posts">
+
+                        {% for post in posts %}
+
+                                <div class="md-grid-post">
+
+                                    <a href="{{ path('post_show', {'id':post.id}) }}">
+
+                                        <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
+
+                                        <div class="md-grid-post-actions">
+
+                                            {% if not post.status %}
+
+                                                <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
+                                                    {% if post.status is null %}
+                                                        <i class="fas fa-history"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-ban"></i>
+                                                    {% endif %}
+                                                </span>
+
+                                            {% endif %}
+
+                                            {% if '.gif' in post.image %}
+                                                <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
+                                                    <i class="fas fa-magic"></i>
+                                                </span>
+                                            {% endif %}
+
+                                        </div>
+
+                                    </a>
+
+                                </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endif %}
+
+        {% else %}
+
+            <div class="profile-no-posts not-have-message" style="border-top: 1px solid #eef1f5">
+                <i class="fas fa-lock"></i>
+                {{ 'user.account.is.closed' | trans({'username':user.username}) }}
+            </div>
+
+        {% endif %}
+
+        {% include 'interface/user/_share_profile.html.twig' %}
+
+    </div>
+
+    {% if not posts %}
+        <div class="md-box profile-no-posts not-have-message md-list-posts">
+            <i class="far fa-clone" style="margin-right: 3px"></i>
+            {% if type == 'profile' or type == 'list' %}
+                {% if app.user == user %}
+                    {{ 'you.have.not.posts' | trans }}
+                {% else %}
+                    {{ 'user.have.not.posts' | trans({'username':user.username}) }}
+                {% endif %}
+            {% else %}
+                {% if app.user == user %}
+                    {{ 'you.have.not.tagged.posts' | trans }}
+                {% else %}
+                    {{ 'user.have.not.tagged.posts' | trans({'username':user.username}) }}
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if type == 'list' and posts %}
+        {% include 'interface/post/_share_post.html.twig' %}
+
+        <div class="md-list-posts">
+            {% for post in posts %}
+                {{ postView(post) }}
+            {% else %}
+
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {{ paginator.display('margin-top') }}
+
+{% endblock %}

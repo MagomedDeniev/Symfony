@@ -1,0 +1,61 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'settings' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+
+        <header class="user-title-block">{{ 'settings' | trans }}</header>
+
+        <div class="md-content-padding md-mobile-padding">
+
+            {{ form_start(form) }}
+
+                <div class="row label-icons-form">
+
+                    <div class="col-12">
+
+                        {{ form_row(form.closedAccount) }}
+                        {{ form_row(form.hideOnline) }}
+                        <hr>
+                        {{ form_row(form.username) }}
+                        {{ form_row(form.email) }}
+
+                        {% if is_granted('ROLE_OWNER') and user != app.user %}
+                            {{ form_row(form.password) }}
+                        {% endif %}
+
+                        <button class="btn btn-primary">
+                            {% if user.email != user.confirmedEmail %}
+                                Отправить снова
+                            {% else %}
+                                {{ 'save' | trans }}
+                            {% endif %}
+                        </button>
+
+                        <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': user.username}) }}">
+                            {{ 'cancel' | trans }}
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block main_bottom %}
+
+    {% if user == app.user %}
+        <div class="settings-footer">
+            {{ 'you.also.can' | trans }} <a style="font-weight: 600" href="{{ path('user_reset') }}">{{ 'reset.password' | trans | lower }}</a> {{ 'or' | trans }} <a style="font-weight: 600" href="{{ path('user_delete_account') }}">{{ 'delete.account' | trans | lower }}.</a>
+        </div>
+    {% endif %}
+
+{% endblock %}

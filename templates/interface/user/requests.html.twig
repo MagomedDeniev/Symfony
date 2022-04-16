@@ -1,0 +1,40 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'notifications' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+        <header class="user-title-block">
+            <a class="btn header-back-button" href="{{ path('user_notifications') }}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {{ 'follow.requests' | trans }}
+        </header>
+
+        <div id="requestsList" class="md-content-padding md-mobile-padding">
+            {% for request in requests %}
+                {{ userLine(request.follower, false, true) }}
+            {% else %}
+                <div class="not-have-message not-have-message-center">
+                    <i class="far fa-user" style="margin-right: 3px"></i>
+                    {{ 'you.have.not.follow.requests' | trans }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div id="requestsIsEmpty" class="md-content-padding md-mobile-padding" style="display:none">
+            <div class="not-have-message not-have-message-center">
+                <i class="far fa-user" style="margin-right: 3px"></i>
+                {{ 'you.have.not.follow.requests' | trans }}
+            </div>
+        </div>
+    </div>
+
+    {% if paginator.pages != 1 %}
+        <div id="requestsPaginator">
+            {{ paginator.display() }}
+        </div>
+    {% endif %}
+
+{% endblock %}

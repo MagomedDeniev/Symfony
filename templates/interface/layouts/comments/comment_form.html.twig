@@ -1,0 +1,70 @@
+{% if app.user %}
+
+    {% if app.user.confirmedEmail and app.user.status is null or app.user.status == true %}
+
+        {{ form_start(commentForm, {action: path('comment_new', {'type': name,'id': entity.id})}) }}
+
+            <div class="md-comment-write">
+
+                <div class="md-comment-writer">
+                    <span class="back-picture bp-45" style="margin-right: 14px;background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                    </span>
+                </div>
+
+                <div class="md-comment-input">
+
+                    <small class="md-comment-reply-area">
+                        <span class="float-left mr-1">{{ 'reply.for' | trans }}</span>
+                        <span class="md-comment-reply-user font-weight-bold"></span>{{ 'reply.for.two' | trans }}
+                        <span class="md-replying-delete"><i class="fas fa-times"></i></span>
+                    </small>
+                    {{ form_errors(commentForm.message) }}
+                    {{ form_widget(commentForm.message) }}
+
+                </div>
+
+                <div class="md-comment-send">
+
+                    <button class="btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        {{ form_end(commentForm) }}
+
+    {% elseif app.user.status is null %}
+
+        <div class="md-comment-guest md-alert md-alert-warning m-0">
+            <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.write.comments' | trans }}
+        </div>
+
+    {% else %}
+
+        <div class="md-comment-guest md-alert md-alert-danger md-box-mb">
+            <i class="fas fa-ban"></i> {{ 'you.are.blocked.and.you.cant.write.comments' | trans }}
+        </div>
+
+    {% endif %}
+
+{% else %}
+
+    <div class="md-comment-guest">
+
+        <a class="btn btn-info mr-1" href="{{ path('app_login') }}">
+            {{ 'log.in' | trans }}
+        </a>
+
+        {{ 'or' | trans }}
+
+        <a class="btn btn-success ml-1 mr-1" href="{{ path('app_register') }}">
+            {{ 'sign.up' | trans }}
+        </a>
+
+        {{ 'to.leave.a.comment' | trans }}
+
+    </div>
+
+{% endif %}

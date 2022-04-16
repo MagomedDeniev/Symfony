@@ -1,0 +1,44 @@
+<div class="likes-count">
+    <a href="{{ path('post_likes', {'id':post.id}) }}">
+        {{ 'likes' | trans }}: <span id="post-like-counter-{{ post.id }}" class="count">{{ post.likes.count }}</span>
+    </a>
+</div>
+
+<div class="post-actions">
+
+    <span class="stat mr-3">
+        {% if app.user %}
+            <a class="like-toggle{% if userLikedPost(app.user, post) %} added{% endif %}" id="post-like-{{ post.id }}" href="{{ path('post_like', {'id':post.id}) }}">
+                <span class="like-icon"></span>
+            </a>
+        {% else %}
+            <a class="guest-like-toggle" href="{{ path('app_login') }}">
+                <span class="like-icon"></span>
+            </a>
+        {% endif %}
+    </span>
+
+    {% if comments %}
+        <span class="stat">
+            <a href="{{ path( 'post_show', {'id': post.id}) }}#comments">
+                <i class="far fa-comment-alt" style="font-size: 22px;"></i>
+                <span class="count">{{ post.comments.count }}</span>
+            </a>
+        </span>
+    {% endif %}
+
+    <span class="stat float-right m-0">
+
+        {% if app.user %}
+            <a class="bookmark-toggle{% if userBookmarkedPost(app.user, post) %} added{% endif %}" href="{{ path('post_bookmark', {'slug': post.slug}) }}">
+                <span class="bookmark-icon"></span>
+            </a>
+        {% else %}
+            <a class="guest-bookmark-toggle" href="javascript:void(0)" style="cursor: pointer;padding-top: 5px;top: -5px;position: relative" data-toggle="tooltip" title="{{ 'guest.bookmark' | trans }}">
+                <span class="bookmark-icon"></span>
+            </a>
+        {% endif %}
+
+    </span>
+
+</div>

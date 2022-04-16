@@ -1,0 +1,543 @@
+# FORMS
+
+select.categories: "Выберите категории"
+select.users: "Выберите пользователей"
+select.featuring: "Выберите совместных"
+select.song: "Выберите песни"
+select.tags: "Выберите теги"
+select.author: "Выберите автора"
+
+add.post: "Новая публикация"
+add.song: "Добавить песню"
+add.tag: "Добавить тег"
+add.user: "Добавить пользователя"
+add.activity: "Добавить деятельность"
+add.person: "Добавить человека"
+
+song.adding: "Добавление песни"
+tag.adding: "Добавление тега"
+user.adding: "Добавление пользователя"
+person.adding: "Добавление человека"
+activity.adding: "Добавление деятельности"
+
+song.editing: "Изменение песни"
+tag.editing: "Изменение тега"
+post.editing: "Изменение публикации"
+person.editing: "Изменение человека"
+activity.editing: "Изменение деятельности"
+profile.editing: "Редактирование страницы"
+
+publication.date: "Дата публикации"
+editing.date: "Дата изменения"
+
+post.tags.help: "Вы можете выбрать три категории, для улучшения сортировки и выдачу публикации"
+song.help: "Вы можете прикрепить песни из своего плейлиста"
+tagged.users.help: "Вы можете отметить пользователей на которых вы подписаны"
+
+heading: Заголовок
+title: Название
+slug: Алиас
+type: Тип
+description: Описание
+image: Изображение
+first.name: Имя
+last.name: Фамилия
+year: Год
+author: Автор
+management: Управление
+manager: Менеджер
+reports: Жалобы
+report: Пожаловаться
+translation: Перевод
+featured: Избранное
+content: Содержание
+additional: Дополнительно
+views: Просмотры
+
+add: Добавить
+reject: Отклонить
+publish: Опубликовать
+approve: Утвердить
+accept: Принять
+send: Отправить
+save: Сохранить
+cancel: Отмена
+log.out: Выйти
+share: Поделиться
+delete: Удалить
+browse: Выбрать
+change: Изменить
+update: Обновить
+more: Еще
+and: И
+from: От
+status: Статус
+
+# PROFILE
+
+profile: Профиль
+list: Лента
+my.page: "Моя страница"
+online: "В сети"
+
+notifications: Уведомлении
+statistics: Статистика
+
+edit: Редактировать
+settings: Настройки
+rights: Права
+ban: Забанить
+unban: Разбанить
+
+avatar: Аватар
+photo: Фото
+delete.avatar: "Удалить аватар"
+full.name: "Полное имя"
+verified: "✓ Проверенный"
+about.me: "О себе"
+website: Сайт
+birth.date: "Дата рождения"
+gender: Пол
+gender.male: Мужской
+gender.female: Женский
+hide.online: "Скрыть статус «В сети»"
+closed.account: "Закрытый аккаунт"
+
+followers: Подписчики
+following: Подписки
+follow: Подписаться
+unfollow: Отписаться
+requested: Запрошено
+follow.requests: "Запросы на подписки"
+unfollow.from.me: Отписать
+write: Написать
+
+profile.changes.saved: "Изменения профиля сохранены"
+confirm.your.email: "Подтвердите свою электронную почту"
+to.customize.your.profile: "чтобы оформить свою страницу"
+to.write.comments: "чтобы писать комментарии"
+to.add.post: "чтобы добавлять публикации"
+to.write.messages: "чтобы писать сообщении"
+
+you.are.blocked.and.you.cant.edit.profile: "Вы заблокированы и не можете редактировать свою страницу"
+you.are.blocked.and.you.cant.add.post: "Вы заблокированы и не можете добавлять публикации"
+you.are.blocked.and.you.cant.write.comments: "Вы заблокированы и не можете писать комментарии"
+
+# USER
+
+users: Пользователи
+feed: Лента
+
+username: "Имя пользователя"
+username.help: "Авторизация будет выполняться с помощью имени пользователя"
+username.already.exists: "Уже существует аккаунт с именем пользователя"
+username.must.be.between: "Имя пользователя может содержать только от 8-ми до 28-ми символов"
+username.can.consist.symbols: "Имя пользователя может состоять только из латинских букв, цифр, символов . и _"
+
+email: "Электронная почта"
+email.help: "Если не подтверждена, то проверьте свою электронную почту и перейдите по отправленной ссылке"
+email.recovery.help: "Введите электронную почту которая привязана к вашему аккаунту"
+email.not.verified: "Электронная почта не подтверждена"
+email.confirmation: "Подтверждение электронной почты"
+
+password: Пароль
+enter.password: "Введите пароль"
+confirm.password: "Подтвердить пароль"
+password.not.same: "Пароли не идентичны"
+
+you.also.can: "Вы также можете"
+
+reset.password: "Изменить свой пароль"
+password.resetting: "Изменение пароля"
+current.password: "Старый пароль"
+new.password: "Новый пароль"
+confirm.password.help: "Введите повторно новый пароль чтобы не ошибиться"
+
+password.is.empty: "Поле пароля не может быть пустым"
+current.password.incorrect: "Старый пароль введён неправильно"
+
+forgot.your.password: "Забыли пароль?"
+password.recovery: "Восстановление пароля"
+password.recovery.link.timeout: "Время ссылки восстановления аккаунта истек"
+
+account.recovery: "Восстановление аккаунта"
+account.deleting: "Удаление аккаунта"
+account.deleting.warning.message: "Все данные связанные с вашим аккаунтом будут безвозвратно удалены"
+delete.account: "Удалить аккаунт"
+
+login: Вход
+log.in: Войти
+remember.me: "Запомнить меня"
+not.registered.yet: "Еще не зарегистрированы?"
+sign.up: Регистрация
+already.registered: "Вы уже зарегистрированны?"
+agree.terms: "Пользовательское соглашение"
+invited.by: "По приглашению"
+invited.by.help: "Введите имя пользователя который вас пригласил"
+
+# MESSAGE
+
+message: Сообщение
+messages: Сообщении
+write.message: "Написать сообщение.."
+delete.for.me: "Удалить у себя"
+delete.for.everyone: "Удалить у всех"
+delete.only.for.me: "Удалить только у себя"
+delete.for.me.and.interlocutor: "Удалить у себя и у { username }"
+messages.over.are.automatically.deleted: "Сообщении больше 200 автоматически удаляются"
+
+# DATE
+
+Jan: Янв
+Feb: Фев
+Mar: Мар
+Apr: Апр
+May: Май
+Jun: Июн
+Jul: Июл
+Aug: Авг
+Sep: Сен
+Oct: Окт
+Nov: Ноя
+Dec: Дек
+
+month01: янв
+month02: фев
+month03: март
+month04: апр
+month05: май
+month06: июнь
+month07: июль
+month08: авг
+month09: сент
+month10: окт
+month11: ноя
+month12: дек
+
+# MUSIC
+
+music: Музыка
+song: Песня
+songs: Песни
+some.songs: Песен
+vocalist: Исполнитель
+
+hits: Хиты
+
+trends: Тренды
+novelty: Новинки
+discussed: "Самые обсуждаемые"
+lasts: "Последние добавленные"
+playlist: Плейлист
+
+featuring: Совместно
+tags: Теги
+lyrics: "Текст песни"
+song.not.found: "Песня не найдена"
+
+premiere.date: "Дата премьеры"
+premiere.date.help: "Дата когда песня была выпущена"
+download.song: "Скачать песню"
+
+update.tags: "Обновить теги"
+send.for.moderation: "Отправить на модерацию"
+send.song.for.moderation.help: "Отметьте этот пункт, когда текст/песня будут готовы. Если не отметите то он сохранится как черновик и вы сможете отправить её позже"
+song.sent.for.moderation: "Песня отправлена на модерацию"
+
+playlist.of: "Плейлист {username}"
+not.songs.in.your.playlist: "У вас еще нет песен в плейлисте"
+user.has.not.songs.in.playlist: "У пользователя {username} нет песен в плейлисте"
+add.to.playlist: "Добавить в плейлист"
+remove.from.playlist: "Удалить из плейлиста"
+
+person.already.has.song.with.same.title: "У этого исполнителя уже существует произведение с таким названием"
+already.have.song.with.same.slug: "Уже существует произведение с таким алиасом"
+
+# PEOPLE
+
+people: Люди
+biography: Биография
+people.for.letter.not.found: "Исполнителей на букву «{ letter }» не найдено"
+people.for.letter: "Исполнители на букву «{ letter }»"
+no.records.found: "Записей не найдено"
+
+# POSTS
+
+posts: Публикации
+post: Публикация
+article: Статья
+categories: Категории
+bookmarks: Закладки
+recommendations: Рекомендации
+
+likes: Нравится
+like.marks: "Отметки «Нравится»"
+
+guest.bookmark: "Добавлять посты в закладки можно только после авторизации"
+add.to.bookmarks: "Добавить в закладки"
+
+post.is.already.approved: "Данная публикация уже утверждена другим модератором"
+post.is.already.rejected: "Данная публикация уже отклонена другим модератором"
+
+post.in.moderation: "Публикация на модерации"
+post.is.rejected: "Публикация отклонена"
+for.next.reason: "по следующей причине"
+
+posts.from.category: "Публикации из категории"
+
+title.or.slug.exists: "Публикация с таким названием уже существует"
+post.image.required: "Изображение к публикации обязательна"
+animated.image: "Анимированное изображение"
+
+post.title.help: "При желании можете заполнить, если на пример пишите статью"
+post.has.been.added: "Публикация успешно отправлена, и будет добавлена после подтверждения администрацией"
+
+# COMMENTS
+
+comments: Комментарии
+comment: Комментарий
+to.leave.a.comment: "чтобы оставлять комментарии"
+write.comment: "Написать комментарий.."
+reply: Ответить
+reply.for: "Ответ для"
+reply.for.two: " "
+
+show: Показать
+answer: Ответ
+answers: Ответа
+some.answers: Ответов
+
+# SEARCH
+
+search: Поиск
+
+search.by.tags: "Поиск по тегам"
+songs.for.tag: "Песни по тегу"
+songs.for.tags: "Песни по тегам"
+
+song.results.for.tag: "Результаты музыки по тегу"
+song.results.for.tags: "Результаты музыки по тегам"
+
+not.found.songs.for.tag: "По тегу «{ tags }» песен не найдено"
+not.found.songs.for.tags: "По тегам «{ tags }» песен не найдено"
+
+not.found.posts.for.keyword: "По запросу «{ keyword }» статей не найдено"
+not.found.songs.for.keyword: "По запросу «{ keyword }» песен не найдено"
+not.found.users.for.keyword: "По запросу «{ keyword }» пользователей не найдено"
+
+not.found.users.posts.for.keyword: "По запросу «{ keyword }» пользователей и статей не найдено"
+not.found.users.songs.for.keyword: "По запросу «{ keyword }» пользователей и песен не найдено"
+not.found.songs.posts.for.keyword: "По запросу «{ keyword }» песен и статей не найдено"
+
+search.for.keyword: "Поиск по запросу «{ keyword }»"
+songs.for.keyword: "Песни по запросу «{ keyword }»"
+users.for.keyword: "Пользователи по запросу «{ keyword }»"
+posts.for.keyword: "Публикации по запросу «{ keyword }»"
+
+not.found.for.keyword: "По запросу «{ keyword }» ничего не найдено"
+in.page: "на странице «{ page }»"
+
+# NOTIFICATIONS
+
+followed.to.you.male: "подписался на ваши обновлении"
+followed.to.you.female: "подписалась на ваши обновлении"
+
+accepted.request.male: "принял ваш запрос на подписку"
+accepted.request.female: "приняла ваш запрос на подписку"
+
+tagged.you.in.post.male: "отметил вас в публикации"
+tagged.you.in.post.female: "отметила вас в публикации"
+
+replied.you.with.comment.male: "ответил на ваш комментарий:"
+replied.you.with.comment.female: "ответила на ваш комментарий:"
+replied.you.with.comment.users: "и другие ответили на ваш комментарий"
+
+commented.your.post.male: "оставил комментарий на вашу публикацию"
+commented.your.post.female: "оставила комментарий на вашу публикацию"
+commented.your.post.users: "и другие оставили комментарии на вашу публикацию"
+
+like.your.post: "понравилась ваша публикация"
+like.your.comment: "понравился ваш комментарий"
+
+rejected.your.post: "отклонил вашу публикацию"
+approved.your.post: "утвердил вашу публикацию"
+
+# MODAL MESSAGES
+
+sure.to.log.out: "Вы уверены что хотите выйти?"
+sure.to.ban.user: "Вы уверены что хотите забанить этого пользователя?"
+sure.to.unban.user: "Вы уверены что хотите разбанить этого пользователя?"
+sure.to.approve.post: "Вы уверены что хотите утвердить эту публикацию?"
+sure.to.reject.post: "Вы уверены что хотите отклонить эту публикацию?"
+sure.to.report.comment: "Вы уверены что хотите пожаловаться на комментарий?"
+sure.to.report.profile: "Вы уверены что хотите пожаловаться на профиль?"
+sure.to.delete.post: "Вы уверены что хотите удалить эту публикацию?"
+sure.to.delete.user: "Вы уверены что хотите удалить этого пользователя?"
+sure.to.delete.account: "Вы уверены что хотите удалить свой аккаунт навсегда?"
+sure.to.delete.notification: "Вы уверены что хотите удалить это уведомление?"
+sure.to.delete.follower: "Вы уверены что хотите отписать от себя подписчика { username }?"
+sure.to.reject.request: "Вы уверены что хотите отклонить запрос от { username }?"
+sure.to.delete.comment: "Вы уверены что хотите удалить этот комментарий?"
+sure.to.delete.conversation.for.me: "Вы уверены что хотите удалить все сообщении с { username } только у себя?"
+sure.to.delete.conversation.for.everyone: "Вы уверены что хотите удалить все сообщении с { username } у себя и у { username }?"
+sure.to.delete.message.for.me: "Вы уверены что хотите удалить сообщение с { username } только у себя?"
+sure.to.delete.message.for.everyone: "Вы уверены что хотите удалить сообщение у себя и у { username }?"
+sure.to.delete.action: "Вы уверены что хотите удалить это действие?"
+sure.to.delete.tag: "Вы уверены что хотите удалить этот тег?"
+sure.to.delete.song: "Вы уверены что хотите удалить эту песню?"
+sure.to.delete.person: "Вы уверены что хотите удалить этого человека?"
+sure.to.delete.activity: "Вы уверены что хотите удалить эту деятельность?"
+sure.to.send.song: "Вы хотите отправить эту песню пользователю"
+sure.to.send.post: "Вы хотите отправить эту публикацию пользователю"
+sure.to.send.profile: "Вы хотите отправить этот профиль пользователю"
+
+# FLASH MESSAGES
+
+flash.user.deleted: "Пользователь { username } удалён"
+flash.registration.successful.completed: "Регистрация успешно завершена"
+flash.recovery.email.sent.successful: "Письмо для восстановления аккаунта успешно отправлен на вашу почту"
+flash.added.to.playlist: "Песня добавлена в плейлист"
+flash.song.is.sent: "Песня отправлена пользователю"
+flash.post.is.sent: "Публикация отправлена пользователю"
+flash.profile.is.sent: "Профиль отправлен пользователю"
+flash.message.is.empty: "Ваше сообщение пустое"
+flash.removed.from.playlist: "Песня удалена из плейлиста"
+flash.comment.added: "Комментарий добавлен"
+flash.comment.adding.error: "Ошибка при добавлении комментария"
+flash.comment.deleted: "Комментарий удален"
+flash.comment.deleting.error: "Ошибка при удалении комментария"
+flash.password.successful.recovered: "Пароль успешно восстановлен"
+flash.password.changed: "Пароль изменен"
+flash.password.is.wrong: "Введен неверный пароль"
+flash.report.is.sent: "Жалоба успешно отправлена"
+
+user.is.banned: "Пользователь { username } забанен"
+user.is.unbanned: "Пользователь { username } разбанен"
+
+# ROLES
+
+ROLE_ADMINISTRATOR: "Администратор сайта"
+ROLE_SONG_AUTHOR: "Автор текстов песен"
+ROLE_SONG_EDITOR: "Редактор песен"
+ROLE_POST_MODERATOR: "Модератор раздела публикаций"
+ROLE_SONG_MODERATOR: "Модератор раздела музыки"
+ROLE_PEOPLE_MODERATOR: "Модератор раздела людей"
+ROLE_SONG_COMMENT_REMOVER: "Удаление комментариев песен"
+ROLE_POST_COMMENT_REMOVER: "Удаление комментариев публикаций"
+ROLE_USER_RIGHTS: "Назначение прав"
+ROLE_USER_BAN: "Бан пользователей"
+ROLE_USER_ANALYST: "Статистика пользователей"
+ROLE_USER_ACTIONS: "Действия модераторов"
+
+# ACTIONS
+
+type_user_blocked: "Блокировка пользователей"
+type_user_unblocked: "Разблокировка пользователей"
+type_comment_deleted: "Удаление комментариев"
+type_post_edited: "Редактирование публикации"
+type_post_approved: "Утверждение публикации"
+type_post_rejected: "Отклонение публикации"
+type_song_edited: "Редактирование песен"
+type_person_edited: "Редактирование биографии"
+
+deleted.comment.male: "удалил комментарий от пользователя"
+deleted.comment.female: "удалила комментарий от пользователя"
+
+blocked.user.male: "заблокировал пользователя"
+blocked.user.female: "заблокировала пользователя"
+unblocked.user.male: "разблокировал пользователя"
+unblocked.user.female: "разблокировала пользователя"
+
+approved.post.male: "утвердил публикацию"
+approved.post.female: "утвердила публикацию"
+
+rejected.post.male: "отклонил публикацию"
+rejected.post.female: "отклонила публикацию"
+
+edited.post.male: "отредактировал публикацию"
+edited.post.female: "отредактировала публикацию"
+
+edited.song.male: "отредактировал песню"
+edited.song.female: "отредактировала песню"
+
+edited.person.male: "отредактировал биографию"
+edited.person.female: "отредактировала биографию"
+
+changed.rights.male: "поменял права пользователя"
+changed.rights.female: "поменяла права пользователя"
+
+user.have.no.actions: "У администратора { username } нет действий"
+no.actions.in: "Нет действий в разделе «{ section }»"
+no.actions: "Действий еще нет"
+
+# EMPTY DATA
+
+you.have.not.messages.with.user: "У вас еще нет сообщений с пользователем { username }"
+you.have.not.conversations: "У вас еще нет сообщений"
+you.have.not.notifications: "У вас еще нет уведомлений"
+you.have.not.bookmarks: "У вас еще нет закладок"
+you.have.not.followers: "У вас еще нет подписчиков"
+you.have.not.following: "У вас еще нет подписок"
+you.have.not.follow.requests: "У вас больше нет запросов на подписки"
+you.have.not.posts: "У вас еще нет публикаций"
+you.have.not.tagged.posts: "Еще нет публикаций на которых вы отмечены"
+post.have.not.likes: "У публикации еще нет отметок «Нравится»"
+comment.have.not.likes: "У комментарии еще нет отметок «Нравится»"
+categoy.have.not.posts: "В категории «{ category }» еще нет публикаций"
+user.have.not.posts: "У пользователя { username } еще нет публикаций"
+user.account.is.closed: "У пользователя { username } закрытый аккаунт"
+user.you.followed.have.not.posts: "У пользователя на которого вы подписаны еще нет публикации"
+users.you.followed.have.not.posts: "У пользователей на которых вы подписаны еще нет публикаций"
+user.have.not.tagged.posts: "Еще нет публикаций на которых отмечен пользователь { username }"
+user.have.not.followers: "У пользователя { username } еще нет подписчиков"
+user.have.not.following: "У пользователя { username } еще нет подписок"
+
+no.songs.in.moderation: "У вас пока нет песен в процессе"
+no.ready.songs.in.moderation: "Пока нет песен на модерации"
+no.pending.songs.in.moderation: "Пока нет песен в ожидании"
+no.posts.in.moderation: "Пока нет статей на модерации"
+
+nothing.found.for: "Ничего не найдено по запросу:"
+
+# MODERATION
+
+moderation: Модерация
+activities: Деятельности
+activity: Деятельность
+actions: Действия
+post.moderation: "Модерация публикаций"
+music.moderation: "Модерация музыки"
+in.moderation: "На модерации"
+rejected.male: "Отклонен"
+rejected.female: "Отклонена"
+to.moderation: "На модерацию"
+my.songs: "Мои песни"
+pending: "В ожидании"
+content.for.male.audience: "Контент для мужской аудитории"
+content.for.female.audience: "Контент для женской аудитории"
+content.for.all: "Контент для всех"
+
+# SITE PAGES
+
+home.page: Главная
+more.count: "Еще { count }"
+see.all: "Посмотреть всё"
+tagged: Отмеченные
+all: Всё
+all.two: Все
+or: или
+feat: с
+at: в
+
+error404: "Ошибка 404"
+error500: "Ошибка 500"
+back.to.home: "Вернуться на главную"
+such.page.not.exist: "Такой страницы не существует"
+something.wrong.in.this.page: "На сервере произошла непредвиденная ошибка, пожалуйста сообщите об этом нашей администрации"
+all.rights.reserved: "Все права защищены"
+
+# EMAIL
+
+email.confirmation.on.website: "Подтверждение почты на сайте ShovdanYist"
+mailer.shovdanyist.signup: "Регистрация на сайте ShovdanYist"
+mailer.shovdanyist.account.recovery: "Восстановление аккаунта ShovdanYist"

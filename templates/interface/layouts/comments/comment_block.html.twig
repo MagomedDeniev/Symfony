@@ -1,0 +1,15 @@
+<div class="md-box md-comments-block">
+
+    <div id="comments" style="position: relative; top: -60px;"></div>
+    <div class="text-muted md-comments-header text-lowercase">
+        <i class="fas fa-comments"></i> {{ 'comments' | trans }}
+        <span>({{ entity.comments.count }})</span>
+    </div>
+
+    {% include 'interface/layouts/comments/comment_form.html.twig' %}
+
+    {% include 'interface/layouts/comments/comment_list.html.twig' %}
+
+</div>
+
+{{ paginator.display() }}

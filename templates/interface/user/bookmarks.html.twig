@@ -1,0 +1,31 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'bookmarks' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+        'active' : ('bookmarks' | trans),
+    }) }}
+{% endblock %}
+
+{% block main %}
+
+    {% for post in posts %}
+        {{ postView(post) }}
+    {% else %}
+        <div class="md-box md-content-padding text-center">
+            <i class="far fa-bookmark" style="margin-right: 3px"></i>
+            {{ 'you.have.not.bookmarks' | trans }}
+        </div>
+    {% endfor %}
+
+    {% include 'interface/post/_share_post.html.twig' %}
+
+    {{ paginator.display() }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

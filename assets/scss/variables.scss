@@ -1,0 +1,288 @@
+// Global
+
+$border-radius: 3px;
+
+// Radius
+
+$radius: (
+        'full': 3px,
+        'bottom': 0 0 3px 3px,
+        'top': 3px 3px 0 0,
+        'right': 0 3px 3px 0,
+        'left': 3px 0 0 3px
+);
+
+@function radius($key) {
+  @if map_has_key($radius, $key) {
+    @return map_get($radius, $key)
+  }
+}
+
+// Box
+
+$box-background: #fff;
+$box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+$box-space: 12px;
+
+// Colors
+
+$white    : #ffffff !default;
+$gray-100 : #f8f9fa !default;
+$gray-200 : #ecf0f1 !default;
+$gray-300 : #dee2e6 !default;
+$gray-400 : #ced4da !default;
+$gray-500 : #b4bcc2 !default;
+$gray-600 : #909499 !default;
+$gray-700 : #7b8a8b !default;
+$gray-800 : #343a40 !default;
+$gray-900 : #212529 !default;
+$black    : #000000 !default;
+
+$blue   : #000 !default;
+$indigo : #6610f2 !default;
+$purple : #6f42c1 !default;
+$pink   : #e83e8c !default;
+$red    : #E74C3C !default;
+$orange : #fd7e14 !default;
+$yellow : #F39C12 !default;
+$brown  : #b88b58 !default;
+$green  : #18BC9C !default;
+$teal   : #20c997 !default;
+$cyan   : #3498DB !default;
+
+$primary   : $blue      !default;
+$secondary : $brown  !default;
+$success   : $green     !default;
+$info      : $cyan      !default;
+$link      : #010101  !default;
+$warning   : $yellow    !default;
+$danger    : $red       !default;
+$light     : $gray-200  !default;
+$dark      : $gray-800  !default;
+
+$yiq-contrasted-threshold:  175 !default;
+
+$color-types: (
+        'primary'   : $primary,
+        'secondary' : $secondary,
+        'success'   : $success,
+        'info'      : $info,
+        'warning'   : $warning,
+        'danger'    : $danger,
+        'light'     : $light,
+        'dark'      : $dark
+);
+
+// Alerts
+
+@each $section, $color in $color-types {
+  .alert-#{$section} .close:hover {
+    color: darken($success, 10%);
+  }
+}
+
+// Post colors
+
+$post-colors: (
+        'questions' : $gray-700,
+        'posts' : $gray-700
+);
+
+@each $section, $color in $post-colors {
+  .#{$section}-bg {
+    background-color: $color;
+  }
+  .#{$section}-color {
+    color: $color;
+  }
+  .#{$section}-color:hover {
+    color: lighten($primary, 20%);
+  }
+}
+
+.md-lined-menu:hover, .md-lined-menu.active {
+  border-left: 3px solid lighten($primary, 25%) !important;
+}
+
+// Buttons
+
+.btn-primary {
+  background-color: #333 !important;
+  border-color: #333 !important;
+}
+
+.btn-primary:hover {
+  background-color: #444 !important;
+  border-color: #444 !important;
+}
+
+.btn-link {
+  color: #555 !important;
+}
+
+.btn-link:hover {
+  color: #555 !important;
+  background-color: #eee !important;
+}
+
+.btn-success {
+  background-color: #21B79A !important;
+  border-color: #21B79A !important;
+}
+
+.btn-success:hover {
+  background-color: #11BF9D !important;
+  border-color: #11BF9D !important;
+}
+
+//.btn {
+//  @each $type, $color in $color-types {
+//    &-#{$type}:hover {
+//      background-color: lighten($color, 5%) !important;
+//      border-color: lighten($color, 5%) !important;
+//    }
+//  }
+//}
+
+$btn-transition: 0 !default;
+
+// Badges
+
+$badge-border-radius: 3px;
+
+.badge-a {
+  padding: unset !important;
+}
+.badge-a a {
+  padding: 0.25em 0.4em;
+  display: block;
+  color: #fff;
+}
+.badge-a a:hover {
+  color: #fff;
+}
+
+.badge-a.badge {
+  @each $type, $color in $color-types {
+    &-#{$type}:hover {
+      background-color: lighten($color, 10%) !important;
+    }
+  }
+}
+
+// Maybe for delete
+
+.badge-border.badge-a.badge {
+  @each $type, $color in $color-types {
+    &-#{$type} {
+      background-color: unset !important;
+      border: 1px solid $color !important;
+      a {
+        color: $color;
+      }
+    }
+    &-#{$type}:hover {
+      background-color: $color !important;
+      a {
+        color: #fff;
+      }
+    }
+  }
+}
+
+// Links
+
+$link-color:              #010101 !default;
+$link-hover-color:        #010101 !default;
+$link-hover-decoration:   none    !default;
+
+.muted-link {
+  @each $type, $color in $color-types {
+    &-#{$type} {
+      color: $gray-600;
+    }
+    &-#{$type}:hover {
+      &.added {
+        color: $danger;
+      }
+      color: $color;
+    }
+  }
+}
+
+// Fonts
+
+$font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$font-size-base:              0.9375rem !default;
+
+$h1-font-size:                3rem    !default;
+$h2-font-size:                2.5rem  !default;
+$h3-font-size:                2rem    !default;
+
+// Tables
+
+$table-accent-bg    : $gray-100 !default;
+$table-border-width : 0         !default;
+
+.table {
+  @each $type, $color in $color-types {
+    &-#{$type}, .table-#{$type} > th, .table-#{$type} > td {
+      background-color: $color !important;
+      color: $white !important;
+    }
+  }
+}
+
+// Dropdowns
+
+$dropdown-link-color:               $gray-700 !default;
+$dropdown-link-hover-color:         $white !default;
+$dropdown-link-hover-bg:            $primary !default;
+
+// Navs
+
+$nav-link-padding-y:                .5rem !default !default;
+$nav-link-padding-x:                2rem !default;
+$nav-link-disabled-color:           $gray-600 !default !default;
+
+$nav-tabs-border-color:             $gray-200 !default;
+
+// Navbar
+
+$navbar-padding-y:                  1rem !default;
+
+$navbar-dark-color:                 $white !default;
+$navbar-dark-hover-color:           $success !default;
+
+// Pagination
+
+$pagination-color:                  $white !default;
+$pagination-bg:                     $success !default;
+$pagination-border-width:           0 !default;
+$pagination-border-color:           transparent !default;
+
+$pagination-hover-color:            $white !default;
+$pagination-hover-bg:               darken($success, 15%) !default;
+$pagination-hover-border-color:     transparent !default;
+
+$pagination-active-bg:              $pagination-hover-bg !default;
+$pagination-active-border-color:    transparent !default;
+
+$pagination-disabled-color:         $gray-200 !default;
+$pagination-disabled-bg:            lighten($success, 15%) !default;
+$pagination-disabled-border-color:  transparent !default;
+
+// Progress bars
+
+$progress-height:                   0.625rem !default;
+$progress-font-size:                0.625rem !default;
+
+// List group
+
+$list-group-hover-bg:               $gray-200 !default;
+$list-group-disabled-bg:            $gray-200 !default;
+
+// Close
+
+$close-color:                       $white !default;
+$close-text-shadow:                 none !default;

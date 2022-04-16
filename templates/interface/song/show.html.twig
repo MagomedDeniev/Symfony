@@ -1,0 +1,77 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block og_title %}{{ song.vocalist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }} | Текст песни{% endblock %}
+
+{% block og_image %}{{ vich_uploader_asset(song.vocalist) }}{% endblock %}
+
+{% block og_type %}<meta property="og:type" content="music.song">{% endblock %}
+
+{% block title %}{{ song.vocalist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }} | Текст песни{% if page and page > 1 %} | Страница {{ page }}{% endif %}{% endblock %}
+
+{% block description %}В ShovdanYist вы можете cкачать песню {{ song.vocalist.fullName }} - {{ song.title }}{% if featuring( song, ', ' ) %} {% endif %}{{ featuring( song, ', ' ) }}, найти тексты чеченских песен, переводы чеченских песен, а также создавать свой собственный плейлист.{% endblock %}
+
+{% block keywords %}текст песни, скачать, перевод, {{ song.vocalist.fullName | lower }}, {{ song.title | lower}}, музыка{% endblock %}
+
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
+{% block pageclass %}two-sidebars{% endblock %}
+
+{% block main_top %}
+
+    {{ breadcrumb({
+        (path('song_index')) : ('music' | trans),
+        (path('people_by_letter', {letter: slugify(song.vocalist.fullName | first) })) : (song.vocalist.fullName | first),
+        (path('person_show', {slug: song.vocalist.slug})) : (song.vocalist.fullName),
+    }, song,'song') }}
+
+    {% include 'interface/song/_share_song.html.twig' %}
+
+{% endblock %}
+
+{% block body %}
+
+    <article>
+
+        <h1>{{ song.vocalist.fullName }} - {{ song.title }}</h1>
+
+        <span class="md-song-feat text-muted">{{ featuring( song, ', ' ) }}</span>
+
+        <div class="md-song-player">
+            {{ player(song,true,true,'song') }}
+        </div>
+
+        {% if not app.user %}
+            <div class="content-alert content-alert-warning mt-3">
+                Скачивать песни и добавлять в плейлист можно только после авторизации
+            </div>
+        {% endif %}
+
+        <div class="md-lyrics">
+            {{ song.lyrics | raw }}
+        </div>
+
+    </article>
+
+{% endblock %}
+
+{% block main_bottom %}
+
+    <div class="md-box md-main-box-col-2">
+        {% include 'interface/song/_stats.html.twig' %}
+    </div>
+
+    {{ comments(song,page,{'slug':song.slug}) }}
+
+{% endblock %}
+
+{% block sidebar_b %}
+
+    <div class="sidebar-b">
+        <div class="md-box sticky-top">
+            {% include 'interface/song/_stats.html.twig' %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,574 @@
+@media only screen and (max-width: 992px) {
+  .cke_button__emojipanel {
+    display: none !important;
+  }
+  .border-heading {
+    text-align: center;
+    padding-bottom: 14px !important;
+  }
+  .front main, main {
+    max-width: 100% !important;
+  }
+  main {
+    width: 100%;
+    padding: 0 !important;
+    flex: unset !important;
+  }
+  .mobile-navbar-item {
+    display: block !important;
+  }
+  .container {
+    max-width: calc(100% - 30px);
+  }
+  .sidebar-a, .sidebar-b {
+    display: none;
+  }
+  .md-box.md-main-box-col-2 {
+    display: flex !important;
+  }
+  .md-one-person {
+    margin-bottom: 20px !important;
+  }
+  .md-song-feat {
+    top: -12px !important;
+  }
+  .md-person-card {
+    padding-bottom: 20px !important;
+    margin-bottom: 20px !important;
+  }
+  .md-nav-menu {
+    display: none !important;
+  }
+  .md-nav-logo, .md-nav-item {
+    display: table;
+    margin: 0 auto;
+    float: unset !important;
+  }
+  #sideNavOpener {
+    display: block !important;
+  }
+  .navbar-login-mobile {
+    display: unset !important;
+  }
+  .navbar-search-opener, .navbar-search {
+    display: unset !important;
+  }
+  .md-search-pages-menu {
+    display: flex !important;
+  }
+  .md-write-post-button {
+    display: unset !important;
+  }
+  .songs-moderation-mobile-menu {
+    display: block !important;
+  }
+  .md-grid-posts {
+    padding: 10px 10px 0 !important;
+  }
+  .md-grid-post {
+    flex-basis: calc(20% - 8px) !important;
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .md-grid-post:nth-child(5n+5) {
+    margin: unset !important;
+  }
+  .md-custom-paginator .md-pagination-box {
+    padding-bottom: 10px !important;
+  }
+  .manager-menu {
+    display: flex !important;
+  }
+  .mobile-menu {
+    display: flex !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .dash-crud-header {
+    border-radius: unset !important;
+  }
+  h1, .h1 {
+    font-size: 24px !important;
+    line-height: 30px !important;
+    margin-bottom: 12px !important;
+    margin-top: -4px !important;
+  }
+  h2, .h2 {
+    font-size: 22px !important;
+    line-height: 26px !important;
+    margin-top: -4px !important;
+  }
+  h3, .h3 {
+    line-height: 22px !important;
+    font-size: 20px !important;
+    margin-top: 0 !important;
+  }
+  .md-person-card h3 {
+    font-size: 24px !important;
+    float: left;
+    margin-right: 8px;
+  }
+  .md-song-player {
+    width: 100%;
+  }
+  .md-song-feat {
+    top: -8px !important;
+  }
+  .container {
+    max-width: unset;
+  }
+  .md-content-padding {
+    padding: 16px !important;
+  }
+  .md-profile-info {
+    margin-top: 16px !important;
+  }
+  .md-form-padding {
+    padding: 14px 16px 16px !important;
+  }
+  .md-one-person {
+    margin-bottom: 15px !important;
+  }
+  .md-person-card {
+    padding-bottom: 18px !important;
+    margin-bottom: 18px !important;
+  }
+  .md-chart-box {
+    max-width: 100% !important;
+    flex: unset;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .md-profile .md-dot-btn {
+    top: 2px !important;
+  }
+  .label-icons-form {
+    flex-direction: column;
+  }
+  .label-icons-form .col-8, .label-icons-form .col-9, .label-icons-form .col-3, .label-icons-form .col-4 {
+    max-width: 100%;
+  }
+  .label-icons-form .col-3 {
+    margin: 15px 0 0;
+  }
+  .label-icons-form .col-3 .btn {
+    float: left;
+    margin: 0 10px 0 0 !important;
+    width: unset;
+    padding: 6px 10px;
+  }
+  .label-icons-form .col-3 .btn:last-child {
+    margin-right: unset !important;
+  }
+  .alert {
+    right: 12px !important;
+    left: 12px !important;
+    bottom: 12px !important;
+    text-align: center;
+  }
+  .error-content {
+    height: 240px !important;
+  }
+  #postImgOutput {
+    width: unset !important;
+  }
+  .md-pages-table-3 table {
+    min-width: 600px;
+  }
+  .md-pages-table-3::after {
+    background: -moz-linear-gradient(right, #fff 0%, rgba(255, 255, 255, 0) 100%);
+    position: absolute;
+    height: 300px;
+    content: '';
+    width: 30px;
+    right: 0;
+    top: 0;
+    display: block;
+  }
+  .user-title-block {
+    font-size: 20px !important;
+  }
+  .user-title-block .md-dot-btn {
+    right: 16px !important;
+    top: 12px !important;
+  }
+  .form-spoiler.mb-3 {
+    margin-bottom: 12px !important;
+  }
+
+  .md-grid-posts {
+    padding: 10px 10px 0 !important;
+  }
+  .md-grid-post {
+    flex-basis: calc(25% - 8px) !important;
+  }
+  .md-grid-post:nth-child(5n+5) {
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .md-grid-post:nth-child(4n+4) {
+    margin: unset !important;
+  }
+  .profile-no-posts {
+    padding: 16px !important;
+    margin-bottom: 10px !important;
+  }
+  .post-info {
+    margin-bottom: 14px !important;
+  }
+  .md-post h3 {
+    position: relative !important;
+    top: -4px !important;
+  }
+  .header-back-button {
+    top: 7px;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .md-person-cards .md-person-card {
+    margin-bottom: 16px !important;
+  }
+  .md-person-cards .md-person-block {
+    flex-direction: column !important;
+  }
+  th {
+    font-size: 14px;
+  }
+  .md-profile .md-username {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+  }
+  .md-profile-block .back-picture.bp-130 {
+    width: 80px;
+    height: 80px;
+  }
+  .md-profile-info {
+    display: table;
+  }
+  .notify-message-user {
+    max-width: 250px;
+  }
+  .md-comment-reply-user.font-weight-bold {
+    max-width: 240px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .md-comment-replied .md-comment-username {
+    display: block;
+    max-width: 200px;
+  }
+  .md-user-song-nav ul {
+    white-space: nowrap;
+    display: flex;
+    overflow: auto;
+  }
+  .md-user-song-nav {
+    display: block;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+  .md-user-song-nav ul:before, .md-user-song-nav ul:after {
+    content: '';
+    position: absolute;
+    width: 21px;
+    height: 40px;
+    display: block;
+    z-index: 10;
+  }
+  .md-user-song-nav ul:before {
+    background: -moz-linear-gradient(left, rgb(255, 255, 255) 0%, rgba(255,255,255,0) 100%);
+    z-index: 10;
+  }
+  .md-user-song-nav ul:after {
+    background: -moz-linear-gradient(right, rgb(255, 255, 255) 0%, rgba(255,255,255,0) 100%);
+    right: 0;
+  }
+  .md-user-song-nav ul li:first-child {
+    margin-left: 20px !important;
+  }
+  .md-user-song-nav ul li:last-child {
+    padding-right: 20px !important;
+  }
+  .md-song-player {
+    width: 100% !important;
+  }
+  .mobile-txt-hider {
+    display: none;
+  }
+  .moderation-actions, .moderation-actions label {
+    width: 100%;
+  }
+  .moderation-type-actions {
+    margin-bottom: 8px !important;
+  }
+  .moderation-user-actions {
+    margin-bottom: 2px !important;
+  }
+  .md-search-pages-menu {
+    margin-left: 2px !important;
+    margin-right: 0 !important;
+  }
+  .profile-buttons {
+    margin-top: 10px !important;
+  }
+  .profile-button .btn {
+    font-size: 13px !important;
+    padding: 3px 6px !important;
+    width: 100px !important;
+  }
+  .md-box {
+    border-radius: 0 !important;
+    box-shadow: unset !important;
+    background: unset !important;
+  }
+  .body-wrapper {
+    background: #fff;
+  }
+  .md-content-padding {
+    padding: unset !important;
+  }
+  .body-wrapper {
+    padding-top: 55px !important;
+  }
+  .feed-types {
+    background: #f2f2f2 !important;
+    margin: 12px 12px 3px !important;
+    box-shadow: unset !important;
+  }
+  .md-conversations-list {
+    padding: 0 !important;
+  }
+  .md-conversation-line, .post-image {
+    border-radius: unset !important;
+  }
+  .post-info {
+    padding: 12px !important;
+    margin: unset !important;
+  }
+  .post-view-bottom {
+    padding: 0 12px;
+  }
+  .md-post {
+    padding-bottom: 14px;
+    margin: unset !important;
+  }
+  .md-mobile-padding {
+    padding: 12px !important;
+  }
+
+  //  Profile grid posts START (To forward just delete)
+  .md-grid-post, .md-grid-post:nth-child(4n+4), .md-grid-post:nth-child(5n+5) {
+    margin-right: 1px !important;
+    margin-bottom: 1px !important;
+  }
+  .md-grid-post img {
+    border-radius: unset !important;
+  }
+  .md-grid-post:nth-child(5n+5) {
+  }
+  .md-grid-post:nth-child(3n+3) {
+    margin-right: unset !important;
+  }
+  .md-grid-posts {
+    padding: unset !important;
+  }
+  .md-grid-post {
+    flex-basis: calc(100% / 3 - 0.7px) !important;
+  }
+  // Profile grid posts END (To forward just delete)
+
+  .md-song-menu.container {
+    margin: 11px 0 -3px !important;
+  }
+  .md-chart-box {
+    margin-bottom: -4px !important;
+  }
+  .user-title-block {
+    border-radius: unset !important;
+  }
+  .md-comments-block {
+    margin-top: -3px !important;
+    padding: 0 13px 15px !important;
+  }
+  .md-main-box-col-2 .md-song-stats, .md-main-box-col-2 .md-post-info {
+    padding: 0 15px 24px !important;
+  }
+  .md-breadcrumb {
+    background: #f2f2f2 !important;
+    margin: 12px 12px 4px !important;
+    border-radius: 5px !important;
+  }
+  .md-breadcrumb-nav::after {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), #f2f2f2) !important;
+  }
+  article h1 {
+    margin-top: 0 !important;
+  }
+  .md-post .btn.md-dot-btn {
+    right: 16px !important;
+    top: 10px !important;
+  }
+  .container {
+    overflow: hidden;
+  }
+  .settings-footer {
+    border-top: 0.5px solid #dbdcdb;
+    border-bottom: 0.5px solid #dbdcdb;
+  }
+  .md-alert {
+    border-radius: unset !important;
+    border: unset !important;
+    margin: unset !important;
+  }
+  .md-search .md-search-box:first-child, .md-search .md-search-box {
+    margin-bottom: 0 !important;
+  }
+  .md-search .md-search-box-not-found {
+    margin: 4px 12px 72px !important;
+    background: #f2f2f2 !important;
+    border-radius: 5px !important;
+    padding: 8px 12px !important;
+    color: #555;
+  }
+  .form-signin-info {
+    background: #f2f2f2 !important;
+    margin-top: -8px !important;
+  }
+  .not-have-message {
+    background: #f2f2f2;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  .not-have-message-center {
+    transform: translate(-50%, -50%);
+    position: fixed;
+    width: 86%;
+    left: 50%;
+    top: 50%;
+  }
+  .md-alert {
+    border-radius: 5px !important;
+    width: calc(100% - 24px);
+    position: fixed;
+    opacity: 0.95;
+    bottom: 62px;
+    z-index: 999;
+    left: 12px;
+  }
+  body {
+    background-color: #282827 !important;
+  }
+  .body-wrapper {
+    background: #fff;
+  }
+
+  // Messages
+  .md-conversation {
+    max-height: calc(100vh - 105px) !important;
+    position: unset !important;
+  }
+  .md-conversation .messages {
+    width: 100%;
+    position: absolute;
+    max-height: unset !important;
+    top: 106px;
+    bottom: 108px;
+  }
+  .md-conversation .messages-box {
+    padding-top: 12px;
+  }
+  .message-form {
+    border-radius: unset !important;
+    position: absolute !important;
+  }
+  .message-write {
+    border-bottom: 1px solid #eef1f5;
+  }
+  .message-form {
+    position: fixed !important;
+    bottom: 50px !important;
+  }
+  .user-conversation-header {
+    position: fixed !important;
+    background: #fff;
+    width: 100%;
+    top: 55px;
+  }
+  .md-vertical-menu {
+    margin-top: 12px;
+  }
+  .online-users-block {
+    padding: 0 0 12px !important;
+    margin-bottom: 6px;
+  }
+  .online-users-title {
+    padding: 8px 12px 6px !important;
+  }
+  .online-users-block::before {
+    left: 0 !important;
+  }
+  .online-users-block::after{
+    right: 0 !important;
+  }
+  .md-conversation .message .text {
+    max-width: calc(100% - 30px) !important;
+  }
+  .md-pagination-box {
+    margin-top: 0 !important;
+  }
+  .md-list-posts {
+    margin-top: unset !important;
+    border-top: 1px solid #eef1f5;
+  }
+  .messages-length-alert {
+    margin-top: -12px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .notify-message-user {
+    max-width: 200px;
+  }
+  .md-comment-reply-user.font-weight-bold {
+    max-width: 210px;
+  }
+  .md-comment-replied .md-comment-username {
+    max-width: 165px;
+  }
+  .md-nav-logo img {
+    margin: 5px 0 !important;
+  }
+}
+
+@media only screen and (max-width: 370px) {
+  th span {
+    display: none;
+  }
+  .notify-message-user {
+    max-width: 170px;
+  }
+  .md-comment-reply-user.font-weight-bold {
+    max-width: 160px;
+  }
+  .md-comment-replied .md-comment-username {
+    max-width: 110px;
+  }
+  .navbar-login-mobile span {
+    display: none;
+  }
+}
+
+// If more than 768px
+
+@media only screen and (min-width: 768px) {
+  body .chosen {
+    height: 41px !important;
+  }
+  .chosen option {
+    display: none;
+  }
+}

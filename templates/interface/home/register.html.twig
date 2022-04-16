@@ -1,0 +1,76 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block pageclass %}login-pages register-page{% endblock %}
+
+{% block sidebar_a %}{% endblock %}
+
+{% form_theme registrationForm _self %}
+
+{% block main %}
+
+    {{ form_start(registrationForm, {'attr': {'class': 'md-box'}}) }}
+
+    <header class="user-title-block">{{ 'sign.up' | trans }}</header>
+
+        <div class="md-autofill md-form-padding">
+
+            {{ form_row(registrationForm.username) }}
+
+            <div class="md-form-gender">
+                {{ form_row(registrationForm.gender) }}
+            </div>
+
+            {{ form_row(registrationForm.birthday) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.password.first) }}
+            {{ form_row(registrationForm.password.second) }}
+
+            <div class="form-spoiler">
+
+                <a class="collapsed no-width" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                    {{ 'additional' | trans }} <i></i>
+                </a>
+
+                <div class="collapse" id="navbarToggleExternalContent">
+                    {{ form_row(registrationForm.invitedBy) }}
+                </div>
+
+            </div>
+
+{#            {{ form_errors(registrationForm.agreeTerms) }}#}
+{#            {{ form_widget(registrationForm.agreeTerms) }}#}
+
+            <button class="btn btn-primary md-bottom-btn mt-0">
+                {{ 'sign.up' | trans }}
+            </button>
+
+        </div>
+
+    {{ form_end(registrationForm) }}
+
+{#    <div class="info block">#}
+
+{#        {{ 'already.registered' | trans }}#}
+
+{#        <br>#}
+
+{#        <a class="btn btn-primary mt-2" href="{{ path('app_login') }}">#}
+{#            {{ 'log.in' | trans }}#}
+{#        </a>#}
+
+{#    </div>#}
+
+{% endblock %}
+
+{% block checkbox_widget %}
+    <div class="form-group mt-2">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" id="registration_form_agreeTerms" name="registration_form[agreeTerms]" class="custom-control-input" value="1">
+            <label class="checkbox-custom custom-control-label" for="registration_form_agreeTerms">
+                {{ 'accept' | trans }}
+            </label> <a style="font-weight: 500" href="{{ path('app_terms') }}">{{ 'agree.terms' | trans | lower }}</a>
+        </div>
+    </div>
+{% endblock %}

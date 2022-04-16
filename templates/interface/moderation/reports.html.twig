@@ -1,0 +1,54 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'reports' | trans }}{% endblock %}
+
+{% block pageclass %}{% if is_granted('ROLE_SONG_MODERATOR') %}two-sidebars{% endif %}{% endblock %}
+
+{% block main_top %}
+
+    {{ breadcrumb({
+        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+        'active' : ('reports' | trans),
+    }) }}
+
+{% endblock %}
+
+{% block main %}
+
+    <div class="md-box md-content-padding md-mobile-padding">
+        <div class="md-reports">
+
+            {% for report in reports %}
+
+                <div class="md-report md-margin-bottom">
+
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username': report.sender.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if report.sender.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(report.sender.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="message">
+                        {% if report.comment %}
+                            {{ 'comment' | trans }} «{{ report.content }}» {{ 'from' | trans | lower }}
+                            <a class="font-weight-bold" href="{{ path('user_profile', {'username': report.accused.username }) }}">
+                                {{ report.accused.username }}
+                            </a>
+                        {% elseif report.profile %}
+                            {{ 'profile' | trans }}
+                            <a class="font-weight-bold" href="{{ path('user_profile', {'username': report.accused.username }) }}">
+                                {{ report.accused.username }}
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+    {{ paginator.display() }}
+
+{% endblock %}

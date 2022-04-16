@@ -1,0 +1,92 @@
+{% set pathname = app.request.get('_route') %}
+
+{% if app.user %}
+
+    <div class="mobile-menu">
+
+        <div>
+            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' or pathname == 'post_feed' %} style="color: #ccc" {% endif %}>
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+
+        <div>
+            {% if app.user.playlistSongs.count %}
+                <a href="{{ path('user_playlist') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #ccc" {% endif %}>
+                    <i class="fas fa-headphones-alt"></i>
+                </a>
+            {% else %}
+                <a href="{{ path('song_index') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #ccc" {% endif %}>
+                    <i class="fas fa-headphones-alt"></i>
+                </a>
+            {% endif %}
+        </div>
+
+        <div>
+            <a href="{{ path('message_conversations')}}"{% if pathname == 'message_conversations' %} style="color: #ccc" {% endif %}>
+                <i class="far fa-comment"></i>
+                {% if messagesCount(app.user) != 0 %}
+                    <span class="mobile-menu-badge">
+                    {% if messagesCount(app.user) > 99 %}
+                        99+
+                    {% else %}
+                        {{ messagesCount(app.user) }}
+                    {% endif %}
+                </span>
+                {% endif %}
+            </a>
+        </div>
+
+        <div>
+            <a href="{{ path('user_notifications') }}"{% if pathname == 'user_notifications' %} style="color: #ccc" {% endif %}>
+                <i class="far fa-heart"></i>
+                {% if notifyCount(app.user) != 0 %}
+                    <span class="mobile-menu-badge">
+                    {% if notifyCount(app.user) > 99 %}
+                        99+
+                    {% else %}
+                        {{ notifyCount(app.user) }}
+                    {% endif %}
+                </span>
+                {% endif %}
+            </a>
+        </div>
+
+        <div>
+            <a href="{{ path('user_profile', {'username':app.user.username}) }}"{% if pathname == 'user_profile' and user == app.user or pathname == 'user_tagged' and user == app.user %} style="color: #ccc" {% endif %}>
+                <i class="far fa-user"></i>
+                {% if is_granted('ROLE_POST_MODERATOR') %}
+                    {% if postModerationCount() != 0 %}
+                        <span class="mobile-menu-badge" style="background: {% if not reportsCount() %}#2f9b59{% endif %}">
+                            {% if postModerationCount() > 99 %}
+                                99+
+                            {% else %}
+                                {{ postModerationCount() }}
+                            {% endif %}
+                        </span>
+                    {% endif %}
+                {% endif %}
+            </a>
+        </div>
+
+    </div>
+
+{% else %}
+
+    <div class="mobile-menu">
+
+        <div>
+            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #ccc" {% endif %}>
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+
+        <div>
+            <a href="{{ path('song_index') }}"{% if pathname == 'song_index' %} style="color: #ccc" {% endif %}>
+                <i class="fas fa-headphones-alt"></i>
+            </a>
+        </div>
+
+    </div>
+
+{% endif %}

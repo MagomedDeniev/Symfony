@@ -1,0 +1,45 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'add.post' | trans }}{% endblock %}
+
+{% block main %}
+
+{#    <h1>{{ 'add.post' | trans }}</h1>#}
+
+    <div class="md-box">
+
+        <header class="user-title-block">{{ 'add.post' | trans }}</header>
+
+        <div class="md-content-padding md-mobile-padding">
+
+            {% if app.user.confirmedEmail and app.user.status is null or app.user.status == true %}
+
+                {{ include('interface/post/layouts/post_form.html.twig') }}
+
+            {% elseif app.user.status is null %}
+
+                <div class="md-alert md-alert-warning m-0">
+                    <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.add.post' | trans }}
+                </div>
+
+            {% else %}
+
+                <div class="md-alert md-alert-danger mb-0">
+                    <i class="fas fa-ban"></i> {{ 'you.are.blocked.and.you.cant.add.post' | trans }}
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor(4000) }}
+    {{ chosen() }}
+    {{ chosen(10, '.chosen-songs') }}
+    {{ chosen(10, '.chosen-users') }}
+    {{ chosen(3,'.chosen-date select') }}
+{% endblock %}

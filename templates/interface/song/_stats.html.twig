@@ -1,0 +1,72 @@
+{% if not song.tags.empty or not song.featuring.empty or song.releaseDate %}
+
+    <div class="md-song-stats">
+
+        {% if not song.tags.empty %}
+
+            <strong>{{ 'tags' | trans }}</strong>
+            {% for tag in song.tags %}
+                <span class="badge badge-info badge-a">
+                    <a href="{{ path('search_songs', {'keyword': 'tags=' ~ tag.slug}) }}">
+                        {{ tag.title }}
+                    </a>
+                </span>
+            {% endfor %}
+
+        {% endif %}
+
+        {% if song.releaseDate %}
+            <strong>{{ 'premiere.date' | trans }}</strong>
+            <span class="badge badge-primary">
+                {% if song.releaseDate | date('d') | slice(0,1) == 0 %}
+                    {{ song.releaseDate ? song.releaseDate | date('d') | replace({'0':''}) }}
+                {% else %}
+                    {{ song.releaseDate ? song.releaseDate | date('d') }}
+                {% endif %}
+
+                {{ ('month' ~ song.releaseDate | date("m")) | trans }}
+
+                {% if "now" | date("Y") != song.releaseDate | date('Y') %}
+                    {{ song.releaseDate ? song.releaseDate | date('Y') }}
+                {% endif %}
+            </span>
+        {% endif %}
+
+        {% if not song.featuring.empty %}
+
+            <strong>{{ 'featuring' | trans }}</strong>
+
+            {% for vocalist in song.featuring %}
+                <span class="badge badge-primary badge-a">
+                    <a class="md-feat-stat" href="{{ path('person_show', { slug: vocalist.slug }) }}">
+                        {{ vocalist.fullName }}
+                    </a>
+                </span>
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
+<div class="md-post-info">
+
+    <div>
+        {% if song.publicationDate %}
+            <strong>{{ 'publication.date' | trans }}</strong><br>
+            {% if song.publicationDate | date('d') | slice(0,1) == 0 %}
+                {{ song.publicationDate ? song.publicationDate | date('d') | replace({'0':''}) }}
+            {% else %}
+                {{ song.publicationDate ? song.publicationDate | date('d') }}
+            {% endif %}
+
+            {{ ('month' ~ song.publicationDate | date("m")) | trans }}
+
+            {% if "now" | date("Y") != song.publicationDate | date('Y') %}
+                {{ song.publicationDate ? song.publicationDate | date('Y') }}
+            {% endif %}
+        {% endif %}
+    </div>
+
+</div>

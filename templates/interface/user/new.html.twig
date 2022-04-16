@@ -1,0 +1,41 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'user.adding' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+        <header class="user-title-block">{{ 'user.adding' | trans }}</header>
+
+        <div class="md-content-padding md-mobile-padding">
+            {{ form_start(form) }}
+
+                <div class="row label-icons-form">
+
+                    <div class="col-12">
+                        {{ form_row(form.username) }}
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.password) }}
+
+                        <div class="mt-3">
+                            <button class="btn btn-primary">
+                                {{ button_label | default('add') | trans }}
+                            </button>
+
+                            <a class="btn btn-link float-right" href="{{ path('users_index') }}">
+                                {{ 'cancel' | trans }}
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ chosen() }}
+{% endblock %}

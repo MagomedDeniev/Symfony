@@ -1,0 +1,53 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}Чеченские песни{% endblock %}
+
+{% block description %}В ShovdanYist вы найдете тексты всех чеченских песен, их переводы, а также сможете скачать их или добавлять в свой плейлист.{% endblock %}
+
+{% block keywords %}тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}
+
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
+{% block main %}
+
+    {% if app.user %}
+
+        <div class="feed-types">
+            <a href="{{ path('user_playlist') }}">{{ 'playlist' | trans }}</a>
+            <a href="{{ path('song_index') }}" class="active">{{ 'hits' | trans }}</a>
+        </div>
+
+    {% endif %}
+
+    <div class="md-chart-boxes row-cols-1 row-cols-md-2">
+        {{ chartBox('trends') }}
+        {{ chartBox('novelty') }}
+        {{ chartBox('discussed') }}
+        {{ chartBox('lasts') }}
+    </div>
+
+    <div class="md-box md-gt-box">
+
+        <div class="listing-module">
+            <strong>{{ 'tags' | trans }}: </strong>
+
+            {% for tag in tags('song') %}
+
+                <span class="badge badge-info badge-a">
+                    <a class="md-feat-stat" href="{{ path('search_songs', {'keyword': 'tags=' ~ tag.slug}) }}">
+                        {{ tag.title }}
+                    </a>
+                </span>
+
+            {% endfor %}
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'posts' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+        'active' : ('post.moderation' | trans),
+    }) }}
+{% endblock %}
+
+{% block main %}
+
+    {% for post in posts %}
+        {{ postView(post, 'moderation') }}
+    {% else%}
+        <div class="md-box md-content-padding">
+            <div class="not-have-message not-have-message-center">
+                <i class="far fa-sticky-note" style="margin-right: 5px"></i>{{ 'no.posts.in.moderation' | trans }}
+            </div>
+        </div>
+    {% endfor %}
+
+    {{ paginator.display() }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ chosen() }}
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'actions' | trans }}{% endblock %}
+
+{% block main_top %}
+    {% if type is defined %}
+        {{ breadcrumb({
+            (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+            (path('moderation_actions')) : 'actions' | trans,
+            'active' : ('type_' ~ type) | trans,
+        }) }}
+    {% elseif user is defined %}
+        {{ breadcrumb({
+            (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+            (path('moderation_actions')) : 'actions' | trans,
+            'active' : user.username
+        }) }}
+    {% else %}
+        {{ breadcrumb({
+            (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+            'active' : ('actions' | trans),
+        }) }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="row m-0">
+
+        <div class="moderation-actions moderation-user-actions chosen-search-off flex-grow-1">
+            <label>
+                <select class="form-control text-center" onchange="location = this.value;">
+                    <option selected="selected" value="{{ path('moderation_actions') }}">Все администраторы</option>
+                    {% for moderator in moderators %}
+                        <option {% if user is defined and user == moderator %}selected="selected"{% endif %} value="{{ path('moderation_user_actions', {'username' : moderator.username}) }}">{{ moderator.username }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+        {% set action_types = ['user_blocked', 'user_unblocked', 'comment_deleted', 'post_edited', 'post_approved', 'post_rejected', 'song_edited', 'person_edited'] %}
+
+        <div class="moderation-actions moderation-type-actions chosen-search-off">
+            <label>
+                <select class="form-control text-center" onchange="location = this.value;">
+                    <option value="{{ path('moderation_actions') }}">Все действия</option>
+                    {% for action_type in action_types %}
+                        <option {% if type is defined and type == action_type %}selected="selected"{% endif %} value="{{ path('moderation_type_actions', {'type' : action_type}) }}">{{ ('type_' ~ action_type) | trans }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+    </div>
+
+    <div class="md-notifications">
+
+        {% for action in actions %}
+
+            {{ actionView(action) }}
+
+        {% else %}
+
+            <div class="text-center">
+                <div class="not-have-message not-have-message-center">
+                    <i class="far fa-hand-point-up" style="margin-right: 3px"></i>
+
+                    {% if type is defined %}
+                        {{ 'no.actions.in' | trans({'section': ('type_' ~ type) | trans }) }}
+                    {% elseif user is defined %}
+                        {{ 'user.have.no.actions' | trans({'username': user.username}) }}
+                    {% else %}
+                        {{ 'no.actions' | trans }}
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+
+{% endblock %}
+
+{% block main_bottom %}
+    {{ paginator.display() }}
+{% endblock %}
+
+{% block scripts %}
+    {{ chosen() }}
+{% endblock %}

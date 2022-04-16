@@ -1,0 +1,88 @@
+<div class="user-line" id="u{{ (follower.id * 14 / 3 + 91) | round }}l">
+
+    <div class="back-picture bp-45" style="background-image: url('{% if follower.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(follower.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); margin-right: 10px">
+    </div>
+
+    <div class="user-line-info">
+        <div class="user-line-username" {% if follower.profile.fullName %}style="line-height: unset"{% endif %}>
+            <span class="md-username">
+                <a href="{{ path('user_profile', {'username' : follower.username }) }}">
+                    {{ follower.username }}
+                </a>
+            </span>
+
+            {% if follower.profile.verified %}
+                <span class="md-verified">
+                    <i class="fas fa-check-circle text-info"></i>
+                </span>
+            {% endif %}
+        </div>
+
+        <span class="user-line-fullname">
+            {{ follower.profile.fullName }}
+        </span>
+    </div>
+
+    {% if request %}
+
+        <div class="user-line-follow">
+            <a class="unfollow" data-toggle="modal" data-target="#rejectRequest{{ (follower.id * 14 / 3 + 91) | round }}"><i class="fas fa-times"></i></a>
+
+            <div class="modal fade md-confirm-modal" id="rejectRequest{{ (follower.id * 14 / 3 + 91) | round }}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="md-modal-container">
+                            <div class="md-modal-message">{{ 'sure.to.reject.request' | trans({'username':follower.username}) }}</div>
+                            <a href="{{ path('reject_request',{'username':follower.username}) }}" class="btn btn-modal-danger md-modal-item reject-request-toggle" id="u{{ (follower.id * 14 / 3 + 91) | round }}t">
+                                {{ 'reject' | trans }}
+                            </a>
+                            <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a id="u{{ (follower.id * 14 / 3 + 91) | round }}t" href="{{ path('accept_request',{'username':follower.username}) }}" class="btn btn-follow btn-info accept-follow-request">{{ 'accept' | trans }}</a>
+        </div>
+
+    {% else %}
+
+        <style>
+            .user-line-follow .btn-follow::before {
+                content: "{{ 'follow' | trans }}";
+            }
+            .user-line-follow .btn-follow.followed::before {
+                content: "{{ 'unfollow' | trans }}";
+            }
+            .user-line-follow .btn-follow.requested::before {
+                content: "{{ 'requested' | trans }}";
+            }
+        </style>
+
+        {% if app.user != follower %}
+            <div class="user-line-follow">
+                {% if app.user and unfollow == app.user %}
+                    <a class="unfollow" data-toggle="modal" data-target="#userUnfollow{{ (follower.id * 14 / 3 + 91) | round }}">
+                        <i class="fas fa-times"></i>
+                    </a>
+                    <div class="modal fade md-confirm-modal" id="userUnfollow{{ (follower.id * 14 / 3 + 91) | round }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="md-modal-container">
+                                    <div class="md-modal-message">{{ 'sure.to.delete.follower' | trans({'username':follower.username}) }}</div>
+                                    <a href="{{ path('user_unfollow',{'username':follower.username}) }}" class="btn btn-modal-danger md-modal-item unfollow-toggle" id="u{{ (follower.id * 14 / 3 + 91) | round }}t">
+                                        {{ 'unfollow.from.me' | trans }}
+                                    </a>
+                                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <a class="btn btn-follow {% if app.user %}follow-toggle{% endif %}{% if userIsFollowed(follower) == 'followed' %} btn-light followed{% elseif userIsFollowed(follower) == 'requested' %} btn-light requested{% else %} btn-info{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':follower.username}) }}{% else %}{{ path('app_login') }}{% endif %}"></a>
+            </div>
+        {% endif %}
+
+    {% endif %}
+
+</div>

@@ -1,0 +1,20 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'tag.adding' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+        <header class="user-title-block">{{ 'tag.adding' | trans }}</header>
+
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/tag/_form.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor() }}
+    {{ chosen(10) }}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'account.recovery' | trans }}{% endblock %}
+
+{% block pageclass %}login-pages register-page{% endblock %}
+
+{% block sidebar_a %}{% endblock %}
+
+{% block main %}
+
+    {{form_start(form, {'attr': {'class': 'form-signin md-box'}})}}
+
+        <header class="user-title-block">
+            {{ 'account.recovery' | trans }}
+        </header>
+
+        <div class="md-autofill md-form-padding">
+
+            {{form_row(form.email)}}
+            <button class="btn btn-primary mt-1" type="submit">{{ 'send' | trans }}</button>
+
+        </div>
+
+    {{form_end(form)}}
+
+{% endblock %}

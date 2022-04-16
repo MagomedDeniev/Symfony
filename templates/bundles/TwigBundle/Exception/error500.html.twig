@@ -1,0 +1,15 @@
+{% extends '/bundles/TwigBundle/Exception/base.html.twig' %}
+
+{% block title %}{{ 'error500' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'error500' | trans }}</h1>
+
+    <p>
+        {{ 'something.wrong.in.this.page' | trans }}
+    </p>
+
+    <a class="btn btn-light" href="{{ path('app_home') }}">{{ 'back.to.home' | trans }}</a>
+
+{% endblock %}

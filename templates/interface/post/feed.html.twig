@@ -1,0 +1,41 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'feed' | trans }}{% endblock %}
+
+{% block main_top %}
+    <div class="feed-types">
+        <a href="{{ path('app_home') }}">{{ 'recommendations' | trans }}</a>
+        <a href="{{ path('post_feed') }}" class="active">{{ 'following' | trans }}</a>
+    </div>
+{% endblock %}
+
+{% block main %}
+
+    {% for post in posts %}
+        {{ postView(post) }}
+    {% else %}
+        <div class="md-box md-content-padding text-center">
+            <div class="not-have-message not-have-message-center">
+            {% if not app.user.following.count %}
+                <i class="far fa-user" style="margin-right: 3px"></i>
+                {{ 'you.have.not.following' | trans }}
+            {% elseif app.user.following.count == 1 %}
+                <i class="far fa-clone" style="margin-right: 3px"></i>
+                {{ 'user.you.followed.have.not.posts' | trans }}
+            {% else %}
+                <i class="far fa-clone" style="margin-right: 3px"></i>
+                {{ 'users.you.followed.have.not.posts' | trans }}
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% include 'interface/post/_share_post.html.twig' %}
+
+    {{ paginator.display() }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'email.confirmation' | trans }}{% endblock %}
+
+{% block main %}
+
+	<div class="md-box">
+
+		<header class="user-title-block">
+			{{ 'email.confirmation' | trans }}
+		</header>
+
+		<div class="md-content-padding">
+
+			{% if status is null %}
+				<div class="md-alert md-alert-warning md-box-mb mb-0">
+					<i class="fas fa-exclamation-triangle"></i> Время ссылки либо истёк либо электронная почта уже подтверждена, если нет то отправьте ссылку заново в настройках вашего аккаунта
+				</div>
+			{% elseif status == false %}
+				<div class="md-alert md-alert-danger md-box-mb mb-0">
+					<i class="fas fa-ban"></i> Вы забанены и не можете подтвердить свою почту
+				</div>
+			{% elseif status == true %}
+				<div class="md-alert md-alert-success md-box-mb mb-0">
+					<i class="fas fa-check"></i> Ваша электронная почта <b>{{ user.email | first }}****@{{ user.email | split('@',3)[1] }}</b> успешно подтверждена!
+				</div>
+			{% endif %}
+
+		</div>
+
+	</div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+<div class="audio-player text-muted">
+
+    <div class="audio-player-image">
+        <div style="background-image: url('{% if image %}{{ image }}{% elseif song.vocalist.picture %}{{ vich_uploader_asset(song.vocalist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
+    </div>
+
+    <div class="audio-player-title">
+        <span>
+            {% if type == 'song' %}
+                <strong>{{ song.vocalist.fullName }}</strong> -
+                {{ song.title }}
+            {% else %}
+                <a href="{{ path('song_show', {slug: song.slug}) }}"><span class="md-player-vocalist">{{ song.vocalist.fullName }}</span> - {{ song.title }}</a>
+            {% endif %}
+        </span>
+        {{ featuring( song, ', ' ) }}
+    </div>
+
+    {% if app.user and download == true or app.user and add == true %}
+
+        <span class="audio-player-actions">
+
+            {% if download == true %}
+                <a class="playlist-download muted-link-info" download="{{ song.vocalist.fullName }} - {{ song.title }} {{ featuring( song, ', ' ) }}.mp3" href="{{ vich_uploader_asset(song) }}" data-toggle="tooltip" title="{{ 'download.song' | trans }}">
+                    <i class="far fa-arrow-alt-circle-down"></i>
+                </a>
+            {% endif %}
+
+            {% if add == true %}
+                {% if userContainSong(app.user, song) %}
+                    {% set playlist_title = 'remove.from.playlist' | trans %}
+                {% else %}
+                    {% set playlist_title = 'add.to.playlist' | trans %}
+                {% endif %}
+
+                <a class="muted-link-info playlist-toggle{% if userContainSong(app.user, song) %} added{% endif %}" href="{{ path('song_playlist', {slug: song.slug}) }}" data-toggle="tooltip" title="{{ playlist_title }}">
+                    <i class="far fa-times-circle"></i>
+                </a>
+            {% endif %}
+
+        </span>
+
+    {% endif %}
+
+    <audio preload="none" title="{{ song.vocalist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }}" class="player-audio" src="{{ vich_uploader_asset(song) }}" type="audio/mp3" controls="controls"></audio>
+
+</div>

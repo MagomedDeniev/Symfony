@@ -1,0 +1,20 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'tag.editing' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+        <header class="user-title-block">{{ 'tag.editing' | trans }}</header>
+
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/tag/_form.html.twig', { 'button_label' : 'update' | trans }) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor() }}
+    {{ chosen(10) }}
+{% endblock %}

@@ -1,0 +1,38 @@
+<div class="md-comments">
+
+    {% for comment in comments %}
+
+        {{ oneComment(comment) }}
+
+        {% if comment.children.count %}
+
+            <div class="form-spoiler" style="margin: 2px 0 0 60px">
+
+                <a class="collapsed message no-width" data-toggle="collapse" data-target="#repliesForComment{{ comment.id }}" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                    {{ 'show' | trans }}
+                    {{ comment.children.count }}
+                    {% if comment.children.count == 1 %}
+                        {{ 'answer' | trans | lower }}
+                    {% elseif comment.children.count > 1 and comment.children.count <= 4 %}
+                        {{ 'answers' | trans | lower }}
+                    {% elseif comment.children.count > 4 %}
+                        {{ 'some.answers' | trans | lower }}
+                    {% endif %}
+                    <i></i>
+                </a>
+
+                <div class="collapse" id="repliesForComment{{ comment.id }}" style="margin: 4px 0 0;">
+                    <div class="md-comment-children">
+                        {% for childComment in comment.children %}
+                            {{ oneComment(childComment) }}
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    {% endfor %}
+
+</div>

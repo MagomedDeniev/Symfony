@@ -1,0 +1,140 @@
+{% if notification.type == 'user_follow' or notification.type == 'user_accepted' %}
+
+    {% if notification.type == 'user_follow' %}
+
+        {% if notification.sender.profile.gender %}
+            {{ 'followed.to.you.female' | trans }}
+        {% else %}
+            {{ 'followed.to.you.male' | trans }}
+        {% endif %}
+
+    {% elseif notification.type == 'user_accepted' %}
+
+        {% if notification.sender.profile.gender %}
+            {{ 'accepted.request.female' | trans }}
+        {% else %}
+            {{ 'accepted.request.male' | trans }}
+        {% endif %}
+
+    {% endif %}
+
+    <style>
+        .notification-follow.btn::before {
+            content: "{{ 'follow' | trans }}";
+        }
+        .notification-follow.btn.followed::before {
+            content: "{{ 'unfollow' | trans }}";
+        }
+        .notification-follow.btn.requested::before {
+            content: "{{ 'requested' | trans }}";
+        }
+    </style>
+
+    <a class="notification-follow btn {% if userIsFollowed(notification.sender) == 'followed' %}btn-light followed{% elseif userIsFollowed(notification.sender) == 'requested' %}btn-light requested{% else %}btn-info{% endif %} {% if app.user %}follow-toggle{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':notification.sender.username}) }}{% else %}{{ path('app_login') }}{% endif %}"></a>
+
+{% elseif notification.type == 'user_tagged' %}
+
+    {% if notification.sender.profile.gender %}
+        {{ 'tagged.you.in.post.female' | trans }}
+    {% else %}
+        {{ 'tagged.you.in.post.male' | trans }}
+    {% endif %}
+
+{% elseif notification.type == 'comment_reply' %}
+
+    {% if notification.quantity > 1 %}
+
+        {{ 'replied.you.with.comment.users' | trans }}
+
+        {% if notification.post %}
+            {{ 'в статье' }} <a href="{{ path('post_show',{'id':notification.post.id}) }}">{{ notification.post.title }}</a>
+        {% elseif notification.song %}
+            {{ 'в песне' }} <a href="{{ path('song_show', {'slug': notification.song.slug}) }}">{{ notification.song.fulltitle }}</a>
+        {% endif %}
+
+    {% elseif notification.comment.author.profile.gender %}
+        {{ 'replied.you.with.comment.female' | trans }}
+    {% else %}
+        {{ 'replied.you.with.comment.male' | trans }}
+    {% endif %}
+
+    {% if notification.quantity == 1 %}
+        {% if notification.comment.song %}
+            <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
+                {{ notification.comment.message }}
+            </a>
+        {% else %}
+            <a class="notify-message-link" href="{{ path( 'post_show', {'id': notification.comment.post.id}) }}">
+                {{ notification.comment.message }}
+            </a>
+        {% endif %}
+    {% endif %}
+
+{% elseif notification.type == 'post_comment' %}
+
+    {% if notification.quantity > 1 %}
+        {{ 'commented.your.post.users' | trans }}:
+    {% elseif notification.comment.author.profile.gender %}
+        {{ 'commented.your.post.female' | trans }}:
+    {% else %}
+        {{ 'commented.your.post.male' | trans }}:
+    {% endif %}
+
+    {% if notification.quantity == 1 %}
+        {% if notification.comment.song %}
+            <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
+                {{ notification.comment.message }}
+            </a>
+        {% else %}
+            <a class="notify-message-link" href="{{ path( 'post_show', {'id': notification.comment.post.id}) }}">
+                {{ notification.comment.message }}
+            </a>
+        {% endif %}
+    {% endif %}
+
+{% elseif notification.type == 'post_like' or notification.type == 'comment_like' %}
+
+    {% if notification.quantity > 1 %}
+        <a href="{{ path('user_profile', {'username' : notification.sender.username}) }}" style="font-weight: 600">
+            {{ 'and' | trans | lower }} {{ 'more' | trans | lower }} {{ notification.quantity - 1 }}
+        </a>
+    {% endif %}
+
+    {% if notification.type == 'post_like' %}
+        {{ 'like.your.post' | trans }}
+    {% else %}
+        {{ 'like.your.comment' | trans }}:
+        {% if notification.post %}
+            <a class="notify-message-link" href="{{ path('post_show',{'id':notification.post.id}) }}">
+                {{ notification.comment.message }}
+            </a>
+        {% else %}
+            <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.song.slug}) }}">
+                {{ notification.comment.message }}
+            </a>
+        {% endif %}
+    {% endif %}
+
+{% elseif notification.type == 'post_approved' %}
+
+    {{ 'approved.your.post' | trans }}
+
+{% elseif notification.type == 'post_rejected' %}
+
+    {{ 'rejected.your.post'| trans }}
+    {{ 'for.next.reason' | trans }}:
+    {{ notification.message }}
+
+{% endif %}
+
+{#{% if notification.quantity == 1 %}#}
+{#    {% if notification.comment.song %}#}
+{#        <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">#}
+{#            {{ notification.comment.message }}#}
+{#        </a>#}
+{#    {% else %}#}
+{#        <a class="notify-message-link" href="{{ path( 'post_show', {'id': notification.comment.post.id}) }}">#}
+{#            {{ notification.comment.message }}#}
+{#        </a>#}
+{#    {% endif %}#}
+{#{% endif %}#}

@@ -1,0 +1,19 @@
+<script>
+    let audios = $('audio').next('.player-audio').prevObject;
+    let len = audios.length;
+    let i = 0;
+    let songID = 0;
+
+    audios.each((key,value) => {
+        value.id = songID + '-song';
+        songID += 1;
+    })
+
+    audios.bind('ended', function () {
+        i = parseInt(this.id.substring(0, this.id.indexOf("-song"))) + 1;
+        if (i !== len) {
+            audios[i].load();
+            audios[i].play();
+        }
+    });
+</script>

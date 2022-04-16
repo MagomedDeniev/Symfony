@@ -1,0 +1,48 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}Права пользователя {{ user.username }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+
+        <header class="user-title-block">Права пользователя {{ user.username }}</header>
+
+        <div class="md-content-padding md-mobile-padding">
+
+            {{ form_start(form) }}
+
+                <div class="text-muted mb-2">{{ 'management' | trans }}</div>
+                {{ form_row(form.ROLE_SONG_AUTHOR) }}
+                {{ form_row(form.ROLE_SONG_EDITOR) }}
+                {{ form_row(form.ROLE_POST_MODERATOR) }}
+                {{ form_row(form.ROLE_SONG_MODERATOR) }}
+                {{ form_row(form.ROLE_PEOPLE_MODERATOR) }}
+                <div class="text-muted mb-2">{{ 'comments' | trans }}</div>
+                {{ form_row(form.ROLE_POST_COMMENT_REMOVER) }}
+                {{ form_row(form.ROLE_SONG_COMMENT_REMOVER) }}
+                <div class="text-muted mb-2">{{ 'users' | trans }}</div>
+                {{ form_row(form.ROLE_USER_ANALYST) }}
+                {{ form_row(form.ROLE_USER_ACTIONS) }}
+                {{ form_row(form.ROLE_USER_BAN) }}
+                {{ form_row(form.ROLE_USER_RIGHTS) }}
+
+                {% if is_granted('ROLE_OWNER') %}
+                    {{ form_row(form.ROLE_ADMINISTRATOR) }}
+                {% endif %}
+
+                <button class="btn btn-primary">
+                    {{ 'save' | trans }}
+                </button>
+
+                <a class="btn btn-link float-right" href="{{ path('user_profile', {'username' : user.username }) }}">
+                    {{ 'cancel' | trans }}
+                </a>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+
+{% endblock %}

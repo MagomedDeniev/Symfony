@@ -1,0 +1,121 @@
+{% if action.type == 'comment_deleted' %}                                                                                {# ---------- COMMENT DELETED ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ 'deleted.comment.female' | trans }}
+    {% else %}
+        {{ 'deleted.comment.male' | trans }}
+    {% endif %}
+
+    <a href="{{ path('user_profile',{'username': action.user.username }) }}">
+        {{ action.user.username }}:
+    </a>
+
+    <span style="font-weight: 500">
+        {{ action.content }}
+    </span>
+
+{% elseif action.type == 'user_blocked' or action.type == 'user_unblocked' %}                                            {# ---------- USER BLOCK / UNBLOCK ---------- #}
+
+    {% if action.type == 'user_blocked' %}
+
+        {% if action.moderator.profile.gender %}
+            {{ 'blocked.user.female' | trans }}
+        {% else %}
+            {{ 'blocked.user.male' | trans }}
+        {% endif %}
+
+    {% else %}
+
+        {% if action.moderator.profile.gender %}
+            {{ 'unblocked.user.female' | trans }}
+        {% else %}
+            {{ 'unblocked.user.male' | trans }}
+        {% endif %}
+
+    {% endif %}
+
+    <a href="{{ path('user_profile',{'username': action.user.username }) }}">
+        {{ action.user.username }}
+    </a>
+
+{% elseif action.type == 'post_approved' or action.type == 'post_rejected' %}                                            {# ---------- POST APPROVE / REJECT ---------- #}
+
+    {% if action.type == 'post_approved' %}
+
+        {% if action.moderator.profile.gender %}
+            {{ 'approved.post.female' | trans }}
+        {% else %}
+            {{ 'approved.post.male' | trans }}
+        {% endif %}
+
+        <a href="{{ path('user_profile',{'username': action.post.author.username }) }}">
+            {{ action.post.author.username }}
+        </a>
+
+    {% elseif action.type == 'post_rejected' %}
+
+        {% if action.moderator.profile.gender %}
+            {{ 'rejected.post.female' | trans }}
+        {% else %}
+            {{ 'rejected.post.male' | trans }}
+        {% endif %}
+
+        {{ 'for.next.reason' | trans }}:
+
+        <span style="font-weight: 500">
+            {{ action.content }}
+        </span>
+
+    {% endif %}
+
+{% elseif action.type == 'post_edited' %}                                                                                {# ---------- POST EDIT ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ 'edited.post.female' | trans }}
+    {% else %}
+        {{ 'edited.post.male' | trans }}
+    {% endif %}
+
+    <a href="{{ path('user_profile',{'username': action.post.author.username }) }}">
+        {{ action.post.author.username }}
+    </a>
+
+{% elseif action.type == 'song_edited' %}                                                                                {# ---------- SONG EDIT ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ 'edited.song.female' | trans }}
+    {% else %}
+        {{ 'edited.song.male' | trans }}
+    {% endif %}
+
+    <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">
+        {{ action.song.fullTitle }}
+    </a>
+
+{% elseif action.type == 'person_edited' %}                                                                              {# ---------- PERSON EDIT ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ 'edited.person.female' | trans }}
+    {% else %}
+        {{ 'edited.person.male' | trans }}
+    {% endif %}
+
+    <a href="{{ path( 'person_show', {'slug': action.person.slug}) }}">
+        {{ action.person.fullName }}
+    </a>
+
+{% elseif action.type == 'rights_changed' %}                                                                             {# ---------- RIGHTS CHANGED ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ 'changed.rights.female' | trans }}
+    {% else %}
+        {{ 'changed.rights.male' | trans }}
+    {% endif %}
+
+    <a href="{{ path('user_profile',{'username': action.user.username }) }}">
+        {{ action.user.username }}:
+    </a>
+
+    {{ action.content | raw }}
+
+{% endif %}

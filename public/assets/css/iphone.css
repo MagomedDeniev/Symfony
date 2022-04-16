@@ -1,0 +1,73 @@
+/* BODY WRAPPER */
+
+/*html, body {*/
+/*    height: 100% !important;*/
+/*    overflow: hidden !important;*/
+/*}*/
+
+/*.body-wrapper {*/
+/*    position: absolute !important;*/
+/*    padding-top: 70px !important;*/
+/*    overflow: auto !important;*/
+/*    height: 100% !important;*/
+/*    width: 100% !important;*/
+/*    top: 0 !important;*/
+/*}*/
+
+/*.md-nav {*/
+/*    margin-bottom: 0 !important;*/
+/*}*/
+
+/*.md-box.sticky-top, .sidebar.sticky-top {*/
+/*    top: -4px !important;*/
+/*}*/
+
+/* PHONE BANGS */
+
+.md-nav {
+    height: 100px !important;
+}
+
+.md-nav .container {
+    padding-top: 45px !important;
+}
+
+#sideNavOpener {
+    border-radius: 10px !important;
+    line-height: 46px !important;
+    height: 46px !important;
+    width: 46px !important;
+    top: 48px !important;
+    left: 4px !important;
+}
+
+#sideNavOpener .notifier {
+    right: 10px !important;
+    top: 11px !important;
+}
+
+.navbar-search-opener {
+    top: 54px !important;
+}
+
+.body-wrapper {
+    padding-top: 115px !important;
+}
+
+.navbar-login-mobile {
+    top: 52px !important;
+}
+
+#sideNav {
+    padding-top: 45px !important;
+}
+
+#navbarSearch {
+    padding-left: 5px !important;
+    border: unset !important;
+    top: 45px !important;
+}
+
+.md-nav-logo:hover {
+    background: unset !important;
+}

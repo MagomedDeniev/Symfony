@@ -1,0 +1,147 @@
+<div class="md-post" id="postId{{ post.id }}">
+
+    <div class="md-box md-content-padding">
+
+        {% if app.user %}
+
+            <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 16px;top: 14px">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+
+            <div class="dropdown-menu dropdown-menu-right">
+
+                {% if app.user %}
+                    <button id="sharePostId{{ post.id }}" type="button" class="dropdown-item share-post-button" data-toggle="modal" data-target="#sharePostModal">
+                        <span class="icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                        {{ 'share' | trans }}
+                    </button>
+                {% endif %}
+
+                {% if is_granted('ROLE_POST_MODERATOR') or post.author == app.user %}
+                    <a href="{{ path('post_edit', {'id':post.id}) }}" class="dropdown-item">
+                        <span class="icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </span>
+                        {{ 'edit' | trans }}
+                    </a>
+                {% endif %}
+
+                {% if is_granted('ROLE_OWNER') or post.author == app.user %}
+                    <span class="dropdown-divider"></span>
+                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePostModal">
+                        <span class="icon">
+                            <i class="far fa-trash-alt"></i>
+                        </span>
+                        {{ 'delete' | trans }}
+                    </button>
+                {% endif %}
+
+            </div>
+
+            {% if is_granted('ROLE_OWNER') or post.author == app.user %}
+                <div class="modal fade md-confirm-modal" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="md-modal-container">
+                                <div class="md-modal-message">{{ 'sure.to.delete.post' | trans }}</div>
+                                <form class="md-modal-item" method="post" action="{{ path('post_delete', {'id': post.id}) }}">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                                    <button class="btn btn-modal-danger">
+                                        {{ 'delete' | trans }}
+                                    </button>
+                                </form>
+                                <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        {% endif %}
+
+        {{ postInfo(post) }}
+
+        {% if post.title %}
+            {% if view =='show' %}
+                <h3>{{ post.title }}</h3>
+            {% else %}
+                {{ postTitle(post) }}
+            {% endif %}
+        {% endif %}
+
+        {{ postImage(post,view) }}
+
+        <div class="post-view-bottom">
+
+            {% if post.songs.count %}
+                <div {% if view == 'show' %}class="md-margin-bottom"{% else %} style="margin-bottom: 6px" {% endif %}>
+                    {% if view == 'show' %}
+                        {% for song in post.songs %}
+                            {{ player(song,null,null,null) }}
+                        {% endfor %}
+                    {% else %}
+                        {% for song in post.songs | slice(0,3) %}
+                            {{ player(song,null,null,null) }}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                {% if post.songs.count > 3 and view != 'show' %}
+                    <div class="post-songs-more">
+                        <a href="{{ path('post_show',{'id':post.id}) }}">
+                            {{ 'more.count' | trans({'count':post.songs.count - 3}) }}
+                            {% if (post.songs.count - 3) == 1 %}
+                                {{ 'song' | trans | lower }}
+                            {% elseif (post.songs.count - 3) > 1 and (post.songs.count - 3) <= 4 %}
+                                {{ 'songs' | trans | lower }}
+                            {% elseif (post.songs.count - 3) > 4 %}
+                                {{ 'some.songs' | trans | lower }}
+                            {% endif %}
+                        </a>
+                        <i class="fas fa-angle-right" style="top: 2px; position: relative;color: #aaa"></i>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            {% if view == 'show' or view == 'moderation' %}
+                {% if post.content %}
+                    <div class="ckeditor-content md-margin-bottom">
+                        {{ post.content | tagger | raw }}
+                    </div>
+                {% endif %}
+            {% else %}
+                {% if post.content %}
+                    <div class="post-collapse closed" id="postCollapse{{ post.id }}">
+                        <div class="ckeditor-content md-margin-bottom">
+                            {{ post.content | raw }}
+                        </div>
+                    </div>
+                    <div class="post-collapse-more" id="postCollapseButton{{ post.id }}">
+                        <span>{{ 'more' | trans }} <i class="fas fa-angle-down"></i></span>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            {{ postTaggedUsers(post) }}
+
+            {% if post.status == true %}
+                {% if view == 'show' %}
+                    {{ postActions(post,false) }}
+                {% else %}
+                    {{ postActions(post,true) }}
+                {% endif %}
+            {% endif %}
+
+            {% if view == 'moderation' %}
+                <hr>
+                {{ postValidation(post) }}
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>

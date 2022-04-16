@@ -1,0 +1,71 @@
+{% if is_granted('ROLE_OWNER') %}
+    <script src="{{ asset('/assets/ckeditor/admin/build/ckeditor.js') }}"></script>
+{% else %}
+    <script src="{{ asset('/assets/ckeditor/user/build/ckeditor.js') }}"></script>
+{% endif %}
+
+<script>
+    const allEditors = document.querySelectorAll('.ckeditor');
+    for (let i = 0; i < allEditors.length; ++i) {
+        ClassicEditor
+            .create( allEditors[i], {
+                    language: '{{ app.request.locale }}',
+                    toolbar: [
+                        'heading', 'bold', 'italic', 'underline',
+                        'strikethrough', 'blockQuote'
+                    ],
+
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Основной текст', class: 'ck-main-text' },
+                            { model: 'heading5', view: 'h5', title: 'Заглавие', class: 'ck-sub-title' },
+                            { model: 'heading6', view: 'h6', title: 'Описание', class: 'ck-sub-description' },
+                        ]
+                    },
+                    {% if limit %}
+                        wordCount: {
+                            onUpdate: stats => {
+                                if (document.getElementById( 'symbolsCounter' )) {
+                                    const wordCountWrapper = document.getElementById( 'symbolsCounter' );
+
+                                    wordCountWrapper.innerHTML = {{ limit }} - stats.characters;
+
+                                    if (parseInt(wordCountWrapper.innerHTML) < 0) {
+                                        wordCountWrapper.style.color = '#df5454';
+                                    } else {
+                                        wordCountWrapper.style.color = '#7b8a8b';
+                                    }
+                                }
+                            }
+                        }
+                    {% endif %}
+                }
+            )
+            .catch( error => {
+                console.error( error );
+            } );
+    }
+</script>
+
+{% if limit %}
+    <style>
+        #symbolsCounter {
+            background: #eff0f5;
+            display: block;
+            position: absolute;
+            right: 0;
+            bottom: -30px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            min-width: 50px;
+            text-align: center;
+            color: #7b8a8b;
+        }
+    </style>
+    <script>
+        let symbolsCounter = document.createElement('span');
+        symbolsCounter.id = 'symbolsCounter';
+        symbolsCounter.innerHTML = {{ limit }};
+        document.getElementsByClassName('ck-editor__main')[0].appendChild(symbolsCounter);
+    </script>
+{% endif %}

@@ -1,0 +1,24 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'users' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
+        'active' : ('users' | trans),
+    }, null, 'user_add') }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="md-search-box">
+        {% for user in users %}
+            {{ userLine(user) }}
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block main_bottom %}
+    {{ paginator.display() }}
+{% endblock %}

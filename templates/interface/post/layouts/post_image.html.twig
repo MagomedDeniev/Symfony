@@ -1,0 +1,13 @@
+{% if post.image %}
+
+    {% if '.gif' in post.image %}
+        {% set post_image_link = vich_uploader_asset(post) %}
+    {% else %}
+        {% set post_image_link = vich_uploader_asset(post) | imagine_filter('post') %}
+    {% endif %}
+
+    <div class="post-liker">
+        <img class="post-image" width="100%" src="{{ post_image_link }}" alt="{{ post.slug }}">
+    </div>
+
+{% endif %}

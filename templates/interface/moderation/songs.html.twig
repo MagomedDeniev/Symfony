@@ -1,0 +1,168 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'music' | trans }}{% endblock %}
+
+{% block pageclass %}{% if is_granted('ROLE_SONG_MODERATOR') %}two-sidebars{% endif %}{% endblock %}
+
+{% block main_top %}
+
+    {{ breadcrumb({
+        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+        'active' : ('music.moderation' | trans),
+    }, null, 'song_add') }}
+
+    {% if is_granted('ROLE_SONG_MODERATOR') %}
+        <div class="md-box md-margin-bottom songs-moderation-mobile-menu" style="padding: 12px">
+            <div class="md-menu">
+                <ul>
+
+                    <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_music' %}active{% endif %}">
+                        <a style="padding-left: 8px" href="{{ path('moderation_music') }}">
+                            {{ 'my.songs' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_ready' %}active{% endif %}">
+                        <a style="padding-left: 8px" href="{{ path('moderation_ready') }}">
+                            {{ 'in.moderation' | trans }}
+                            {% if songModerationCount() != 0 %}
+                                <span class="badge badge-pill badge-danger float-right mt-1">
+                                    {% if songModerationCount() > 99 %}
+                                        99+
+                                    {% else %}
+                                        {{ songModerationCount() }}
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_pending' %}active{% endif %}">
+                        <a style="padding-left: 8px" href="{{ path('moderation_pending') }}">
+                            {{ 'pending' | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+    <div>
+
+        {% for key,song in songs %}
+
+            <div class="player-box">
+
+                {% if is_granted('ROLE_SONG_MODERATOR') %}
+                    {{ player(song) }}
+                {% else %}
+                    {{ player(song,false,false,'song') }}
+                {% endif %}
+
+                <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="{{ path('song_edit', {'slug':song.slug}) }}" class="dropdown-item">
+                        <i class="fa fa-edit"></i> {{ 'edit' | trans }}
+                    </a>
+
+                    {% if is_granted('ROLE_SONG_MODERATOR') %}
+                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteSong{{ song.id }}">
+                            <i class="fas fa-trash-alt"></i>
+                            {{ 'delete' | trans }}
+                        </button>
+                    {% endif %}
+                </div>
+
+                {% if is_granted('ROLE_SONG_MODERATOR') %}
+                    <div class="modal fade md-confirm-modal" id="deleteSong{{ song.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="md-modal-container">
+                                    <div class="md-modal-message">{{ 'sure.to.delete.song' | trans }}</div>
+                                    <form class="md-modal-item" method="post" action="{{ path('song_delete', {'id': song.id}) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ song.id) }}">
+                                        <button class="btn btn-modal-danger">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        {% else %}
+
+            <div class="text-center">
+                <div class="not-have-message not-have-message-center">
+                    <i class="far fa-play-circle" style="margin-right: 2px"></i>
+                    {% if app.request.attributes.get('_route') == 'moderation_music' %}
+                        {{ 'no.songs.in.moderation' | trans }}
+                    {% elseif app.request.attributes.get('_route') == 'moderation_ready' %}
+                        {{ 'no.ready.songs.in.moderation' | trans }}
+                    {% elseif app.request.attributes.get('_route') == 'moderation_pending' %}
+                        {{ 'no.pending.songs.in.moderation' | trans }}
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    {{ paginator.display() }}
+
+{% endblock %}
+
+{% block sidebar_b %}
+
+    {% if is_granted('ROLE_SONG_MODERATOR') %}
+
+        <div class="sidebar-b">
+            <div class="md-box sticky-top" style="padding: 12px">
+                <div class="md-menu">
+
+                    <ul>
+                        <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_music' %}active{% endif %}">
+                            <a style="padding-left: 8px" href="{{ path('moderation_music') }}">
+                                {{ 'my.songs' | trans }}
+                            </a>
+                        </li>
+                        <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_ready' %}active{% endif %}">
+                            <a style="padding-left: 8px" href="{{ path('moderation_ready') }}">
+                                {{ 'in.moderation' | trans }}
+                                {% if songModerationCount() != 0 %}
+                                    <span class="badge badge-pill badge-danger float-right mt-1">
+                                        {% if songModerationCount() > 99 %}
+                                            99+
+                                        {% else %}
+                                            {{ songModerationCount() }}
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_pending' %}active{% endif %}">
+                            <a style="padding-left: 8px" href="{{ path('moderation_pending') }}">
+                                {{ 'pending' | trans }}
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

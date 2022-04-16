@@ -1,0 +1,211 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'search' | trans }}{% endblock %}
+
+{% block pageclass %}two-sidebars{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        'active' : 'search.for.keyword' | trans({'keyword':keyword})
+    }) }}
+{% endblock %}
+
+{% block main %}
+
+    <div class="md-search">
+
+        {{ form_start(form) }}
+
+            <div class="md-search-box md-search-input-box md-box">
+
+                <div class="md-search-input">
+                    {{ form_widget(form.keyword) }}
+                    <button class="btn btn-success">
+                        {{ 'search' | trans }}
+                    </button>
+                </div>
+
+                <div class="md-search-pages-menu">
+                    <a href="{{ path('search_index',{'keyword':keyword}) }}" class="active">{{ 'all' | trans }}</a>
+                    <a href="{{ path('search_users',{'keyword':keyword}) }}">{{ 'users' | trans }}</a>
+                    <a href="{{ path('search_songs',{'keyword':keyword}) }}">{{ 'music' | trans }}</a>
+                    <a href="{{ path('search_posts',{'keyword':keyword}) }}">{{ 'posts' | trans }}</a>
+                </div>
+
+            </div>
+
+        {{ form_end(form) }}
+
+        {% if users %}
+
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
+
+                <h4 class="mb-3">
+                    {{ 'users' | trans }}
+                </h4>
+
+                {% for user in users %}
+                    {{ userLine(user) }}
+                {% endfor %}
+
+                {% if (users | length) == 5 %}
+                    <div class="see-all mt-3">
+                        <a href="{{ path('search_users',{'keyword':keyword}) }}">
+                            {{ 'see.all' | trans }}
+                            <span><i class="fas fa-angle-right"></i></span>
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+        {% if songs %}
+
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
+
+                <h4 class="mb-3">
+                    {{ 'music' | trans }}
+                </h4>
+
+                {% for song in songs %}
+
+                    {% if not loop.first %}<br>{% endif %}
+
+                    {{ player(song.info) }}
+
+                    <div>
+                        {{ song.words | raw}}
+                    </div>
+
+                {% endfor %}
+
+                {% if (songs | length) == 5 %}
+                    <div class="see-all mt-3">
+                        <a href="{{ path('search_songs',{'keyword':keyword}) }}">
+                            {{ 'see.all' | trans }}
+                            <span><i class="fas fa-angle-right"></i></span>
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+        {% if posts %}
+
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
+
+                <h4 class="mb-3">
+                    {{ 'posts' | trans }}
+                </h4>
+
+                <div class="posts-list">
+
+                    {% for post in posts %}
+
+                        <div class="posts-list-item">
+                            <a href="{{ path('post_show',{'id':post.info.id}) }}">
+                                <div class="back-picture bp-48" style="background-image: url('{% if post.info.image %}{{ vich_uploader_asset(post.info) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 10px">
+                                </div>
+                            </a>
+
+                            <h5>
+                                <a href="{{ path('post_show',{'id':post.info.id}) }}">
+                                    {{ post.info.title }}
+                                </a>
+                            </h5>
+
+                            <div style="margin-top: 1px">
+                                {{ post.words | raw}}
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                    {% if (posts | length) == 5 %}
+                        <div class="posts-list-item see-all">
+                            <a href="{{ path('search_posts',{'keyword':keyword}) }}">
+                                {{ 'see.all' | trans }}
+                                <span><i class="fas fa-angle-right"></i></span>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+        {% if not posts or not songs or not users %}
+
+            <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
+                {% if not posts and songs and users %}
+                    {{ 'not.found.posts.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not songs and posts and users %}
+                    {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not users and posts and songs %}
+                    {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not users and not posts and songs %}
+                    {{ 'not.found.users.posts.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not users and not songs and posts %}
+                    {{ 'not.found.users.songs.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not songs and not posts and users %}
+                    {{ 'not.found.songs.posts.for.keyword' | trans({'keyword':keyword}) }}
+                {% else %}
+                    {{ 'not.found.for.keyword' | trans({'keyword':keyword}) }}
+                {% endif %}
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block sidebar_b %}
+
+    <div class="sidebar-b">
+        <div class="md-box sticky-top" style="padding: 12px">
+            <div class="text-muted mb-2 pl-2">{{ 'search' | trans }}</div>
+
+            <div class="md-menu">
+
+                <ul>
+                    <li class="md-menu-item md-lined-menu active">
+                        <a style="padding-left: 8px" href="{{ path('search_index',{'keyword':keyword}) }}">
+                            {{ 'all' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_songs',{'keyword':keyword}) }}">
+                            {{ 'music' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_users',{'keyword':keyword}) }}">
+                            {{ 'users' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_posts',{'keyword':keyword}) }}">
+                            {{ 'posts' | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

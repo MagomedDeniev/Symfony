@@ -1,0 +1,39 @@
+{{ form_start(form) }}
+
+    <div class="row label-icons-form">
+
+        <div class="col-9">
+
+            <div id="output-content" style="border-radius: 3px;background-image: url('{% if person.picture %}{{ vich_uploader_asset(person) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+            </div>
+            {{ form_row(form.pictureFile) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.biography) }}
+
+        </div>
+
+        <div class="col-3">
+
+            {{ form_row(form.birthDay) }}
+            {{ form_row(form.activity) }}
+
+        </div>
+
+    </div>
+
+    <button class="btn btn-primary">
+        {{ button_label | default('add') | trans }}
+    </button>
+
+    {% if person.id %}
+        <a class="btn btn-link float-right" href="{{ path('person_show', {'slug':person.slug}) }}">
+            {{ 'cancel' | trans }}
+        </a>
+    {% else %}
+        <a class="btn btn-link float-right" href="{{ path('people_by_letter', {'letter':'a'}) }}">
+            {{ 'cancel' | trans }}
+        </a>
+    {% endif %}
+
+{{ form_end(form) }}

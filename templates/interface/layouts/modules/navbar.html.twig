@@ -1,0 +1,140 @@
+<nav class="md-nav sticky-top">
+
+    <div class="container">
+
+        {% if app.user %}
+            <a id="sideNavOpener" href="{{ path('post_new') }}">
+                <i class="fas fa-plus-circle" style="font-size: 20px; top: -2px; position: relative"></i>
+            </a>
+        {% else %}
+            <a id="sideNavOpener" href="{{ path('app_login') }}">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        {% endif %}
+
+{#        <a id="sideNavOpener" href="javascript:void(0)">#}
+{#            <i class="fas fa-bars"></i>#}
+{#            {% if app.user and notifyIndicator(app.user) %}#}
+{#                <span class="notifier"></span>#}
+{#            {% endif %}#}
+{#        </a>#}
+
+        <a class="md-nav-logo" href="{{ path('app_home') }}">
+            <img src="{{ asset('/assets/images/logotype.png') }}" alt="Shovdan Yist">
+        </a>
+
+        <a class="navbar-search-opener" id="openNavbarSearch" href="javascript:void(0)">
+            <span>
+                <i class="fas fa-search"></i>
+            </span>
+        </a>
+
+        <div class="navbar-search-mobile" id="navbarSearch">
+
+            <span class="navbar-search-closer" id="closeNavbarSearch">
+                <i class="fas fa-times"></i>
+            </span>
+
+            <div class="md-search-all-input">
+                <input id="navbarSearchInput" class="form-control search_input" type="search" placeholder="{{ 'search' | trans}}" aria-label="{{ 'search' | trans}}">
+
+                <a class="btn btn-success search_button">
+                    <i class="fas fa-search"></i>
+                </a>
+            </div>
+
+        </div>
+
+{#            <a class="btn btn-white navbar-login-mobile" style="box-shadow: unset;position: absolute; right: 9px; top: 9px;" href="{{ path('app_login') }}">#}
+{#                <i class="fas fa-user-circle"></i>#}
+{#                <span>{{ 'log.in' | trans }}</span>#}
+{#            </a>#}
+
+        <div class="md-nav-menu">
+
+            <ul>
+
+                <li class="md-nav-item md-navbar-search">
+
+                    <div class="navbar-search">
+                        <div class="md-search-all-input">
+                            <input class="form-control search_input" type="search" placeholder="{{ 'search' | trans}}" aria-label="{{ 'search' | trans}}">
+
+                            <a class="btn btn-success search_button">
+                                <i class="fas fa-search"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </li>
+
+                {% if not app.user %}
+
+                    <li style="padding-top: 8px">
+                        <a class="btn btn-white" style="box-shadow: unset" href="{{ path('app_login') }}">
+                            <i class="fas fa-user-circle"></i>
+                            {{ 'log.in' | trans }}
+                        </a>
+                    </li>
+
+                {% endif %}
+
+                {% if app.user %}
+
+                    <li class="md-nav-item dropdown float-right">
+
+                        <a class="md-nav-link" data-toggle="dropdown" href="#" id="download">
+
+                            <div class="md-user-navbar-username">
+                                {{ app.user.username }}
+                            </div>
+
+                            <div class="back-picture bp-35" style="margin: 9px;background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                            </div>
+
+                            <span class="md-navbar-arrow"><i class="fas fa-chevron-down"></i></span>
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right">
+
+                            <a class="dropdown-item" href="{{ path('post_new') }}">
+                                <i class="fas fa-plus-circle"></i>
+                                {{ 'add.post' | trans }}
+                            </a>
+
+                            <span class="dropdown-divider"></span>
+
+                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#navbarLogout">
+                                <i class="fas fa-power-off"></i>
+                                {{ 'log.out' | trans }}
+                            </button>
+
+                        </div>
+
+                    </li>
+
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+{% if app.user %}
+    <div class="modal fade md-confirm-modal" id="navbarLogout" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="md-modal-container">
+                    <div class="md-modal-message">{{ 'sure.to.log.out' | trans }}</div>
+
+                    <a class="btn btn-modal-danger md-modal-item" href="{{ path('app_logout') }}">{{ 'log.out' | trans }}</a>
+                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

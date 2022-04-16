@@ -1,0 +1,60 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ user.username }} | {{ type | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+
+        <header class="user-title-block">
+            <div class="username-container">
+
+                <span class="username">
+                    <a href="{{ path('user_profile', {'username':user.username}) }}">
+                        {{ user.username }}
+                    </a>
+                </span>
+                {% if profile.verified == true %}
+                    <span class="verified">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </span>
+                {% endif %}
+
+            </div>
+        </header>
+
+        <div class="md-profile-posts-menu" style="border-top: unset;border-bottom: 1px solid #eef1f5">
+            <a href="{{ path('user_followers', {'username':user.username}) }}" {% if type == 'followers' %}class="active"{% endif %}>
+                {{ 'followers' | trans }}
+            </a>
+            <a href="{{ path('user_following', {'username':user.username}) }}" {% if type == 'following' %}class="active"{% endif %}>
+                {{ 'following' | trans }}
+            </a>
+        </div>
+
+        <div class="md-content-padding md-mobile-padding">
+
+            {% for follower in follows %}
+                {% if type == 'followers' %}
+                    {{ userLine(follower, user) }}
+                {% else %}
+                    {{ userLine(follower) }}
+                {% endif %}
+            {% else %}
+                <div class="text-center">
+                    <i class="far fa-user" style="margin-right: 3px"></i>
+                    {% if app.user == user %}
+                        {{ ('you.have.not.' ~ type) | trans }}
+                    {% else %}
+                        {{ ('user.have.not.' ~ type) | trans({'username':user.username}) }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {{ paginator.display() }}
+
+{% endblock %}

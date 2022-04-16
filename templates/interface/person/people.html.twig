@@ -1,0 +1,60 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}
+    {{ 'people.for.letter' | trans({'%letter%': letter | capitalize}) }}
+{% endblock %}
+
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('song_index')) : ('music' | trans),
+        'active' : (letter | capitalize),
+    }, null,'people') }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="md-cards-group md-person-cards">
+
+        {% for person in people %}
+
+            <div class="md-person-card" {% if songsCount(person) == 0 %}style="opacity: 0.5;" {% endif %}>
+
+                <h3><a href="{{ path('person_show', {slug: person.slug}) }}">{{ person.fullName }}</a></h3>
+
+                <div class="md-person-block">
+
+                    <a href="{{ path('person_show', {slug: person.slug}) }}">
+                        <div class="md-person-image" style="background-image: url('{% if person.picture %}{{ vich_uploader_asset(person) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
+                    </a>
+
+                    <p>
+                        {% for profession in person.activity %}
+                            <span class="badge badge-success badge-lower">{{ profession.title }}</span>
+                            {% if loop.last %}<br>{% endif %}
+                        {% endfor %}
+
+                        {% if person.birthDay %}
+                            <strong>{{ 'birth.date' | trans }}:</strong> {{ person.birthDay ? person.birthDay | format_datetime('medium', 'none', '', 'UTC') }}
+                            <br>
+                        {% endif %}
+
+                        <strong>{{ 'some.songs' | trans | capitalize }}:</strong> {{ songsCount(person) }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            {{ 'people.for.letter.not.found' | trans({'%letter%': letter | capitalize}) }}
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

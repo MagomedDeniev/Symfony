@@ -1,0 +1,10 @@
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="md-alert-auto-hide md-alert md-alert-{{ label }} md-box-mb">
+            {{ message }}
+{#            <button style="display: contents" type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#                <i class="fas fa-times" style="font-size: 12px; margin-left: 3px"></i>#}
+{#            </button>#}
+        </div>
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,91 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block og_title %}{{ person.fullName }} | Биография, Дискография{% endblock %}
+
+{% block og_image %}{{ vich_uploader_asset(person) }}{% endblock %}
+
+{% block og_type %}
+    <meta property="og:type" content="profile">
+    <meta property="profile:first_name" content="{{ person.firstname }}">
+    <meta property="profile:last_name" content="{{ person.lastname }}">
+{% endblock %}
+
+{% block title %}{{ person.fullName }} | Биография, Дискография{% endblock %}
+
+{% block description %}В ShovdanYist вы сможете найти биографию, дискографию и все песни исполнителя {{ person.fullName }}, а также все тексты чеченских песен и их переводы.{% endblock %}
+
+{% block keywords %}{{ person.fullName | lower }} биография, {{ person.fullName | lower }} дискография, {{ person.fullName | lower }} все песни, тексты чеченских песен, переводы чеченских песен, под гитару, чеченская музыка{% endblock %}
+
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
+{% block main_top %}
+
+    {{ breadcrumb({
+        (path('song_index')) : ('music' | trans),
+        (path('people_by_letter', {letter: slugify(person.fullName | first) })) : (person.fullName | first),
+        'active' : (person.fullName),
+    }, person,'person') }}
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="md-person-card md-one-person">
+
+        <h1>{{ person.fullName }}</h1>
+
+        <div class="md-person-block">
+
+            <div class="md-person-image" style="background-image: url('{% if person.picture %}{{ vich_uploader_asset(person) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
+
+            <p>
+
+                {% if person.birthDay %}
+                    <strong>{{ 'birth.date' | trans }}:</strong> {{ person.birthDay ? person.birthDay | format_datetime('medium', 'none', '', 'UTC') }}
+                    <br>
+                {% endif %}
+
+                {% for profession in person.activity %}
+                    <span class="badge badge-success badge-lower">{{ profession.title }}</span>
+                {% endfor %}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <table class="table table-striped table-middle-aligned md-table-carved">
+
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col"><i class="fas fa-closed-captioning"></i> {{ 'title' | trans }}</th>
+            <th scope="col"><i class="fa fa-calendar"></i> {{ 'year' | trans }}</th>
+            {% if is_granted('ROLE_OWNER') %}<th scope="col"><i class="fas fa-eye"></i> {{ 'views' | trans }}</th>{% endif %}
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% for song in songs %}
+
+            <tr>
+                <td>
+                    <a href="{{ path('song_show', {slug: song.slug}) }}">{{ song.title }}</a>
+                    <span class="small text-muted">
+                        <br>{{ featuring( song, ',<br>' ) }}
+                    </span>
+                </td>
+                <td>{{ song.releaseDate ? song.releaseDate | date("Y") }}</td>
+                {% if is_granted('ROLE_OWNER') %}<td>{{ songViewsCount(song) }}</td>{% endif %}
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% endblock %}

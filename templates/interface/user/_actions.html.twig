@@ -1,0 +1,143 @@
+{% if app.user %}
+
+    <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-h"></i>
+    </button>
+
+    <div class="dropdown-menu dropdown-menu-right">
+
+        <button id="shareProfile" type="button" class="dropdown-item" data-toggle="modal" data-target="#shareProfileModal">
+            <i class="fas fa-paper-plane"></i>
+            {{ 'share' | trans }}
+        </button>
+
+        {% if app.user != user %}
+            <a href="javascript:void(0)" class="dropdown-item" data-toggle="modal" data-target="#reportProfileModal{{ user.id }}">
+                <span class="icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </span>
+                {{ 'report' | trans }}
+            </a>
+        {% endif %}
+
+        {% if user != app.user and is_granted('ROLE_OWNER') %}
+            <a href="{{ path('user_edit', {'username' : user.username}) }}" class="dropdown-item">
+                <i class="fas fa-user-edit"></i> {{ 'edit' | trans }}
+            </a>
+
+            <a href="{{ path('user_settings', {'username' : user.username}) }}" class="dropdown-item">
+                <i class="fas fa-cog"></i> {{ 'settings' | trans }}
+            </a>
+        {% endif %}
+
+        {% if rightToChangeUserRights(app.user,user) %}
+            <a href="{{ path('moderation_user_rights', {'username': user.username}) }}" class="dropdown-item">
+                <i class="fas fa-shield-alt"></i> {{ 'rights' | trans }}
+            </a>
+        {% endif %}
+
+        {% if rightToBlockUser(app.user,user) %}
+
+            {% if user.status is null or user.status == true %}
+
+                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#banUser">
+                    <i class="fas fa-user-times"></i> {{ 'ban' | trans }}
+                </button>
+
+            {% else %}
+
+                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#unbanUser">
+                    <i class="fas fa-user-times"></i> {{ 'unban' | trans }}
+                </button>
+
+            {% endif %}
+
+        {% endif %}
+
+        {% if is_granted('ROLE_OWNER') and app.user != user %}
+
+            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteUser">
+                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
+            </button>
+
+        {% endif %}
+
+        {% if app.user == user %}
+            <a href="javascript:void(0)" id="sideNavLogoutCloser" class="dropdown-item" data-toggle="modal" data-target="#navbarLogout">
+                <i class="fas fa-power-off"></i> {{ 'log.out' | trans }}
+            </a>
+        {% endif %}
+
+    </div>
+
+    {% if app.user != user %}
+        <div class="modal fade md-confirm-modal" id="reportProfileModal{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="md-modal-container">
+                        <div class="md-modal-message">{{ 'sure.to.report.profile' | trans }}</div>
+                        <a class="btn btn-modal-danger md-modal-item" href="{{ path('report_profile',{'id':user.id}) }}">{{ 'report' | trans }}</a>
+                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if rightToBlockUser(app.user,user) %}
+
+        {% if user.status is null or user.status == true %}
+
+            <div class="modal fade md-confirm-modal" id="banUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="md-modal-container">
+                            <div class="md-modal-message">{{ 'sure.to.ban.user' | trans }}</div>
+                            <a class="btn btn-modal-danger md-modal-item" href="{{ path('moderation_ban_user', {'id': user.id}) }}">{{ 'ban' | trans }}</a>
+                            <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="modal fade md-confirm-modal" id="unbanUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="md-modal-container">
+                            <div class="md-modal-message">{{ 'sure.to.unban.user' | trans }}</div>
+                            <a class="btn btn-modal-primary md-modal-item" href="{{ path('moderation_unban_user', {'id': user.id}) }}">{{ 'unban' | trans }}</a>
+                            <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+
+    {% endif %}
+
+    {% if is_granted('ROLE_OWNER') and app.user != user %}
+
+        <div class="modal fade md-confirm-modal" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="md-modal-container">
+                        <div class="md-modal-message">{{ 'sure.to.delete.user' | trans }}</div>
+                        <form class="md-modal-item" method="post" action="{{ path('user_delete', {'id': user.id}) }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                            <button class="btn btn-modal-danger">
+                                {{ 'delete' | trans }}
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endif %}

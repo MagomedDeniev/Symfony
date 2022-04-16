@@ -1,0 +1,55 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'account.deleting' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+
+        <header class="user-title-block">{{ 'account.deleting' | trans }}</header>
+
+        <div class="md-autofill md-content-padding md-mobile-padding">
+
+            <div class="mb-4 text-center">
+                <i class="far fa-trash-alt"></i>
+                {{ 'account.deleting.warning.message' | trans }}
+            </div>
+
+            <form method="post" action="{{ path('user_delete', {'id': app.user.id}) }}">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
+                <label style="width: 100%">
+                    {{ 'enter.password' | trans }}
+                    <input type="password" name="password" class="form-control mt-2 mb-3">
+                </label>
+                <br>
+
+                <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
+                    {{ 'cancel' | trans }}
+                </a>
+
+                <div class="modal fade md-confirm-modal" id="deleteAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="md-modal-container">
+                                <div class="md-modal-message">{{ 'sure.to.delete.account' | trans }}</div>
+                                <button type="submit" class="btn btn-modal-danger md-modal-item">
+                                    {{ 'delete.account' | trans }}
+                                </button>
+                                <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteAccount">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ 'delete.account' | trans }}
+            </button>
+
+        </div>
+
+    </div>
+
+{% endblock %}

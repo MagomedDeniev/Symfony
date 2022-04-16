@@ -1,0 +1,45 @@
+<div class="post-info">
+
+    <span class="avatar back-picture bp-24" style="background-image: url('{% if post.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(post.author.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+    </span>
+
+    <a class="username" href="{{ path('user_profile', {'username': post.author.username }) }}">
+        {{ post.author.username }}
+    </a>
+
+    {% if post.author.profile.verified %}
+        <span class="md-comment-verified">
+            <i class="fas fa-check-circle text-info"></i>
+        </span>
+    {% endif %}
+
+    <span class="date">
+
+        {% if post.publishedAt | date('d') | slice(0,1) == 0 %}
+            {{ post.publishedAt ? post.publishedAt | date('d') | replace({'0':''}) }}
+        {% else %}
+            {{ post.publishedAt ? post.publishedAt | date('d') }}
+        {% endif %}
+
+        {{ ('month' ~ post.publishedAt | date("m")) | trans }}
+
+        {% if "now" | date("Y") != post.publishedAt | date('Y') %}
+            {{ post.publishedAt ? post.publishedAt | date('Y') }}
+        {% endif %}
+
+        {{ post.publishedAt ? post.publishedAt | date(' H:i') }}
+    </span>
+
+    {% if post.status is null %}
+        <span class="badge badge-info ml-1">
+            <i class="fas fa-history"></i>
+            {{ 'in.moderation' | trans }}
+        </span>
+    {% elseif post.status == false %}
+        <span class="badge badge-danger ml-1">
+            <i class="fas fa-ban"></i>
+            {{ 'rejected.female' | trans }}
+        </span>
+    {% endif %}
+
+</div>

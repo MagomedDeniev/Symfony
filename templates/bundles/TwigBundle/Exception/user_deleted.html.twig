@@ -1,0 +1,15 @@
+{% extends '/bundles/TwigBundle/Exception/base.html.twig' %}
+
+{% block title %}{{ 'error404' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>Ваш аккаунт успешно удалён</h1>
+
+    <p>
+        Нам жаль если наш портал вас чем-то не удовлитворил, надеемся вас снова увидеть с нами и желаем вам удачи.
+    </p>
+
+    <a class="btn btn-light" href="{{ path('app_home') }}">{{ 'back.to.home' | trans }}</a>
+
+{% endblock %}

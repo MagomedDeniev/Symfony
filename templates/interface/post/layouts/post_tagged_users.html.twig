@@ -1,0 +1,22 @@
+{% if post.taggedUsers.count %}
+    <div class="tagged-users">
+
+        {% for taggedUser in post.taggedUsers %}
+            <div class="tagged-user">
+                <a href="{{ path('user_profile', {'username':  taggedUser.username }) }}">
+                    <span class="bp-24 back-picture" style="margin-right: 6px;background-image: url('{% if taggedUser.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(taggedUser.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                    <span style="font-weight: 600;">
+                        {{ taggedUser.username }}
+                    </span>
+                </a>
+
+                {% if taggedUser.profile.verified %}
+                    <span class="md-comment-verified">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </span>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+    </div>
+{% endif %}

@@ -1,0 +1,20 @@
+<div class="md-box md-chart-box">
+
+    <div class="md-chart-box-heading">
+        {{ chart | trans }}
+    </div>
+
+    <div class="md-chart-box-body">
+        {% for song in songs %}
+            {{ player(song) }}
+        {% endfor %}
+    </div>
+
+    <div class="md-chart-box-see-all see-all">
+        <a href="{{ path('song_chart', {'chart': chart}) }}">
+            {{ 'see.all' | trans }}
+            <span><i class="fas fa-angle-right"></i></span>
+        </a>
+    </div>
+
+</div>

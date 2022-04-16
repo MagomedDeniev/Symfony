@@ -1,0 +1,159 @@
+{% if app.user %}
+
+    {% set user = app.user %}
+
+    <div class="sidebar sticky-top">
+
+        <div class="md-box sidebar-box">
+
+            <div class="md-user-sidebar-profile">
+
+                <div class="back-picture bp-45" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                </div>
+
+                <div class="md-user-sidebar-username">
+                    <span class="md-username">
+                        <a href="{{ path('user_profile', {'username' : user.username }) }}">
+                            {{ user.username }}
+                        </a>
+                    </span>
+
+                    {% if user.profile.verified %}
+                        <span class="md-verified">
+                            <i class="fas fa-check-circle text-info"></i>
+                        </span>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="md-menu">
+
+                <ul>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('app_home') }}">
+                            <span>
+                                <i class="fas fa-pager"></i>
+                            </span>
+                            {{ 'feed' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('message_conversations') }}">
+                            <span>
+                                <i class="fas fa-comment"></i>
+                            </span>
+                            {{ 'messages' | trans }}
+                            {% if messagesCount(app.user) != 0 %}
+                                <span class="badge badge-pill badge-danger float-right mt-1">
+                                    {% if messagesCount(app.user) > 99 %}
+                                        99+
+                                    {% else %}
+                                        {{ messagesCount(app.user) }}
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('user_notifications') }}">
+                            <span>
+                                <i class="fas fa-bell"></i>
+                            </span>
+                            {{ 'notifications' | trans }}
+                            {% if notifyCount(app.user) != 0 %}
+                                <span class="badge badge-pill badge-danger float-right mt-1">
+                                    {% if notifyCount(app.user) > 99 %}
+                                        99+
+                                    {% else %}
+                                        {{ notifyCount(app.user) }}
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        {% if app.user.playlistSongs.count %}
+                            <a href="{{ path('user_playlist') }}">
+                                <span>
+                                    <i class="fas fa-headphones"></i>
+                                </span>
+                                {{ 'music' | trans }}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('song_index') }}">
+                                <span>
+                                    <i class="fas fa-headphones"></i>
+                                </span>
+                                {{ 'music' | trans }}
+                            </a>
+                        {% endif %}
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% else %}
+
+    <div class="md-box sidebar sticky-top">
+
+        <div class="md-box sidebar-box">
+
+            <div class="md-menu">
+
+                <ul>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('app_home') }}">
+                            <span>
+                                <i class="fas fa-pager"></i>
+                            </span>
+                            {{ 'feed' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('song_index') }}">
+                            <span>
+                                <i class="fas fa-music"></i>
+                            </span>
+                            {{ 'music' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('song_chart', {'chart':'trends'}) }}">
+                            <span>
+                                <i class="fas fa-fire-alt"></i>
+                            </span>
+                            {{ 'trends' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('song_chart', {'chart':'novelty'}) }}">
+                            <span>
+                                <i class="fas fa-certificate"></i>
+                            </span>
+                            {{ 'novelty' | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endif %}

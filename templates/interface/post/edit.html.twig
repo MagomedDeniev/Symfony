@@ -1,0 +1,23 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'post.editing' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+        <header class="user-title-block">{{ 'post.editing' | trans }}</header>
+
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/post/layouts/post_form.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor(4000) }}
+    {{ chosen() }}
+    {{ chosen(10, '.chosen-songs') }}
+    {{ chosen(10, '.chosen-users') }}
+    {{ chosen(3,'.chosen-date select') }}
+{% endblock %}

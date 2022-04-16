@@ -1,0 +1,170 @@
+<div class="md-box md-breadcrumb">
+
+    {% if name == 'post' %}
+        <a href="{{ path('post_show', {'id':entity.id}) }}">
+            <div class="back-picture bp-24 mr-2" style="background-image: url('{% if entity.image %}{{ vich_uploader_asset(entity) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px;">
+            </div>
+        </a>
+    {% endif %}
+
+    <div class="md-breadcrumb-nav">
+
+        <ol>
+            {% for link,title in links %}
+
+                {% if link != 'active' %}
+                    <li class="breadcrumb-item"><a href="{{ link }}">{{ title }}</a></li>
+                {% else %}
+                    <li class="breadcrumb-item active">{{ title }}</li>
+                {% endif %}
+
+            {% endfor %}
+        </ol>
+
+    </div>
+
+    {% if name %}
+
+        {% if name == 'song' %}
+
+            {% if app.user %}
+
+                <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right">
+
+                    <button id="shareSong" type="button" class="dropdown-item" data-toggle="modal" data-target="#shareSongModal">
+                        <span class="icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                        {{ 'share' | trans }}
+                    </button>
+
+                    {% if is_granted('ROLE_SONG_EDITOR') %}
+                        <a href="{{ path('song_edit', {'slug':entity.slug}) }}" class="dropdown-item">
+                            <span class="icon">
+                                <i class="fas fa-pencil-alt"></i>
+                            </span>
+                            {{ 'edit' | trans }}
+                        </a>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_OWNER') %}
+                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteSong">
+                            <span class="icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </span>
+                            {{ 'delete' | trans }}
+                        </button>
+                    {% endif %}
+
+                </div>
+
+                {% if is_granted('ROLE_OWNER') %}
+                    <div class="modal fade md-confirm-modal" id="deleteSong" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="md-modal-container">
+                                    <div class="md-modal-message">{{ 'sure.to.delete.song' | trans }}</div>
+                                    <form class="md-modal-item" method="post" action="{{ path('song_delete', {'id': entity.id}) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+                                        <button class="btn btn-modal-danger">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endif %}
+
+        {% elseif name == 'person' %}
+
+            {% if is_granted('ROLE_PEOPLE_MODERATOR') %}
+
+                <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right">
+
+                    <a href="{{ path('person_edit', {'slug':entity.slug}) }}" class="dropdown-item">
+                        <i class="fa fa-edit"></i> {{ 'edit' | trans }}
+                    </a>
+
+                    {% if is_granted('ROLE_OWNER') %}
+                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePerson">
+                            <i class="fas fa-trash-alt"></i>
+                            {{ 'delete' | trans }}
+                        </button>
+                    {% endif %}
+
+                </div>
+
+                {% if is_granted('ROLE_OWNER') %}
+                    <div class="modal fade md-confirm-modal" id="deletePerson" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="md-modal-container">
+                                    <div class="md-modal-message">{{ 'sure.to.delete.person' | trans }}</div>
+                                    <form class="md-modal-item" method="post" action="{{ path('person_delete', {'id': entity.id}) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+                                        <button class="btn btn-modal-danger">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endif %}
+
+        {% elseif name == 'people' %}
+
+            {% if is_granted('ROLE_PEOPLE_MODERATOR') %}
+                <a class="breadcrumb-btn" href="{{ path('person_new') }}">
+                    <i class="fas fa-plus"></i>
+                </a>
+            {% endif %}
+
+        {% elseif name == 'song_add' %}
+
+            {% if is_granted('ROLE_SONG_MODERATOR') %}
+                <a class="breadcrumb-btn" href="{{ path('song_new') }}">
+                    <i class="fas fa-plus"></i>
+                </a>
+            {% endif %}
+
+        {% elseif name == 'user_add' %}
+
+            <a class="breadcrumb-btn" href="{{ path('user_new') }}">
+                <i class="fas fa-plus"></i>
+            </a>
+
+        {% elseif name == 'tag_add' %}
+
+            <a class="breadcrumb-btn" href="{{ path('tag_new') }}">
+                <i class="fas fa-plus"></i>
+            </a>
+
+        {% elseif name == 'activity_add' %}
+
+            <a class="breadcrumb-btn" href="{{ path('activity_new') }}">
+                <i class="fas fa-plus"></i>
+            </a>
+
+        {% endif %}
+
+    {% endif %}
+
+</div>

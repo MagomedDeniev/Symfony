@@ -1,0 +1,94 @@
+{{ form_start(form) }}
+
+    <div class="row label-icons-form">
+
+        <div class="{% if rightToEditSongs(app.user) %}col-8{% else %}col-12{% endif %}">
+
+            {% if song.id %}
+                {{ player(song,false,false,'song') }}
+            {% endif %}
+
+            {% if is_granted('ROLE_SONG_MODERATOR') %}
+                {{ form_row(form.title) }}
+                {{ form_row(form.audioFile) }}
+            {% endif %}
+
+            {{ form_row(form.lyrics) }}
+
+            {% if hasOnlyAuthorRightsInSongs(app.user) %}
+                {{ form_row(form.sendForModeration) }}
+            {% endif %}
+
+            {% if rightToEditSongs(app.user) %}
+                <div class="form-spoiler mb-3">
+
+                    <a class="collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                        {{ 'translation' | trans }} <i></i>
+                    </a>
+
+                    <div class="collapse" id="navbarToggleExternalContent">
+                        {{ form_widget(form.translation) }}
+                    </div>
+
+                </div>
+            {% endif %}
+
+        </div>
+
+        {% if rightToEditSongs(app.user) %}
+
+            <div class="col-4">
+                {{ form_row(form.releaseDate) }}
+                {% if is_granted('ROLE_SONG_MODERATOR') %}
+                    {{ form_row(form.vocalist) }}
+                {% endif %}
+                {{ form_row(form.featuring) }}
+                {{ form_row(form.tags) }}
+
+                {% if is_granted('ROLE_SONG_MODERATOR') %}
+                    {{ form_row(form.updateTags) }}
+
+                    <div class="chosen-search-off">
+                        {{ form_row(form.status) }}
+                    </div>
+                    {{ form_row(form.author) }}
+                    {{ form_row(form.featured) }}
+                {% endif %}
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    {{ form_widget(form.save, {label: 'save', attr: {class: 'btn btn-primary'}}) }}
+
+    {% if form.saveAndNew is defined %}
+        {{ form_widget(form.saveAndNew, {label: 'ㅤ', attr: {class: 'btn btn-info save-new-btn px-3'}}) }}
+        <script>
+            document.querySelector('.save-new-btn').innerHTML = '<i class="fas fa-file-medical"></i>';
+        </script>
+    {% endif %}
+
+    <button class="btn btn-secondary">
+        <i class="fas fa-file-export"></i>
+    </button>
+
+    {% if song.status == true %}
+        <a class="btn btn-link float-right" href="{{ path('song_show', {'slug':song.slug}) }}">
+            {{ 'cancel' | trans }}
+        </a>
+    {% elseif not song.id or song.status is null and song.author == app.user %}
+        <a class="btn btn-link float-right" href="{{ path('moderation_music') }}">
+            {{ 'cancel' | trans }}
+        </a>
+    {% elseif song.status == false and not song.status is null %}
+        <a class="btn btn-link float-right" href="{{ path('moderation_ready') }}">
+            {{ 'cancel' | trans }}
+        </a>
+    {% else %}
+        <a class="btn btn-link float-right" href="{{ path('moderation_pending') }}">
+            {{ 'cancel' | trans }}
+        </a>
+    {% endif %}
+
+{{ form_end(form) }}

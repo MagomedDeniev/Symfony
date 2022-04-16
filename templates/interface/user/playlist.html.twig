@@ -1,0 +1,48 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'playlist' | trans }}{% endblock %}
+
+{% block description %}В ShovdanYist вы найдете тексты всех чеченских песен, их переводы, а также сможете скачать их или добавлять в свой плейлист.{% endblock %}
+
+{% block keywords %}{% if not app.user %}{{ 'playlist.of' | trans | lower }} {{ user.username }}{% endif %}, тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}
+
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
+{% block main_top %}
+    <div class="feed-types">
+        <a href="{{ path('user_playlist') }}" class="active">{{ 'playlist' | trans }}</a>
+        <a href="{{ path('song_index') }}">{{ 'hits' | trans }}</a>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+    {% for key,song in playlist %}
+
+        {{ player(song,false,true) }}
+
+    {% else %}
+
+        <div class="not-have-message">
+            <i class="fas fa-headphones-alt" style="margin-right: 3px"></i>
+
+            {% if user.username == app.user.username %}
+                {{ 'not.songs.in.your.playlist' | trans }}
+            {% else %}
+                {{ 'user.has.not.songs.in.playlist' | trans({'username':user.username}) }}
+            {% endif %}
+        </div>
+
+    {% endfor %}
+
+{% endblock %}
+
+{% block main_bottom %}
+    {{ paginator.display() }}
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

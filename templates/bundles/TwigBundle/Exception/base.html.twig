@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %} - ShovdanYist</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <link href="{{ asset('/assets/images/favicon.ico') }}" rel="shortcut icon" type="image/vnd.microsoft.icon">
+        {{ encore_entry_link_tags('app6') }}
+    </head>
+
+    <body class="{% block pageclass %}{% endblock %} error-pages">
+
+        {% block navbar %}
+            {% include '/bundles/TwigBundle/Exception/navbar.html.twig' %}
+        {% endblock %}
+
+        <style>
+            .error-content {
+                background-position: center;
+                background-size: cover;
+                position: relative;
+                height: 320px;
+                border-radius: 3px;
+            }
+            .error-page-info {
+                transform: translate(-50%, -50%);
+                text-align: center;
+                position: absolute;
+                padding: 20px;
+                width: 100%;
+                left: 50%;
+                top: 50%;
+            }
+            .error-pages h1, .error-pages p {
+                text-shadow: 1px 1px 1px rgba(0,0,0,0.3) !important;
+                color: #fff;
+            }
+            .error-pages h1 {
+                margin: unset;
+            }
+            .error-pages .btn {
+                margin-top: 16px;
+            }
+        </style>
+
+        <div class="container md-container">
+
+            <div class="row">
+
+                <main>
+                    {% block breadcrumb %}{% endblock %}
+                    <div class="error-content" style="background-image:url('{{ asset('/assets/images/error-bg.jpg') }}') ">
+                        <div class="error-page-info">
+                            {% block body %}{% endblock %}
+                        </div>
+                    </div>
+                    {% block main_bottom %}{% endblock %}
+                    {% include 'interface/layouts/modules/footer.html.twig' %}
+                </main>
+
+            </div>
+
+        </div>
+
+        {{ encore_entry_script_tags('app6') }}
+
+    </body>
+
+</html>

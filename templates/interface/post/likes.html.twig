@@ -1,0 +1,32 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}
+    {% if post.title %}
+        {{ 'like.marks' | trans }} | {{ post.title }} | {{ 'article' | trans }} {{ post.id }}
+    {% else %}
+        {{ 'like.marks' | trans }} | {{ post.id }}
+    {% endif %}
+{% endblock %}
+
+{% block main_top %}
+        {{ breadcrumb({
+            'active' : 'like.marks' | trans ~ ' ',
+        }, post, 'post') }}
+{% endblock %}
+
+{% block body %}
+
+    {% for user in users %}
+        {{ userLine(user) }}
+    {% else %}
+        <div class="text-center">
+            <i class="far fa-heart" style="margin-right: 3px"></i>
+            {{ 'post.have.not.likes' | trans }}
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+{% block main_bottom %}
+    {{ paginator.display() }}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}
+    {{ 'like.marks' | trans }} | {{ comment.message| slice(0, 30) }} | {{ comment.id }}
+{% endblock %}
+
+{% block main_top %}
+        {{ breadcrumb({
+            'active' : 'like.marks' | trans ~ ' - ' ~ comment.message | slice(0, 30),
+        }) }}
+{% endblock %}
+
+{% block body %}
+    {% for user in users %}
+        {{ userLine(user) }}
+    {% else %}
+        <div class="text-center">
+            <i class="far fa-heart" style="margin-right: 3px"></i>
+            {{ 'comment.have.not.likes' | trans }}
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+{% block main_bottom %}
+    {{ paginator.display() }}
+{% endblock %}

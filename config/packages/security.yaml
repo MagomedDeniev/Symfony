@@ -1,0 +1,74 @@
+security:
+    enable_authenticator_manager: true
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User:
+            algorithm: auto
+
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|scss|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticator: App\Security\UserAuthenticator
+            logout:
+                path: app_logout
+                target: /
+                # where to redirect after logout
+                # target: app_any_route
+            remember_me:
+                always_remember_me: true
+                secret: '%kernel.secret%'
+                lifetime: 2419200 # 2419200 - 1 month in seconds | 604800 - 1 week in seconds
+                path: /
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    role_hierarchy:
+        ROLE_MODERATOR: ROLE_USER
+        ROLE_SUPER_MODERATOR: ROLE_MODERATOR
+
+        ROLE_POST_COMMENT_REMOVER: ROLE_MODERATOR
+        ROLE_POST_MODERATOR: ROLE_MODERATOR
+
+        ROLE_PEOPLE_MODERATOR: ROLE_MODERATOR
+
+        ROLE_SONG_AUTHOR: ROLE_MODERATOR
+        ROLE_SONG_EDITOR: ROLE_MODERATOR
+        ROLE_SONG_COMMENT_REMOVER: ROLE_MODERATOR
+        ROLE_SONG_MODERATOR: ROLE_MODERATOR
+
+        ROLE_USER_ANALYST: ROLE_MODERATOR
+        ROLE_USER_ACTIONS: ROLE_MODERATOR
+        ROLE_USER_BAN: ROLE_MODERATOR
+
+        ROLE_REPORT_MODERATOR: ROLE_MODERATOR
+
+        ROLE_USER_RIGHTS: [ROLE_MODERATOR, ROLE_SUPER_MODERATOR]
+        ROLE_ADMINISTRATOR: ROLE_USER_RIGHTS
+
+        ROLE_OWNER: [ROLE_REPORT_MODERATOR, ROLE_ADMINISTRATOR, ROLE_POST_COMMENT_REMOVER, ROLE_POST_MODERATOR, ROLE_PEOPLE_MODERATOR, ROLE_SONG_COMMENT_REMOVER, ROLE_SONG_AUTHOR, ROLE_SONG_EDITOR, ROLE_SONG_MODERATOR, ROLE_USER_ANALYST, ROLE_USER_ACTIONS, ROLE_USER_BAN]
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+#         - { path: ^/moderation, roles: ROLE_OWNER }
+#         - { path: ^/moderation/music, roles: [ROLE_SONG_MODERATOR, ROLE_SONG_AUTHOR] }

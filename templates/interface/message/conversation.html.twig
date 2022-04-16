@@ -1,0 +1,384 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'messages' | trans }}{% endblock %}
+
+{% block footer %}{% endblock %}
+{% block pageclass %}conversation-page{% endblock %}
+
+{% block main %}
+
+    <div class="md-conversation md-box">
+
+        <header class="user-title-block user-conversation-header">
+            <a class="btn header-back-button" href="{{ path('message_conversations') }}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+
+            <div class="username-container">
+                <span class="username">
+                    <a href="{{ path('user_profile', {'username':user.username}) }}">
+                        {{ user.username }}
+                    </a>
+                </span>
+
+                {% if user.profile.verified == true %}
+                    <span class="verified">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </span>
+                {% endif %}
+            </div>
+        </header>
+
+        <div id="messagesBox" class="messages">
+            <div class="messages-box">
+
+                {% for message in messages %}
+
+                    {% if loop.index == 1 and (messages | length) > 200 %}
+                        <div class="messages-length-alert">
+                            {{ 'messages.over.are.automatically.deleted' | trans }}
+                        </div>
+                    {% endif %}
+
+                    <div id="message{{ message.id }}" class="message{% if app.user == message.sender %} me{% endif %}{% if message.song %} audio-message{% endif %}{% if message.post %} post-message{% endif %}{% if message.profile %} profile-message{% endif %}{% if message.image %} image-message{% endif %}">
+                        <div class="message-actions">
+                            <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button type="button" class="dropdown-item reply-to-message" data-toggle="modal" id="#replyToMessage{{ message.id }}">
+                                    {{ 'reply' | trans }}
+                                </button>
+
+                                <span class="dropdown-divider"></span>
+
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteMessage{{ message.id }}ForMe">
+                                    {{ 'delete.for.me' | trans }}
+                                </button>
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteMessage{{ message.id }}ForEveryone">
+                                    {{ 'delete.for.everyone' | trans({'username':user.username}) }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="modal fade md-confirm-modal" id="deleteMessage{{ message.id }}ForMe" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="md-modal-container">
+                                        <div class="md-modal-message">{{ 'sure.to.delete.message.for.me' | trans({'username':user.username}) }}</div>
+                                        <a class="btn btn-modal-danger md-modal-item" href="{{ path('delete_message_for_me', {'id':message.id}) }}">
+                                            {{ 'delete.only.for.me' | trans }}
+                                        </a>
+                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade md-confirm-modal" id="deleteMessage{{ message.id }}ForEveryone" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="md-modal-container">
+                                        <div class="md-modal-message">{{ 'sure.to.delete.message.for.everyone' | trans({'username':user.username}) }}</div>
+                                        <a class="btn btn-modal-danger md-modal-item" href="{{ path('delete_message_for_everyone', {'id':message.id}) }}">
+                                            {{ 'delete.for.me.and.interlocutor' | trans({'username':user.username}) }}
+                                        </a>
+                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text">
+
+                            {% if message.song %}
+                                <span class="song-message">
+                                    {{ player(message.song,false,false) }}
+                                    <span class="song-full-title" style="display: none">{{ message.song.fullTitle }}</span>
+                                </span>
+                            {% elseif message.post %}
+                                <span class="post-message">
+                                    <a href="{{ path('post_show',{'id':message.post.id}) }}">
+                                        <div class="post-message-content">
+                                            <div class="back-picture bp-130" style="background-image: url('{% if message.post.image %}{{ vich_uploader_asset(message.post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                            </div>
+                                            <div class="info">
+                                                <span><i class="fas fa-heart"></i> {{ message.post.likes.count }}</span>
+                                                <span><i class="fas fa-comment"></i> {{ message.post.comments.count }}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </span>
+                            {% elseif message.profile %}
+                                <span class="profile-message">
+                                    <a href="{{ path('user_profile', {'username':message.profile.user.username}) }}">
+                                        <div class="user-line">
+                                            <div class="back-picture bp-35" style="background-image: url('{% if message.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(message.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                                            </div>
+                                            <div class="user-line-info">{{ message.profile.user.username }}</div>
+                                        </div>
+                                    </a>
+                                </span>
+                            {% else %}
+                                {% if message.replyTo %}
+                                    {% if message.replyTo.song %}
+                                        <a href="#message{{ message.replyTo.id }}">
+                                            <div class="replied-message">
+                                                <i class="fas fa-play-circle"></i> {{ message.replyTo.song.fullTitle }}
+                                            </div>
+                                        </a>
+                                    {% elseif message.replyTo.post %}
+                                        <a href="#message{{ message.replyTo.id }}">
+                                            <div class="replied-message">
+                                                <div class="back-picture bp-24" style="background-image: url('{% if message.replyTo.post.image %}{{ vich_uploader_asset(message.replyTo.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 5px">
+                                                </div>
+                                                {{ 'post' | trans }}
+                                            </div>
+                                        </a>
+                                    {% elseif message.replyTo.profile %}
+                                        <a href="#message{{ message.replyTo.id }}">
+                                            <div class="replied-message">
+                                                <div class="back-picture bp-24" style="background-image: url('{% if message.replyTo.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(message.replyTo.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); border-radius: 20px; margin-right: 5px">
+                                                </div>
+                                                {{ message.replyTo.profile.user.username }}
+                                            </div>
+                                        </a>
+                                    {% else %}
+                                        <a href="#message{{ message.replyTo.id }}">
+                                            <div class="replied-message">
+                                                {% if message.replyTo.image %}
+                                                    <div class="back-picture bp-24" style="background-image: url('{% if message.replyTo.image %}{{ vich_uploader_asset(message.replyTo) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 5px">
+                                                    </div>
+                                                    {% if message.replyTo.content %}
+                                                        {{ message.replyTo.content }}
+                                                    {% else %}
+                                                        {{ 'photo' | trans }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ message.replyTo.content }}
+                                                {% endif %}
+                                            </div>
+                                        </a>
+                                    {% endif %}
+                                    {% if message.image %}
+                                        <div class="message-image">
+                                            <a data-toggle="modal" data-target="#messageImage{{ message.id }}" class="back-picture bp-130" style="cursor: pointer; border-radius: 8px; background-image: url('{% if message.image %}{{ vich_uploader_asset(message) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                            </a>
+
+                                            <div class="modal fade md-empty-modal" id="messageImage{{ message.id }}" data-keyboard="false" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <img src="{{ vich_uploader_asset(message) | imagine_filter('message') }}" alt="{{ message.image }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <span class="text-message">{{ message.content }}</span>
+                                {% else %}
+                                    {% if message.image %}
+                                        <div class="message-image">
+                                            <a data-toggle="modal" data-target="#messageImage{{ message.id }}" class="back-picture bp-130" style="cursor: pointer; border-radius: 8px; background-image: url('{% if message.image %}{{ vich_uploader_asset(message) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                            </a>
+
+                                            <div class="modal fade md-empty-modal" id="messageImage{{ message.id }}" data-keyboard="false" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <img src="{{ vich_uploader_asset(message) | imagine_filter('message') }}" alt="{{ message.image }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <span class="text-message">{{ message.content }}</span>
+                                {% endif %}
+                            {% endif %}
+
+                            <small>
+                                {% if ("now" | date('d.m.y')) == (message.sentAt ? message.sentAt | date('d.m.y')) %}
+                                    {{ message.sentAt ? message.sentAt | date('G:i') }}
+                                {% elseif ("now" | date('Y')) == (message.sentAt ? message.sentAt | date('Y')) %}
+                                    {{ message.sentAt ? message.sentAt | date('d') }}
+                                    {{ message.sentAt ? message.sentAt | date('M') | trans | lower }}
+                                    {{ message.sentAt ? message.sentAt | date('G:i') }}
+                                {% else %}
+                                    {{ message.sentAt ? message.sentAt | date('d') }}
+                                    {{ message.sentAt ? message.sentAt | date('M') | trans | lower }}
+                                    {{ message.sentAt ? message.sentAt | date('Y') }}
+                                    {{ message.sentAt ? message.sentAt | date('G:i') }}
+                                {% endif %}
+                                {% if message.sender == app.user %}
+                                    {% if message.seen and not message.receiver.hideOnline %}
+                                        <i style="font-size: 8px" class="fas fa-check-double"></i>
+                                    {% else %}
+                                        <i style="font-size: 8px" class="fas fa-check"></i>
+                                    {% endif %}
+                                {% endif %}
+                            </small>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="py-3 not-have-message not-have-message-center">
+                        <i class="far fa-comment" style="margin-right: 3px"></i>
+                        {{ 'you.have.not.messages.with.user' | trans({'username' : user.username}) }}
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        {% if app.user.confirmedEmail and app.user.status is null or app.user.status == true %}
+
+            {{ form_start(form, {'attr': {'class': 'message-form'}}) }}
+                <div id="replyMessageBox">
+                    <span id="replyMessage"></span>
+                    <span id="replyMessageClose"><i class="fas fa-times"></i></span>
+                </div>
+
+                <div class="message-write">
+                    <div class="attach">
+                        <div id="attachedImage">
+                            <span id="attachedImageClose">
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </div>
+                        <a class="btn">
+                            <i class="fas fa-plus"></i>
+                            <span style="display: none">
+                                {{ form_widget(form.imageFile) }}
+                            </span>
+                        </a>
+                    </div>
+                    <div class="input">
+                        {{ form_widget(form.content) }}
+                    </div>
+                    <div class="send">
+                        <button type="submit" class="btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            {{ form_end(form) }}
+
+        {% elseif app.user.status is null %}
+
+            <div class="pr-3 pl-3 pb-3">
+                <div class="md-alert md-alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.write.messages' | trans }}
+                </div>
+            </div>
+
+        {% else %}
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+
+    <script>
+        let messageInput = document.getElementById('message_content');
+        let fileInput = document.getElementById('message_imageFile_file');
+        let attachedImageClose = document.getElementById('attachedImageClose');
+        let messageTextArea = document.querySelector('.message-write textarea');
+        let messageSendButton = document.querySelector('.send button');
+        let messagesBox = document.querySelector('.messages-box');
+        let attachedImage = document.getElementById('attachedImage');
+
+        fileInput.onchange = () => {
+            messageInput.removeAttribute('required');
+            messageSendButton.id = 'imageLoaded';
+            attachedImage.style.backgroundImage = 'url(\'' + window.URL.createObjectURL(fileInput.files[0]) + '\')';
+            attachedImage.style.display = 'block';
+        };
+
+        attachedImageClose.addEventListener('click', () => {
+            messageSendButton.removeAttribute('id');
+            attachedImage.style.display = 'none';
+            messageInput.required = 'required';
+            fileInput.value = '';
+        })
+
+        let messageBoxBlock = document.createElement('div');
+        messageBoxBlock.className = 'sending-message message me';
+
+        function messageSender(){
+            if (messageInput.value || messageSendButton.id === 'imageLoaded') {
+                if (document.querySelector('.sending-message') == null) {
+                    messageBoxBlock.insertAdjacentHTML('afterbegin','<div class="text">' + '<span class="text-message">' + messageTextArea.value + '</span>' + '<small style="margin-left: 5px"><i class="fas fa-spinner fa-spin"></i></small></div>');
+                    messagesBox.insertAdjacentElement('beforeend',messageBoxBlock);
+                    messageSendButton.insertAdjacentHTML('beforebegin','<div class="message-send-disabler"></div>');
+                    messageSendButton.style.opacity = '0.8';
+
+                    if (messageSendButton.id === 'imageLoaded') {
+                        let sentImage = '<div class="message-image"><div class="back-picture bp-130" style="border-radius: 8px; background-image: url(' + window.URL.createObjectURL(fileInput.files[0]) + ')"></div></div>';
+                        messageBoxBlock.querySelector('.text').insertAdjacentHTML('afterbegin',sentImage);
+                        messageBoxBlock.classList.add('image-message');
+                    }
+                }
+            }
+        }
+
+        document.querySelector('.attach .btn').addEventListener('click', () => {
+            fileInput.click();
+        })
+
+        messageSendButton.addEventListener('click',messageSender);
+    </script>
+
+    <script>
+        let replyToMessageButtons = document.querySelectorAll('.reply-to-message');
+        let replyMessageBox = document.getElementById('replyMessageBox');
+        let replyMessage = document.getElementById('replyMessage');
+
+        replyToMessageButtons.forEach((button) => {
+            button.addEventListener('click', (event) => {
+                let replyId = button.id.replace('#replyToMessage', '');
+                document.getElementById('message_replyTo').value = replyId;
+                document.getElementById('message_content').focus();
+
+                replyMessageBox.removeAttribute('class');
+                replyMessageBox.style.display = 'block';
+
+                let message = document.getElementById('message' + replyId);
+                let textMessage = message.querySelector('.text-message');
+                let imageMessage = message.querySelector('.message-image');
+                let songMessage = message.querySelector('.song-message');
+                let postMessage = message.querySelector('.post-message');
+                let profileMessage = message.querySelector('.profile-message');
+
+                if (imageMessage) {
+                    replyMessageBox.className = 'post';
+                    if (message.querySelector('.text-message').innerHTML) {
+                        replyMessage.innerHTML = imageMessage.querySelector('.back-picture').outerHTML + textMessage.innerHTML;
+                    } else {
+                        replyMessage.innerHTML = imageMessage.querySelector('.back-picture').outerHTML + '<div class="info">' + '{{ 'photo' | trans }}' + '</div>';
+                    }
+                } else if (songMessage) {
+                    replyMessageBox.className = 'song';
+                    replyMessage.innerHTML = '<div class="info"><i class="fas fa-play-circle"></i> ' + songMessage.querySelector('.song-full-title').innerHTML + '</div>';
+                } else if (postMessage) {
+                    replyMessageBox.className = 'post';
+                    replyMessage.innerHTML = postMessage.querySelector('.back-picture').outerHTML + '<div class="info">' + '{{ 'post' | trans }}' + '</div>';
+                } else if (profileMessage) {
+                    replyMessageBox.className = 'profile';
+                    replyMessage.innerHTML = profileMessage.querySelector('.back-picture').outerHTML + '<div class="info">' + profileMessage.querySelector('.user-line-info').innerHTML + '</div>';
+                } else {
+                    console.log('lost');
+                    replyMessage.innerHTML = textMessage.innerHTML;
+                }
+            })
+        })
+
+        document.getElementById('replyMessageClose').addEventListener('click', () => {
+            document.getElementById('message_replyTo').removeAttribute('value');
+            replyMessageBox.style.display = 'none';
+        })
+    </script>
+
+{% endblock %}

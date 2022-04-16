@@ -1,0 +1,40 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'password.resetting' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+
+        <header class="user-title-block">{{ 'password.resetting' | trans }}</header>
+
+        <div class="md-autofill md-content-padding md-mobile-padding">
+
+        {{ form_start(form) }}
+
+            <div class="row label-icons-form">
+
+                <div class="col-12">
+
+                    {{ form_row(form.current) }}
+                    {{ form_row(form.new) }}
+
+                    <button class="btn btn-primary">
+                        {{ 'change' | trans }}
+                    </button>
+
+                    <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
+                        {{ 'cancel' | trans }}
+                    </a>
+
+                </div>
+
+            </div>
+
+        {{ form_end(form) }}
+
+        </div>
+
+    </div>
+
+{% endblock %}

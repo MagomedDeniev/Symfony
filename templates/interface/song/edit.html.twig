@@ -1,0 +1,20 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ song.fullTitle }} | {{ 'song.editing' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+        <header class="user-title-block">{{ 'song.editing' | trans }}</header>
+
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/song/_form_song.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor() }}
+    {{ chosen(10) }}
+{% endblock %}

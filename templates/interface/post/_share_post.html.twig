@@ -1,0 +1,54 @@
+<div class="modal fade user-share-modal" id="sharePostModal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="md-modal-container">
+
+                <div class="user-share-media">
+
+                    {% for shareUser in shareUsers %}
+                        <div class="user-line">
+
+                            <div class="back-picture bp-45" style="background-image: url('{% if shareUser.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(shareUser.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); margin-right: 10px">
+                            </div>
+
+                            <div class="user-line-info">
+                                <div class="user-line-username">
+                                    <span class="md-username">{{ shareUser.username }}</span>
+
+                                    {% if shareUser.profile.verified %}
+                                        <span class="md-verified">
+                                            <i class="fas fa-check-circle text-info"></i>
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div>
+                    {% else %}
+                        <div class="text-center" style="color: #ccc">
+                            <i class="far fa-user" style="margin-right: 3px"></i>
+                            {{ 'you.have.not.following' | trans }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<button id="sharePostConfirm" type="button" data-toggle="modal" data-target="#sharePostAlert" style="display: none"></button>
+
+<div class="modal fade md-confirm-modal user-share-send-modal" id="sharePostAlert" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="md-modal-container">
+                <div class="md-modal-message">{{ 'sure.to.send.post' | trans }} <span id="sharePostUsername"></span>?</div>
+                <span id="sharePostId" style="display: none"></span>
+                <a id="sharePostConfirmButton" href="#" class="btn btn-modal-primary md-modal-item">{{ 'send' | trans }}</a>
+                <button id="sharePostCancel" type="button" class="btn btn-modal-default md-modal-item">{{ 'cancel' | trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>

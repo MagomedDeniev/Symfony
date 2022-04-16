@@ -1,0 +1,178 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'search' | trans }}{% endblock %}
+
+{% block pageclass %}two-sidebars{% endblock %}
+
+{% block main_top %}
+    {% if tags %}
+        {{ breadcrumb({
+            (path('app_home')) : ('home.page' | trans),
+            'active' : (('songs.for.' ~ tags.plural) | trans({'keyword': keyword})) ~ ' : ' ~ tags.string,
+        }) }}
+    {% else %}
+        {{ breadcrumb({
+            (path('app_home')) : ('home.page' | trans),
+            'active' : ('songs.for.keyword' | trans({'keyword': keyword})),
+        }) }}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+
+    <div class="md-search">
+
+        <div class="md-search-box md-search-input-box md-box">
+
+            {{ form_start(form) }}
+
+                <div class="md-search-input">
+                    {{ form_widget(form.keyword) }}
+                    <button class="btn btn-success">
+                        {{ 'search' | trans }}
+                    </button>
+                </div>
+
+            {{ form_end(form) }}
+
+            <div class="form-spoiler tag-search-spoiler m-0 mt-2">
+
+                <div style="text-align: right">
+                    <a style="margin-right: 2px;position: relative;top: 1px" class="collapsed message" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                        {{ 'search.by.tags' | trans }} <i></i>
+                    </a>
+                </div>
+
+                <div class="collapse" id="navbarToggleExternalContent">
+
+                    {{ form_start(tagsForm) }}
+                    <div class="md-search-input">
+                        {{ form_widget(tagsForm.tags) }}
+                        {{ form_widget(tagsForm.tagSearch) }}
+                    </div>
+                    {{ form_end(tagsForm) }}
+
+                </div>
+
+            </div>
+
+            <div class="md-search-pages-menu">
+                <a href="{{ path('search_index',{'keyword':(tags) ? tags.string : keyword}) }}">{{ 'all' | trans }}</a>
+                <a href="{{ path('search_users',{'keyword':(tags) ? tags.string : keyword}) }}">{{ 'users' | trans }}</a>
+                <a href="{{ path('search_songs',{'keyword':keyword}) }}" class="active">{{ 'music' | trans }}</a>
+                <a href="{{ path('search_posts',{'keyword':(tags) ? tags.string : keyword}) }}">{{ 'posts' | trans }}</a>
+            </div>
+
+        </div>
+
+        {% if songs %}
+
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
+
+                {% if tags %}
+
+                    <div class="mb-3">
+
+                        <span class="text-muted pb-3">
+                            {% if tags.plural == 'tags' %}
+                                {{ 'song.results.for.tags' | trans }}
+                            {% else %}
+                                {{ 'song.results.for.tag' | trans }}
+                            {% endif %}
+                        </span>
+
+                        {% for tag in tags.data %}
+                            <span class="badge badge-info badge-a">
+                                <a class="md-feat-stat" href="{{ path('search_songs', {'keyword': 'tags=' ~ tag.slug}) }}">
+                                    {{ tag.title }}
+                                </a>
+                            </span>
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+                {% for song in songs %}
+
+                    {% if not loop.first %}<br>{% endif %}
+
+                    {{ player(song.info) }}
+
+                    <div>
+                        {{ song.words | raw}}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
+                {% if tags %}
+                    {% if page > 1 %}
+                        {{ ('not.found.songs.for.' ~ tags.plural) | trans({'tags':tags.string}) }} {{ 'in.page' | trans({'page':page}) }}
+                    {% else %}
+                        {{ ('not.found.songs.for.' ~ tags.plural) | trans({'tags':tags.string}) }}
+                    {% endif %}
+                {% else %}
+                    {% if page > 1 %}
+                        {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
+                    {% else %}
+                        {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}
+                    {% endif %}
+                {% endif %}
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    {{ paginator.display() }}
+
+{% endblock %}
+
+{% block sidebar_b %}
+
+    <div class="sidebar-b">
+        <div class="md-box sticky-top" style="padding: 12px">
+            <div class="text-muted mb-2 pl-2">{{ 'search' | trans }}</div>
+
+            <div class="md-menu">
+
+                <ul>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_index',{'keyword':(tags) ? tags.string : keyword}) }}">
+                            {{ 'all' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu active">
+                        <a style="padding-left: 8px" href="{{ path('search_songs',{'keyword':keyword}) }}">
+                            {{ 'music' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_users',{'keyword':(tags) ? tags.string : keyword}) }}">
+                            {{ 'users' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_posts',{'keyword':(tags) ? tags.string : keyword}) }}">
+                            {{ 'posts' | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+    {{ chosen(10) }}
+{% endblock %}

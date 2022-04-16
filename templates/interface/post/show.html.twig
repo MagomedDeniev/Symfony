@@ -1,0 +1,62 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block og_title %}
+    {% if post.title %}
+        {{ post.title }} | {{ 'article' | trans }}
+    {% else %}
+        {{ 'post' | trans }} #{{ post.id }}
+    {% endif %}
+{% endblock %}
+
+{% block og_image %}{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('post') }}{% endif %}{% endblock %}
+
+{% block og_type %}
+    <meta property="og:type" content="post">
+    <meta property="post:published_time" content="{{ post.publishedAt | format_datetime('full', 'full', '', 'UTC')}}">
+    <meta property="post:modified_time" content="{{ post.updatedAt | format_datetime('full', 'full', '', 'UTC')}}">
+    <meta property="post:author" content="{{ post.author.profile.fullname }}">
+{% endblock %}
+
+{% block title %}
+    {% if post.title %}
+        {{ post.title }} | {{ 'article' | trans }} {{ post.id }}
+    {% else %}
+        {{ 'post' | trans }} {{ post.author.username }} | {{ post.id }}
+    {% endif %}
+{% endblock %}
+
+{% block pageclass %}{% if is_granted('ROLE_POST_MODERATOR') or app.user == post.author %} moder-or-author{% endif %}{% endblock %}
+
+{% block main_top %}
+
+    {% if post.status is null %}
+        <div class="md-alert md-alert-info md-box-mb">
+            <i class="fas fa-history"></i>
+            {{ 'post.in.moderation' | trans }}
+        </div>
+    {% elseif post.status == false %}
+        <div class="md-alert md-alert-danger md-box-mb">
+            <i class="fas fa-ban"></i>
+            {{ 'post.is.rejected' | trans }}
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block main %}
+
+    <div class="last-margin-disable">
+        {{ postView(post, 'show') }}
+    </div>
+
+    {% include 'interface/post/_share_post.html.twig' %}
+
+{% endblock %}
+
+{% block main_bottom %}
+
+    {% if post.status == true %}
+        {{ comments(post,page,{'id':post.id}) }}
+    {% endif %}
+
+{% endblock %}

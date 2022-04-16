@@ -1,0 +1,82 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'tags' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
+        'active' : ('tags' | trans),
+    }, null, 'tag_add') }}
+{% endblock %}
+
+{% block body %}
+
+    <table class="table table-striped table-middle-aligned">
+
+        <tbody>
+
+            {% for tag in tags %}
+
+                <tr>
+                    <td>
+                        {{ tag.title }}
+
+                        <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+
+                        <div class="dropdown-menu">
+
+                            <a href="{{ path('tag_edit', {'id': tag.id}) }}" class="dropdown-item">
+                                <i class="fa fa-edit" aria-hidden="true"></i> {{ 'edit' | trans }}
+                            </a>
+
+                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteTag{{ tag.id }}">
+                                <i class="fas fa-trash-alt"></i>
+                                {{ 'delete' | trans }}
+                            </button>
+
+                        </div>
+
+                        <div class="modal fade md-confirm-modal" id="deleteTag{{ tag.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="md-modal-container">
+                                        <div class="md-modal-message">{{ 'sure.to.delete.tag' | trans }}</div>
+                                        <form class="md-modal-item" method="post" action="{{ path('tag_delete', {'id': tag.id}) }}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tag.id) }}">
+                                            <button class="btn btn-modal-danger">
+                                                {{ 'delete' | trans }}
+                                            </button>
+                                        </form>
+                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br><span class="small text-muted">{{ tag.slug }}</span>
+                    </td>
+
+                    <td>
+                        {% if tag.type == 'song' %}
+                            <span class="badge badge-success">
+                                {{ tag.type }}
+                            </span>
+                        {% elseif tag.type == 'post' %}
+                            <span class="badge badge-info">
+                                {{ tag.type }}
+                            </span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% endblock %}

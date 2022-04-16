@@ -1,0 +1,168 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'messages' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+
+        {% if onlineUsers %}
+            <div class="online-users-title">{{ 'online' | trans }}</div>
+            <div class="online-users-block">
+                <div class="online-users-list">
+                    {% for onlineUser in onlineUsers %}
+                        <a href="{{ path('message_conversation', {'username':onlineUser.username}) }}">
+                            <div class="back-picture bp-50" style="background-image: url('{% if onlineUser.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(onlineUser.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                                <span class="online-user-status"></span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if users %}
+
+            <div class="md-conversations-list">
+
+            {% for user in users %}
+
+                {% set lastMessage = lastMessage(user) %}
+
+                <div class="md-conversation-line">
+                    <a href="{{ path('message_conversation', {'username':user.username}) }}">
+                        <div class="avatar">
+                            <div class="back-picture bp-50" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); margin-right: 10px">
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            <div class="username" style="line-height: unset">
+                                {{ user.username }}
+
+                                {% if user.profile.verified %}
+                                    <span class="md-verified">
+                                        <i class="fas fa-check-circle text-info"></i>
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="message{% if lastMessage.post or lastMessage.image %} message-post-preview{% endif %}{% if lastMessage.profile %} message-profile-preview{% endif %}">
+                                <div class="text">
+                                    <span>
+                                        {% if lastMessage.sender == app.user %}
+                                            Вы:
+                                        {% endif %}
+
+                                        {% if lastMessage.song %}
+                                            <i class="fas fa-play-circle"></i>
+                                            {{ lastMessage.song.vocalist.fullName ~ ' - ' ~ lastMessage.song.title }}
+                                        {% elseif lastMessage.post %}
+                                            <div class="back-picture bp-24" style="background-image: url('{% if lastMessage.post.image %}{{ vich_uploader_asset(lastMessage.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; {% if lastMessage.sender != app.user %}margin-left: unset !important;{% endif %}">
+                                            </div>
+                                            {{ 'post' | trans }}
+                                        {% elseif lastMessage.profile %}
+                                            <div class="back-picture bp-24" style="background-image: url('{% if lastMessage.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(lastMessage.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); border-radius: 3px; {% if lastMessage.sender != app.user %}margin-left: unset !important;{% endif %}">
+                                            </div>
+                                            {{ lastMessage.profile.user.username }}
+                                        {% else %}
+                                            {% if lastMessage.image %}
+                                                <div class="back-picture bp-24" style="background-image: url('{% if lastMessage.image %}{{ vich_uploader_asset(lastMessage) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; {% if lastMessage.sender != app.user %}margin-left: unset !important;{% endif %}">
+                                                </div>
+                                            {% endif %}
+                                            {% if lastMessage.content %}
+                                                {{ lastMessage.content }}
+                                            {% else %}
+                                                {{ 'photo' | trans }}
+                                            {% endif %}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="time text-muted">
+                                    <small>
+                                        {% if ("now" | date('d.m.y')) == (lastMessage.sentAt ? lastMessage.sentAt | date('d.m.y')) %}
+                                            {{ lastMessage.sentAt ? lastMessage.sentAt | date('G:i') }}
+                                        {% elseif ("now" | date('Y')) == (lastMessage.sentAt ? lastMessage.sentAt | date('Y')) %}
+                                            {{ lastMessage.sentAt ? lastMessage.sentAt | date('d') }}
+                                            {{ lastMessage.sentAt ? lastMessage.sentAt | date('M') | trans | lower }}
+                                        {% else %}
+                                            {{ lastMessage.sentAt ? lastMessage.sentAt | date('d.m.y') }}
+                                        {% endif %}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    {% if conversationMessagesCount(app.user,user) != 0 %}
+                        <span class="conversation-unseen-counter">
+                            {% if conversationMessagesCount(app.user,user) > 99 %}
+                                99+
+                            {% else %}
+                                {{ conversationMessagesCount(app.user,user) }}
+                            {% endif %}
+                        </span>
+                    {% endif %}
+
+                    <button type="button" class="btn md-comment-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteConversationWith{{ user.username | capitalize }}ForMe">
+                            {{ 'delete.for.me' | trans }}
+                        </button>
+                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteConversationWith{{ user.username | capitalize }}ForEveryone">
+                            {{ 'delete.for.everyone' | trans({'username':user.username}) }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal fade md-confirm-modal" id="deleteConversationWith{{ user.username | capitalize }}ForMe" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="md-modal-container">
+                                <div class="md-modal-message">{{ 'sure.to.delete.conversation.for.me' | trans({'username':user.username}) }}</div>
+                                <a class="btn btn-modal-danger md-modal-item" href="{{ path('delete_conversation_for_me', {'username':user.username}) }}">
+                                    {{ 'delete.only.for.me' | trans }}
+                                </a>
+                                <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade md-confirm-modal" id="deleteConversationWith{{ user.username | capitalize }}ForEveryone" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="md-modal-container">
+                                <div class="md-modal-message">{{ 'sure.to.delete.conversation.for.everyone' | trans({'username':user.username}) }}</div>
+                                <a class="btn btn-modal-danger md-modal-item" href="{{ path('delete_conversation_for_everyone', {'username':user.username}) }}">
+                                    {{ 'delete.for.me.and.interlocutor' | trans({'username':user.username}) }}
+                                </a>
+                                <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+        {% if not users %}
+
+            <div class="md-content-padding md-mobile-padding">
+                <div class="not-have-message not-have-message-center">
+                    <i class="far fa-comment" style="margin-right: 3px"></i>
+                    {{ 'you.have.not.conversations' | trans }}
+                </div>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}
