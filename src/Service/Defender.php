@@ -11,7 +11,6 @@ use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Defender
@@ -52,7 +51,7 @@ class Defender
         if ($user === null) {
             ($role === 'ROLE_GUEST') ? $granted = true : $granted = false;
         } else {
-            $token = new UsernamePasswordToken($user, 'none', 'none', $user->getRoles());
+            $token = new UsernamePasswordToken($user, null, $user->getRoles());
 
             if ($this->accessDecisionManager->decide($token, [$role], $object)) {
                 $granted = true;

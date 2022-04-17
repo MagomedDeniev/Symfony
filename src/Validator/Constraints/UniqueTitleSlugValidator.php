@@ -10,12 +10,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class UniqueTitleSlugValidator extends ConstraintValidator
 {
-    private EntityManagerInterface $manager;
-
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->manager = $manager;
-    }
+    public function __construct(private EntityManagerInterface $manager,){}
 
     public function validate($entity, Constraint $constraint)
     {

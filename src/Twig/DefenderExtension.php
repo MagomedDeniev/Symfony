@@ -11,12 +11,7 @@ use Twig\TwigFunction;
 
 class DefenderExtension extends AbstractExtension
 {
-    private $defender;
-
-    public function __construct(Defender $defender)
-    {
-        $this->defender = $defender;
-    }
+    public function __construct(private Defender $defender){}
 
     public function getFunctions(): array
     {

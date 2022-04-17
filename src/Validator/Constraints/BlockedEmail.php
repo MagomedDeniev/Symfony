@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
         return \get_class($this).'Validator';
     }
 
-    public function getTargets()
+    public function getTargets(): array|string
     {
         return self::CLASS_CONSTRAINT;
     }

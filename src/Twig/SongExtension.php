@@ -13,33 +13,30 @@ use Twig\TwigFunction;
 
 class SongExtension extends AbstractExtension
 {
-    private $songs;
-    private $letters = [
-        'a' => 'а',
-        'b' => 'б',
-        'v' => 'в',
-        'g' => 'г',
-        'd' => 'д',
-        'z' => 'з',
-        'i' => 'и',
-        'k' => 'к',
-        'l' => 'л',
-        'm' => 'м',
-        'p' => 'п',
-        'r' => 'р',
-        's' => 'с',
-        't' => 'т',
-        'u' => 'у',
-        'h' => 'х',
-        'sh' => 'ш',
-        'e' => 'э',
-        'yu' => 'ю'
-    ];
-
-    public function __construct(SongRepository $songs)
-    {
-        $this->songs = $songs;
-    }
+    public function __construct(
+        private SongRepository $songs,
+        private $letters = [
+            'a' => 'а',
+            'b' => 'б',
+            'v' => 'в',
+            'g' => 'г',
+            'd' => 'д',
+            'z' => 'з',
+            'i' => 'и',
+            'k' => 'к',
+            'l' => 'л',
+            'm' => 'м',
+            'p' => 'п',
+            'r' => 'р',
+            's' => 'с',
+            't' => 'т',
+            'u' => 'у',
+            'h' => 'х',
+            'sh' => 'ш',
+            'e' => 'э',
+            'yu' => 'ю'
+        ]
+    ){}
 
     public function getFunctions(): array
     {

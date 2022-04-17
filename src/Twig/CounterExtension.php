@@ -20,42 +20,28 @@ use App\Repository\PlaylistSongRepository;
 use App\Repository\UserRepository;
 use App\Service\Defender;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class CounterExtension extends AbstractExtension
 {
-    private $songRepo;
-    private $playlistSongRepo;
-    private $notifyRepo;
-    private $messageRepo;
-    private $translator;
-    private $bookmarks;
-    private $likes;
-    private $postRepo;
-    private $followRepo;
-    private $reportRepo;
-    private $defender;
-    private $security;
-    private $users;
-
-    public function __construct(SongRepository $songRepository, PostRepository $postRepo, Security $security, UserRepository $users, Defender $defender, ReportRepository $reportRepo, BookmarkRepository $bookmarks, LikeRepository $likes, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, MessageRepository $messageRepo, TranslatorInterface $translator, FollowRepository $followRepo)
-    {
-        $this->songRepo = $songRepository;
-        $this->postRepo = $postRepo;
-        $this->playlistSongRepo = $playlistSongRepo;
-        $this->bookmarks = $bookmarks;
-        $this->likes = $likes;
-        $this->notifyRepo = $notifyRepo;
-        $this->messageRepo = $messageRepo;
-        $this->translator = $translator;
-        $this->followRepo = $followRepo;
-        $this->reportRepo = $reportRepo;
-        $this->defender = $defender;
-        $this->security = $security;
-        $this->users = $users;
-    }
+    public function __construct(
+        private SongRepository $songRepo,
+        private PostRepository $postRepo,
+        private Security $security,
+        private UserRepository $users,
+        private Defender $defender,
+        private ReportRepository $reportRepo,
+        private BookmarkRepository $bookmarks,
+        private LikeRepository $likes,
+        private PlaylistSongRepository $playlistSongRepo,
+        private NotificationRepository $notifyRepo,
+        private MessageRepository $messageRepo,
+        private TranslatorInterface $translator,
+        private FollowRepository $followRepo
+    ){}
 
     public function getFunctions(): array
     {
@@ -84,7 +70,7 @@ class CounterExtension extends AbstractExtension
         $result = [];
 
         foreach ($featuring as $vocalist) {
-            array_push($result,$vocalist->getFullName());
+            $result[] = $vocalist->getFullName();
         }
 
         sort($result);
@@ -92,7 +78,7 @@ class CounterExtension extends AbstractExtension
         $template = ' (' . $this->translator->trans('feat') . ' %s)';
 
         if ($featuring->isEmpty()){
-            $template = null;
+            $template = '';
         }
 
         return sprintf($template, $result);
@@ -180,7 +166,7 @@ class CounterExtension extends AbstractExtension
         return $this->songRepo->getSongViews($song);
     }
 
-    private function getUser()
+    private function getUser(): UserInterface|User|null
     {
         if ($this->defender->isGranted($this->security->getUser(),'ROLE_GUEST')) {
             return $this->security->getUser();

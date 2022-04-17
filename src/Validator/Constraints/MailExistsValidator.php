@@ -11,14 +11,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MailExistsValidator extends ConstraintValidator
 {
-    private $manager;
-    private $translator;
-
-    public function __construct(EntityManagerInterface $manager, TranslatorInterface $translator)
-    {
-        $this->manager = $manager;
-        $this->translator = $translator;
-    }
+    public function __construct(
+        private EntityManagerInterface $manager,
+        private TranslatorInterface $translator
+    ){}
 
     public function validate($value, Constraint $constraint)
     {

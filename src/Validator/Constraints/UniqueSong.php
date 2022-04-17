@@ -12,12 +12,12 @@ use Symfony\Component\Validator\Constraint;
 {
     public $message = '{{ message }}';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return \get_class($this).'Validator';
     }
 
-    public function getTargets()
+    public function getTargets(): array|string
     {
         return self::CLASS_CONSTRAINT;
     }

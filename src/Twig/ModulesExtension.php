@@ -3,7 +3,6 @@
 namespace App\Twig;
 
 use App\Entity\Comment;
-use App\Entity\Message;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Repository\MessageRepository;
@@ -11,7 +10,6 @@ use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use App\Service\Defender;
 use App\Service\Paginator;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
@@ -23,24 +21,15 @@ use Twig\TwigFunction;
 
 class ModulesExtension extends AbstractExtension
 {
-    private $tags;
-    private $paginator;
-    private $container;
-    private $messageRepo;
-    private $security;
-    private $defender;
-    private $users;
-
-    public function __construct(Security $security, Defender $defender, TagRepository $tags, Paginator $paginator, ContainerInterface $container, MessageRepository $messageRepo, UserRepository $userRepo)
-    {
-        $this->users = $userRepo;
-        $this->security = $security;
-        $this->defender = $defender;
-        $this->paginator = $paginator;
-        $this->container = $container;
-        $this->tags = $tags;
-        $this->messageRepo = $messageRepo;
-    }
+    public function __construct(
+        private Security $security,
+        private Defender $defender,
+        private TagRepository $tags,
+        private Paginator $paginator,
+        private MessageRepository $messageRepo,
+        private UserRepository $userRepo,
+        private $container
+    ){}
 
     public function getFunctions(): array
     {
@@ -128,7 +117,7 @@ class ModulesExtension extends AbstractExtension
         if ($this->defender->isGranted($this->security->getUser(),'ROLE_GUEST')) {
             return $this->security->getUser();
         } else {
-            return $this->users->findOneBy(['username' => $this->security->getUser()->getUsername()]);
+            return $this->userRepo->findOneBy(['username' => $this->security->getUser()->getUsername()]);
         }
     }
 }

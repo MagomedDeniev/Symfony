@@ -4,7 +4,6 @@ namespace App\Twig;
 
 use App\Entity\Post;
 use App\Form\NotificationType;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -15,12 +14,7 @@ use Twig\TwigFunction;
 
 class PostExtension extends AbstractExtension
 {
-    private $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    public function __construct(private $container){}
 
     public function getFunctions(): array
     {

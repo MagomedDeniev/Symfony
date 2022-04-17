@@ -17,12 +17,12 @@ use Symfony\Component\Validator\Constraint;
         parent::__construct($options, $groups, $payload);
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return \get_class($this).'Validator';
     }
 
-    public function getTargets()
+    public function getTargets(): array|string
     {
         return self::CLASS_CONSTRAINT;
     }

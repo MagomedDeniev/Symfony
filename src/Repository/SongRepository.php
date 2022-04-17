@@ -120,7 +120,7 @@ class SongRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getSongViews(Song $song): float
+    public function getSongViews(Song $song)
     {
         $qb = $this->createQueryBuilder('s');
 
@@ -132,7 +132,13 @@ class SongRepository extends ServiceEntityRepository
 
         $qb ->setMaxResults(1);
 
-        return round($qb->getQuery()->getResult()[0]['1']);
+        $result = $qb->getQuery()->getResult()[0]['1'];
+
+        if ($result === null) {
+            $result = 0;
+        }
+
+        return round($result);
     }
 
     public function findByViews($criteria, $orderBy = null, $limit = null, $offset = 0)

@@ -84,6 +84,7 @@ class SongController extends CustomAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $initializer->initializeSongNew($song, $form);
+            $this->addFlash('success', $this->trans('song.sent.for.moderation'));
 
             if ($form->get('save')->isClicked()) {
                 return $this->redirectToRoute('song_edit', [

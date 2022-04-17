@@ -12,14 +12,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UniqueSongValidator extends ConstraintValidator
 {
-    private $translator;
-    private $repo;
-
-    public function __construct(SongRepository $repo, TranslatorInterface $translator)
-    {
-        $this->repo = $repo;
-        $this->translator = $translator;
-    }
+    public function __construct(
+        private SongRepository $repo,
+        private TranslatorInterface $translator
+    ){}
 
     public function validate($entity, Constraint $constraint)
     {

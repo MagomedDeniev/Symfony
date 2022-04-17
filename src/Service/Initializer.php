@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Action;
-use App\Entity\Notification;
 use App\Entity\Post;
 use App\Entity\Person;
 use App\Entity\Song;
@@ -15,20 +14,16 @@ use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Initializer
 {
     public function __construct(
         private NotificationRepository $notifications,
-        private TranslatorInterface $translator,
         private Security $security,
         private Defender $defender,
         private Compiler $compiler,
         private SlugifyInterface $slugify,
-        private FlashBagInterface $flash,
         private UserRepository $users,
         private EntityManagerInterface $em
     ){}
@@ -80,7 +75,6 @@ class Initializer
         }
 
         if ($this->defender->hasOnlyAuthorRightsInSongs($this->getUser()) && $form->get('sendForModeration')->getData()) {
-            $this->flash->add('success', $this->translator->trans('song.sent.for.moderation'));
             $song->setPublicationDate(new \DateTime('now'));
             $song->setStatus(0);
         }

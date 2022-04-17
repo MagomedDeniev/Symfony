@@ -17,18 +17,12 @@ use Twig\TwigFunction;
 
 class UserExtension extends AbstractExtension
 {
-    private $users;
-    private $security;
-    private $defender;
-    private $follows;
-
-    public function __construct(UserRepository $users, Security $security, Defender $defender, FollowRepository $follows)
-    {
-        $this->users = $users;
-        $this->security = $security;
-        $this->defender = $defender;
-        $this->follows = $follows;
-    }
+    public function __construct(
+        private UserRepository $users,
+        private Security $security,
+        private Defender $defender,
+        private FollowRepository $follows
+    ){}
 
     public function getFunctions(): array
     {

@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
 #[Vich\Uploadable]
-class Profile implements \Serializable
+class Profile
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -59,6 +59,16 @@ class Profile implements \Serializable
     #[Pure] public function __construct()
     {
         $this->messages = new ArrayCollection();
+    }
+
+    public function __serialize()
+    {
+        return [$this];
+    }
+
+    public function __unserialize($serialized)
+    {
+        return [$this];
     }
 
     public function getId(): ?int
@@ -127,28 +137,6 @@ class Profile implements \Serializable
         }
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->avatar,
-        ));
-    }
-
-    /**
-     * @param string $serialized
-     */
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->avatar,
-            ) = unserialize($serialized, array('allowed_classes' => false));
     }
 
     public function getFullname(): ?string

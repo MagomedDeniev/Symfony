@@ -9,18 +9,14 @@ use Symfony\Component\Mime\Address;
 
 class Mailer
 {
-    private $mailer;
-    private $from;
-    private $to;
-    private $subject;
-    private $template;
-    public $variables;
-
-    public function __construct(MailerInterface $mailer, $email)
-    {
-        $this->mailer = $mailer;
-        $this->from = $email;
-    }
+    public function __construct(
+        private MailerInterface $mailer,
+        private $email,
+        private $to,
+        private $subject,
+        private $template,
+        public $variables
+    ){}
 
     public function notify()
     {
@@ -39,12 +35,12 @@ class Mailer
 
     public function getFrom()
     {
-        return $this->from;
+        return $this->email;
     }
 
     public function setFrom($from): Mailer
     {
-        $this->from = $from;
+        $this->email = $from;
 
         return $this;
     }

@@ -123,9 +123,6 @@
     "phpdocumentor/type-resolver": {
         "version": "1.6.1"
     },
-    "phpstan/phpdoc-parser": {
-        "version": "1.4.3"
-    },
     "psr/cache": {
         "version": "2.0.0"
     },
