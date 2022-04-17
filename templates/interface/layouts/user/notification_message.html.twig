@@ -30,7 +30,7 @@
         }
     </style>
 
-    <a class="notification-follow btn {% if userIsFollowed(notification.sender) == 'followed' %}btn-light followed{% elseif userIsFollowed(notification.sender) == 'requested' %}btn-light requested{% else %}btn-info{% endif %} {% if app.user %}follow-toggle{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':notification.sender.username}) }}{% else %}{{ path('app_login') }}{% endif %}"></a>
+    <a class="notification-follow btn {% if userIsFollowed(notification.sender) == 'followed' %}btn-light followed{% elseif userIsFollowed(notification.sender) == 'requested' %}btn-light requested{% else %}btn-info{% endif %} {% if app.user %}follow-toggle{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':notification.sender.username}) }}{% else %}{{ path('app_login') }}{% endif %}" onclick="event.preventDefault()"></a>
 
 {% elseif notification.type == 'user_tagged' %}
 

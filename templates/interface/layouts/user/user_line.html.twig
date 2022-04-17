@@ -33,7 +33,7 @@
                     <div class="modal-content">
                         <div class="md-modal-container">
                             <div class="md-modal-message">{{ 'sure.to.reject.request' | trans({'username':follower.username}) }}</div>
-                            <a href="{{ path('reject_request',{'username':follower.username}) }}" class="btn btn-modal-danger md-modal-item reject-request-toggle" id="u{{ (follower.id * 14 / 3 + 91) | round }}t">
+                            <a href="{{ path('reject_request',{'username':follower.username}) }}" class="btn btn-modal-danger md-modal-item reject-request-toggle" id="u{{ (follower.id * 14 / 3 + 91) | round }}t" onclick="event.preventDefault()">
                                 {{ 'reject' | trans }}
                             </a>
                             <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <a id="u{{ (follower.id * 14 / 3 + 91) | round }}t" href="{{ path('accept_request',{'username':follower.username}) }}" class="btn btn-follow btn-info accept-follow-request">{{ 'accept' | trans }}</a>
+            <a id="u{{ (follower.id * 14 / 3 + 91) | round }}t" href="{{ path('accept_request',{'username':follower.username}) }}" class="btn btn-follow btn-info accept-follow-request" onclick="event.preventDefault()">{{ 'accept' | trans }}</a>
         </div>
 
     {% else %}
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                 {% endif %}
-                <a class="btn btn-follow {% if app.user %}follow-toggle{% endif %}{% if userIsFollowed(follower) == 'followed' %} btn-light followed{% elseif userIsFollowed(follower) == 'requested' %} btn-light requested{% else %} btn-info{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':follower.username}) }}{% else %}{{ path('app_login') }}{% endif %}"></a>
+                <a class="btn btn-follow {% if app.user %}follow-toggle{% endif %}{% if userIsFollowed(follower) == 'followed' %} btn-light followed{% elseif userIsFollowed(follower) == 'requested' %} btn-light requested{% else %} btn-info{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':follower.username}) }}{% else %}{{ path('app_login') }}{% endif %}" onclick="event.preventDefault()"></a>
             </div>
         {% endif %}
 

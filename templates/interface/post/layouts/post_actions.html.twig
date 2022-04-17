@@ -8,7 +8,7 @@
 
     <span class="stat mr-3">
         {% if app.user %}
-            <a class="like-toggle{% if userLikedPost(app.user, post) %} added{% endif %}" id="post-like-{{ post.id }}" href="{{ path('post_like', {'id':post.id}) }}">
+            <a class="like-toggle{% if userLikedPost(app.user, post) %} added{% endif %}" id="post-like-{{ post.id }}" href="{{ path('post_like', {'id':post.id}) }}" onclick="event.preventDefault()">
                 <span class="like-icon"></span>
             </a>
         {% else %}
@@ -30,7 +30,7 @@
     <span class="stat float-right m-0">
 
         {% if app.user %}
-            <a class="bookmark-toggle{% if userBookmarkedPost(app.user, post) %} added{% endif %}" href="{{ path('post_bookmark', {'slug': post.slug}) }}">
+            <a class="bookmark-toggle{% if userBookmarkedPost(app.user, post) %} added{% endif %}" href="{{ path('post_bookmark', {'slug': post.slug}) }}" onclick="event.preventDefault()">
                 <span class="bookmark-icon"></span>
             </a>
         {% else %}

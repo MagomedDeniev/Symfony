@@ -33,7 +33,7 @@
                     {% set playlist_title = 'add.to.playlist' | trans %}
                 {% endif %}
 
-                <a class="muted-link-info playlist-toggle{% if userContainSong(app.user, song) %} added{% endif %}" href="{{ path('song_playlist', {slug: song.slug}) }}" data-toggle="tooltip" title="{{ playlist_title }}">
+                <a class="muted-link-info playlist-toggle{% if userContainSong(app.user, song) %} added{% endif %}" href="{{ path('song_playlist', {slug: song.slug}) }}" data-toggle="tooltip" title="{{ playlist_title }}" onclick="event.preventDefault()">
                     <i class="far fa-times-circle"></i>
                 </a>
             {% endif %}
